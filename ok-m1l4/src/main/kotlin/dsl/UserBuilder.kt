@@ -1,30 +1,30 @@
 package dsl
 
 import models.*
+import java.time.DayOfWeek
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.temporal.TemporalAdjusters
 
-@UserDslMarker
-class NameContext {
+@UserDsl
+class UserContext {
     var first: String = ""
     var second: String = ""
     var last: String = ""
 }
 
-@UserDslMarker
-class BirthContext {
-    var date: String = ""
-}
-
-@UserDslMarker
-class ContactsDsl {
+@UserDsl
+class ContactsContext {
     var email: String = ""
     var phone: String = ""
 }
 
-class ActionsContext {
-    private val _actions = mutableSetOf<Action>()
+@UserDsl
+class ActionsDsl {
+    private val _actions: MutableSet<Action> = mutableSetOf()
 
-    val actions
+    val actions: Set<Action>
         get() = _actions.toSet()
 
     fun add(action: Action) {
@@ -38,64 +38,117 @@ class ActionsContext {
     operator fun String.unaryPlus() = add(this)
 }
 
-@UserDslMarker
+@UserDsl
+class AvailableCreator {
+    private val myAvailableList: MutableList<LocalDateTime> = mutableListOf()
+
+    val availableList: List<LocalDateTime>
+        get() = myAvailableList.toList()
+
+    fun sunday(time:String) = dayAndTimeOfWeek(DayOfWeek.SUNDAY, time)
+
+    fun monday(time:String) = dayAndTimeOfWeek(DayOfWeek.MONDAY, time)
+
+    fun tuesday(time:String) = dayAndTimeOfWeek(DayOfWeek.TUESDAY, time)
+
+    fun wednesday(time:String) = dayAndTimeOfWeek(DayOfWeek.WEDNESDAY, time)
+
+    fun thursday(time:String) = dayAndTimeOfWeek(DayOfWeek.THURSDAY, time)
+
+    fun friday(time:String) = dayAndTimeOfWeek(DayOfWeek.FRIDAY, time)
+
+    fun saturday(time:String) = dayAndTimeOfWeek(DayOfWeek.SATURDAY, time)
+
+    private fun dayAndTimeOfWeek(day: DayOfWeek, time: String) {
+        val dDay = dayOfWeek(day)
+        val dTime = parseTime(time)
+
+        myAvailableList.add(LocalDateTime.of(dDay, dTime))
+    }
+
+    private fun dayOfWeek(day: DayOfWeek): LocalDate {
+        return LocalDate.now().with(TemporalAdjusters.next(day))
+    }
+
+    /**
+     *
+     * @param time format __hh:mm__
+     */
+    private fun parseTime(time: String): LocalTime {
+//        val parsed = time.split(":")
+//            .map { it.toInt() }
+//        return LocalTime.of(parsed[0], parsed[1])
+        return time.split(":")
+            .map { it.toInt() }
+            .let { LocalTime.of(it[0], it[1]) }
+    }
+}
+
+@UserDsl
 class UserBuilder {
-    var id: UserId = UserId.random()
+    var id = UserId.random()
 
-    var firstName: String = ""
-    var secondName: String = ""
-    var lastName: String = ""
+    var firstName = ""
+    var secondName = ""
+    var lastName = ""
 
-    var birthDate: LocalDate = LocalDate.MIN
-    var email: Email = Email.NONE
-    var phone: Phone = Phone.NONE
+    val available = mutableListOf<LocalDateTime>()
+    var email = Email.NONE
+    var phone = Phone.NONE
 
-    var actions: Set<Action> = mutableSetOf()
+    val actions = mutableSetOf<Action>()
 
-    @UserDslMarker
-    fun name(block: NameContext.() -> Unit) {
-        val context = NameContext().apply(block)
+    @UserDsl
+    fun name(block: UserContext.() -> Unit) {
+        val context = UserContext().apply(block)
+
         firstName = context.first
         secondName = context.second
         lastName = context.last
     }
 
-    @UserDslMarker
-    fun birth(block: BirthContext.() -> Unit) {
-        val context = BirthContext().apply(block)
-        birthDate = LocalDate.parse(context.date)
+    @UserDsl
+    fun actions(block: ActionsDsl.() -> Unit) {
+        val context = ActionsDsl().apply(block)
+
+        actions.addAll(context.actions)
     }
 
-    @UserDslMarker
-    fun actions(block: ActionsContext.() -> Unit) {
-        val context = ActionsContext().apply(block)
-        actions = context.actions
+    @UserDsl
+    fun available(block: AvailableCreator.() -> Unit) {
+        val context = AvailableCreator().apply(block)
+
+        available.addAll(context.availableList)
     }
 
-    fun build(): User {
-        return User(
-            id = id,
-            firstName = firstName,
-            secondName = secondName,
-            lastName = lastName,
-            birthDate = birthDate,
-            email = email,
-            phone = phone,
-            actions = actions
-        )
-    }
+    fun build() = User(
+        id = id,
+        firstName = firstName,
+        secondName = secondName,
+        lastName = lastName,
+        available = available,
+        email = email,
+        phone = phone,
+        actions = actions,
+    )
 }
 
-@UserDslMarker
-fun UserBuilder.contacts(block: ContactsDsl.() -> Unit) {
-    val context = ContactsDsl().apply(block)
+@UserDsl
+fun UserBuilder.contacts(block: ContactsContext.() -> Unit) {
+    val context = ContactsContext().apply(block)
+
     email = Email(context.email)
     phone = Phone(context.phone)
 }
 
-@UserDslMarker
+@UserDsl
 fun user(block: UserBuilder.() -> Unit) = UserBuilder().apply(block).build()
 
-@DslMarker
-annotation class UserDslMarker
+//fun user(block: UserBuilder.() -> Unit): User {
+//    val builder = UserBuilder()
+//    builder.block()
+//    return builder.build()
+//}
 
+@DslMarker
+annotation class UserDsl

@@ -1,16 +1,18 @@
 package models
 
-import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.*
 
+// Action - separate
 enum class Action {
-    DELETE,
     READ,
+    DELETE,
     WRITE,
     UPDATE,
     CREATE
 }
 
+// User - separate
 data class User(
     val id: UserId,
 
@@ -18,7 +20,7 @@ data class User(
     val secondName: String,
     val lastName: String,
 
-    val birthDate: LocalDate,
+    val available: List<LocalDateTime>,
     val email: Email,
     val phone: Phone,
 
@@ -26,7 +28,7 @@ data class User(
 )
 
 @JvmInline
-value class UserId(val value: String) {
+value class UserId(val id: String) {
     companion object {
         val NONE = UserId("")
         fun random() = UserId(UUID.randomUUID().toString())
@@ -34,14 +36,14 @@ value class UserId(val value: String) {
 }
 
 @JvmInline
-value class Email(val value: String) {
+value class Email(val email: String) {
     companion object {
         val NONE = Email("")
     }
 }
 
 @JvmInline
-value class Phone(val value: String) {
+value class Phone(val phone: String) {
     companion object {
         val NONE = Phone("")
     }
