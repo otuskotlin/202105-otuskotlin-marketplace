@@ -8,9 +8,13 @@ class SqlDslUnitTest {
 
     @Test
     fun `simple select all from table`() {
-        checkSQL("select * from table") {
+        val expected = "select * from table"
+
+        val real = query {
             from("table")
         }
+
+        checkSQL(expected, real)
     }
 
     @Test
@@ -24,39 +28,59 @@ class SqlDslUnitTest {
 
     @Test
     fun `select certain columns from table`() {
-        checkSQL("select col_a, col_b from table") {
+        val expected = "select col_a, col_b from table"
+
+        val real = query {
             select("col_a", "col_b")
             from("table")
         }
+
+        checkSQL(expected, real)
     }
 
     @Test
     fun `select certain columns from table 1`() {
-        checkSQL("select col_a, col_b from table") {
+        val expected = "select col_a, col_b from table"
+
+        val real = query {
             select("col_a", "col_b")
             from("table")
         }
+
+        checkSQL(expected, real)
     }
 
     @Test
     fun `select with complex where condition with one condition`() {
-        checkSQL("select * from table where col_a = 'id'") {
+        val expected = "select * from table where col_a = 'id'"
+
+        val real = query {
             from("table")
             where { "col_a" eq "id" }
         }
+
+        checkSQL(expected, real)
     }
 
     @Test
     fun `select with complex where condition with two conditions`() {
-        checkSQL("select * from table where col_a != 0") {
+        val expected = "select * from table where col_a != 0"
+
+        val real = query {
             from("table")
-            where { "col_a" nonEq 0 }
+            where {
+                "col_a" nonEq 0
+            }
         }
+
+        checkSQL(expected, real)
     }
 
     @Test
     fun `when 'or' conditions are specified then they are respected`() {
-        checkSQL("select * from table where (col_a = 4 or col_b !is null)") {
+        val expected = "select * from table where (col_a = 4 or col_b !is null)"
+
+        val real = query {
             from("table")
             where {
                 or {
@@ -65,10 +89,11 @@ class SqlDslUnitTest {
                 }
             }
         }
+
+        checkSQL(expected, real)
     }
 
-    private fun checkSQL(actual: String, sql: SqlSelectBuilder.() -> Unit) {
-        val expected = query(sql).build()
-        assertEquals(expected, actual)
+    private fun checkSQL(expected: String, sql: SqlSelectBuilder) {
+        assertEquals(expected, sql.build())
     }
 }
