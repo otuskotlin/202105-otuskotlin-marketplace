@@ -6,6 +6,13 @@ import kotlin.test.assertEquals
 
 class UserTestCase {
     @Test
+    fun `test lambda function`() {
+        sout {
+            1 + 23
+        }
+    }
+
+    @Test
     fun `test simple user`() {
         val user = user {
             name {
