@@ -17,7 +17,7 @@ class SimpleTestCase {
 
     @Test
     fun `HW test`() {
-        println("dsfghfg")
+        println("HW")
         assertEquals(null, null)
     }
 }
