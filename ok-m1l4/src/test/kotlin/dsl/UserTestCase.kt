@@ -26,8 +26,9 @@ class UserTestCase {
                 first = "Kirill"
                 last = "Krylov"
             }
-            birth {
-                date = "2020-01-10"
+            available {
+                monday("12:30")
+                friday("18:00")
             }
             contacts {
                 email = "email@gmail.com"
