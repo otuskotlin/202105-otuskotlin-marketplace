@@ -13,6 +13,13 @@ class UserTestCase {
     }
 
     @Test
+    fun `test simple dsl`() {
+        soutWithPrefix {
+            "${time()}-info!"
+        }
+    }
+
+    @Test
     fun `test simple user`() {
         val user = user {
             name {
