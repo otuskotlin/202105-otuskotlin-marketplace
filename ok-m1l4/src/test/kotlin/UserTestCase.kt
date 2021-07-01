@@ -6,7 +6,7 @@ import kotlin.test.assertEquals
 
 class UserTestCase {
     @Test
-    fun `sout without params`() {
+    fun `test user`() {
         val user = user {
             name {
                 first = "Kirill"
