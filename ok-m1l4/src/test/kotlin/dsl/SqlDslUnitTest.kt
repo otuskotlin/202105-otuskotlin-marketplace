@@ -50,6 +50,12 @@ class SqlDslUnitTest {
         checkSQL(expected, real)
     }
 
+    /**
+     * __eq__ is "equals" function. Must be one of char:
+     *  - for strings - "="
+     *  - for numbers - "="
+     *  - for null - "is"
+     */
     @Test
     fun `select with complex where condition with one condition`() {
         val expected = "select * from table where col_a = 'id'"
@@ -62,6 +68,12 @@ class SqlDslUnitTest {
         checkSQL(expected, real)
     }
 
+    /**
+     * __nonEq__ is "non equals" function. Must be one of chars:
+     *  - for strings - "!="
+     *  - for numbers - "!="
+     *  - for null - "!is"
+     */
     @Test
     fun `select with complex where condition with two conditions`() {
         val expected = "select * from table where col_a != 0"
