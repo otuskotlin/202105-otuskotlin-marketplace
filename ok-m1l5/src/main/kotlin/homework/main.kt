@@ -1,18 +1,25 @@
 package homework
 
-import homework.dto.GithubRepo
+import java.io.File
 
 fun main() {
-    val githubApi = GithubApi()
-    val login = githubApi.login()
-    println("Login successfully $login")
+    val dictionaryApi = DictionaryApi()
+    val words = FileReader.readFile().split(" ", "\n").toSet()
 
-    val urls = listOf(OTUS_MARKETPLAGE_URI, KOTLIN_KEEP)
-    loginAndFindRepos(githubApi, urls)
+    val dictionaries = findWords(dictionaryApi, words, Locale.EN)
+
+    dictionaries.map { dictionary ->
+        print("For word ${dictionary.word} i found examples: ")
+        println(dictionary.meanings.map { definition -> definition.definitions.map { it.example } })
+    }
 }
 
-private fun loginAndFindRepos(githubApi: GithubApi, urls: List<String>): List<GithubRepo> {
-    return urls.map {
-        githubApi.getRepository(it)
+private fun findWords(dictionaryApi: DictionaryApi, words: Set<String>, locale: Locale) = // make some suspensions and async
+    words.map {
+        dictionaryApi.findWord(locale, it)
     }
+
+object FileReader {
+    fun readFile(): String =
+        File(this::class.java.classLoader.getResource("words.txt")?.toURI() ?: throw RuntimeException("Can't read file")).readText()
 }
