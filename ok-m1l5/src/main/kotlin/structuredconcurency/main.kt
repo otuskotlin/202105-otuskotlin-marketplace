@@ -12,6 +12,8 @@ suspend fun main() {
     }
 }
 
+// Loads sequantially
+// Time measure == time of each function * 2
 suspend fun findWordsSlowly(vocabulary: Vocabulary, word: String, word2: String) {
     val word = vocabulary.find(word)
     val word2 = vocabulary.find(word2, withTime = 5000)
@@ -24,7 +26,7 @@ suspend fun findWordsSlowly(vocabulary: Vocabulary, word: String, word2: String)
 
 suspend fun findWordsAsync(vocabulary: Vocabulary, word: String, word2: String) {
     val deferred = GlobalScope.async { vocabulary.find(word) }
-    val deferred2 = GlobalScope.async { vocabulary.find(word2, withTime = 5000) }
+    val deferred2 = GlobalScope.async { vocabulary.find(word2, withTime = 5000) } // Resume (with GlobalScope)
 
     println("Make some other stuff")
 
