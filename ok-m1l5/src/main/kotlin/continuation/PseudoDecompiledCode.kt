@@ -1,18 +1,19 @@
 package continuation
 
-//fun coroutine(continuation: Continuation<Any?>) {
-//    when(continuation.label){
-//        0 -> {
-//            println("Coroutine starts")
-//            delay(1000L)
-//        }
-//        1 -> {
-//            println("Coroutine middle stage")
-//            delay(2000L)
-//        }
-//        2 -> {
-//            println("Coroutine has ended")
-//            continuation.resume(Unit)
-//        }
-//    }
-//}
+fun coroutine(continuation: Continuation<Any?>) {
+    val cont = continuation as? ThisCont ?: object: ThisCont {
+        fun resume(...) {
+            coroutine(this)
+        }
+    }
+    when(cont.label){
+        0 -> {
+            cont.label = 1
+            getText(cont)
+        }
+        1 -> {
+            val result = cont.result as String
+            printText(result)
+        }
+    }
+}

@@ -1,7 +1,5 @@
 package continuation
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 
@@ -10,13 +8,15 @@ fun main() = runBlocking {
 }
 
 suspend fun coroutine() {
-    println("Coroutine starts")
-    delay(1000L)
-    println("Coroutine middle stage")
-    delay(2000L)
-    println("Coroutine has ended")
+    val text = getText()
+    printText(text)
 }
 
-fun CoroutineScope.coroutineAsync() = async {
-    println("Work started")
+suspend fun getText(): String {
+    delay(2000)
+    return "hello, otus"
+}
+
+fun printText(text: String) {
+    println(text)
 }
