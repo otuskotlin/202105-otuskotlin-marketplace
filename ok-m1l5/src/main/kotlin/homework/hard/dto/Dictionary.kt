@@ -1,4 +1,4 @@
-package homework.dto
+package homework.hard.dto
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
