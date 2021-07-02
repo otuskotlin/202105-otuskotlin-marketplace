@@ -8,7 +8,7 @@ suspend fun main() {
     val vocabulary = Vocabulary()
 
     coroutineScope {
-        findWordsAsync(vocabulary, "мог", "любимый")
+        findWordsSlowly(vocabulary, "мог", "любимый")
     }
 }
 
