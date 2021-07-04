@@ -23,8 +23,14 @@ kotlin {
     linuxX64 {
         binaries {
             executable {
-                baseName = "firstKmp"
+                baseName = "firstKmpApp"
                 debuggable
+            }
+            sharedLib {
+                baseName = "firstKmpLib"
+            }
+            staticLib {
+                baseName = "firstKmpLib"
             }
         }
     }
@@ -51,6 +57,7 @@ kotlin {
                 implementation(kotlin("test-js"))
             }
         }
+
         val jvmMain by getting {
             dependencies {
 
@@ -61,5 +68,17 @@ kotlin {
                 implementation(kotlin("test-junit"))
             }
         }
+
+        val linuxX64Main by getting {
+            dependencies {
+
+            }
+        }
+        val linuxX64Test by getting {
+            dependencies {
+                implementation(kotlin("test"))
+            }
+        }
+
     }
 }
