@@ -21,9 +21,9 @@ fun CoroutineScope.blockingCall(ctx: CoroutineContext) =
     }
 
 fun main() {
-    runBlocking {
-        val ctx = newSingleThreadContext("MyOwnThread")
-        measureTimeMillis {
+    measureTimeMillis {
+        runBlocking {
+            val ctx = newSingleThreadContext("MyOwnThread")
             repeat(10) {
 //                suspendingCall(ctx)
                 blockingCall(ctx)
