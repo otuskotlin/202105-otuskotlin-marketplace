@@ -1,3 +1,3 @@
-fun main() {
-    println("Hello World!")
-}
+package ru.otus.otuskotlin.marketplace.kmp
+
+expect fun main()

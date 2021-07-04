@@ -25,6 +25,7 @@ kotlin {
             executable {
                 baseName = "firstKmpApp"
                 debuggable
+                entryPoint = "ru.otus.otuskotlin.marketplace.kmp.main"
             }
             sharedLib {
                 baseName = "firstKmpLib"
