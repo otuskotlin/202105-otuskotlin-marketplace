@@ -40,6 +40,11 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-common"))
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0-native-mt"){
+                    version {
+                        strictly("1.5.0-native-mt")
+                    }
+                }
             }
         }
         val commonTest by getting {
