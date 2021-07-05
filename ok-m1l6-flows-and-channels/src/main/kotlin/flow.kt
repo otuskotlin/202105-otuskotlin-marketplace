@@ -1,14 +1,21 @@
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.trySendBlocking
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.runningReduce
 import kotlinx.coroutines.flow.sample
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.transformLatest
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
@@ -74,7 +81,10 @@ class CallbackDetector(
         }
 }
 
-suspend fun main() {
+fun <T> Flow<T>.rollingMax(comparator: Comparator<T>): Flow<T> =
+    runningReduce { max, current -> maxOf(max, current, comparator) }
+
+suspend fun main(): Unit = coroutineScope {
     val distribution = BoxMullerDistribution().scale(24.0, 1.5)
     val detectors = listOf(
         CoroutineDetector("coroutine", distribution, 500L),
@@ -96,6 +106,13 @@ suspend fun main() {
                 .sample(1_000L)
         }
         .merge()
+        .shareIn(this, SharingStarted.Lazily)
+
+    samples
+        .rollingMax(compareBy { it.value })
+        .sample(1_000L)
+        .onEach { println(it) }
+        .launchIn(this)
 
     withTimeoutOrNull(10_500L) {
         withContext(Dispatchers.IO) {
@@ -116,4 +133,6 @@ suspend fun main() {
             }
         }
     }
+
+    coroutineContext.cancelChildren()
 }
