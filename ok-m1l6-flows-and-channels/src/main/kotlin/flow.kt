@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.retry
 import kotlinx.coroutines.flow.runningReduce
 import kotlinx.coroutines.flow.sample
 import kotlinx.coroutines.flow.shareIn
@@ -77,6 +78,7 @@ class CallbackDetector(
             timer.schedule(0L, samplePeriod) {
                 trySendBlocking(Sample(serialNumber, values.next()))
             }
+            timer.schedule(7_000L) { close(RuntimeException("Detector request failed")) }
             awaitClose { timer.cancel() }
         }
 }
@@ -96,6 +98,7 @@ suspend fun main(): Unit = coroutineScope {
     val samples = detectors
         .map {
             it.samples()
+                .retry()
                 .transformLatest {
                     emit(it)
                     while (true) {
@@ -103,14 +106,14 @@ suspend fun main(): Unit = coroutineScope {
                         emit(it.copy(timestamp = Instant.now()))
                     }
                 }
-                .sample(1_000L)
+                .sample(desiredPeriod)
         }
         .merge()
         .shareIn(this, SharingStarted.Lazily)
 
     samples
         .rollingMax(compareBy { it.value })
-        .sample(1_000L)
+        .sample(desiredPeriod)
         .onEach { println(it) }
         .launchIn(this)
 
