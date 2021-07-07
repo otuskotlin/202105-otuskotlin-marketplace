@@ -38,6 +38,7 @@ class ActionsDsl {
     operator fun String.unaryPlus() = add(this)
 }
 
+@Suppress("unused")
 @UserDsl
 class AvailableCreator {
     private val myAvailableList: MutableList<LocalDateTime> = mutableListOf()
