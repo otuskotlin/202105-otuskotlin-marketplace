@@ -1,5 +1,8 @@
 package homework.hard
 
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.runBlocking
 import java.io.File
 
 fun main() {
@@ -14,12 +17,21 @@ fun main() {
     }
 }
 
-private fun findWords(dictionaryApi: DictionaryApi, words: Set<String>, locale: Locale) = // make some suspensions and async
+private fun findWords(dictionaryApi: DictionaryApi, words: Set<String>, locale: Locale) = runBlocking { // make some suspensions and async
     words.map {
-        dictionaryApi.findWord(locale, it)
-    }
+        async { dictionaryApi.findWord(locale, it) }
+    }.awaitAll()
+}
+
+
+//private fun findWords(dictionaryApi: DictionaryApi, words: Set<String>, locale: Locale) = // make some suspensions and async
+//    words.map {
+//        dictionaryApi.findWord(locale, it)
+//    }
 
 object FileReader {
     fun readFile(): String =
-        File(this::class.java.classLoader.getResource("words.txt")?.toURI() ?: throw RuntimeException("Can't read file")).readText()
+        File(
+            this::class.java.classLoader.getResource("words.txt")?.toURI() ?: throw RuntimeException("Can't read file")
+        ).readText()
 }
