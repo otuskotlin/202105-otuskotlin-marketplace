@@ -55,7 +55,8 @@ kotlin {
         }
         val jsMain by getting {
             dependencies {
-
+                implementation(npm("js-big-decimal","~1.3.4"))
+                implementation(npm("is-sorted","~1.0.5"))
             }
         }
         val jsTest by getting {
