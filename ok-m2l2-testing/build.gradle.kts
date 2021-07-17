@@ -43,9 +43,9 @@ kotlin {
                 implementation(kotlin("test-junit5"))
             }
         }
+        tasks.withType<Test>().configureEach {
+            useJUnitPlatform()
+        }
     }
 }
 
-tasks.withType<Test>().configureEach {
-    useJUnitPlatform()
-}
