@@ -1,12 +1,5 @@
 plugins {
-    kotlin("multiplatform") version "1.5.20"
-}
-
-group = rootProject.group
-version = rootProject.version
-
-repositories {
-    mavenCentral()
+    kotlin("multiplatform")
 }
 
 kotlin {
