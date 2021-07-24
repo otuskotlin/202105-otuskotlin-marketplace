@@ -45,7 +45,7 @@ Marketplace -- это площадка, на которой пользовате
 1. CRUDS (create, read, update, delete, search) для объявлений (ad)
 1. ad.offers (опционально)
 
-### Описание сущености ad
+### Описание сущности ad
 1. Info
    1. Title
    1. Description
