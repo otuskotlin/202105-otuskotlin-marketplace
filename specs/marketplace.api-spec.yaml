@@ -171,7 +171,7 @@ components:
     BaseRequest:
       description: Базовый класс для всех запросов
       allOf:
-        - $ref: '#/components/schemas/BaseMessage'
+#        - $ref: '#/components/schemas/BaseMessage'
         - type: object
           properties:
             requestId:
@@ -180,7 +180,7 @@ components:
     BaseResponse:
       description: Базовый класс для всех ответов
       allOf:
-        - $ref: '#/components/schemas/BaseMessage'
+#        - $ref: '#/components/schemas/BaseMessage'
         - type: object
           properties:
             requestId:
@@ -315,11 +315,13 @@ components:
     InitAdRequest:
       description: Структура для запроса начального состояния при старте вэб-клиента
       allOf:
+        - $ref: '#/components/schemas/BaseMessage'
         - $ref: '#/components/schemas/BaseRequest'
 
     InitAdResponse:
       description: Структура для ответа с начальным состоянием при старте вэб-клиента
       allOf:
+        - $ref: '#/components/schemas/BaseMessage'
         - $ref: '#/components/schemas/BaseResponse'
         - type: object
 
@@ -327,6 +329,7 @@ components:
     CreateAdRequest:
       description: Структура для запроса создания нового объявления
       allOf:
+        - $ref: '#/components/schemas/BaseMessage'
         - $ref: '#/components/schemas/BaseRequest'
         - type: object
           properties:
@@ -347,6 +350,7 @@ components:
     CreateAdResponse:
       description: Структура для ответа на запрос о создании объявления
       allOf:
+        - $ref: '#/components/schemas/BaseMessage'
         - $ref: '#/components/schemas/BaseResponse'
         - type: object
           properties:
@@ -358,12 +362,28 @@ components:
     ReadAdRequest:
       description: Структура для получения объявления
       allOf:
+        - $ref: '#/components/schemas/BaseMessage'
         - $ref: '#/components/schemas/BaseRequest'
         - type: object
+          properties:
+            readAdId:
+              type: string
+            debug:
+              allOf:
+                - $ref: '#/components/schemas/BaseDebugRequest'
+                - type: object
+                  properties:
+                    stub:
+                      type: string
+                      enum:
+                        - success
+                        - emptyId
+                        - databaseError
 
     ReadAdResponse:
       description: Структура для ответа на запрос с информацией об объявлении
       allOf:
+        - $ref: '#/components/schemas/BaseMessage'
         - $ref: '#/components/schemas/BaseResponse'
         - type: object
           properties:
@@ -373,6 +393,7 @@ components:
     UpdateAdRequest:
       description: Структура для запроса обновления существующего объявления
       allOf:
+        - $ref: '#/components/schemas/BaseMessage'
         - $ref: '#/components/schemas/BaseRequest'
         - type: object
           properties:
@@ -393,6 +414,7 @@ components:
     UpdateAdResponse:
       description: Структура для ответа на запрос с информацией об объявлении
       allOf:
+        - $ref: '#/components/schemas/BaseMessage'
         - $ref: '#/components/schemas/BaseResponse'
         - type: object
           properties:
@@ -402,21 +424,38 @@ components:
     DeleteAdRequest:
       description: Структура для запроса удаления объявления
       allOf:
+        - $ref: '#/components/schemas/BaseMessage'
         - $ref: '#/components/schemas/BaseRequest'
+        - type: object
+          properties:
+            deleteAdId:
+              type: string
+            debug:
+              allOf:
+                - $ref: '#/components/schemas/BaseDebugRequest'
+                - type: object
+                  properties:
+                    stub:
+                      type: string
+                      enum:
+                        - success
+                        - emptyId
+                        - databaseError
+
+    DeleteAdResponse:
+      description: Структура для ответа на запрос об удалении объявления
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseResponse'
         - type: object
           properties:
             deletedAd:
               $ref: '#/components/schemas/ResponseAd'
 
-    DeleteAdResponse:
-      description: Структура для ответа на запрос об удалении объявления
-      allOf:
-        - $ref: '#/components/schemas/BaseResponse'
-        - type: object
-
     SearchAdRequest:
       description: Структура для запроса поиска объявлений
       allOf:
+        - $ref: '#/components/schemas/BaseMessage'
         - $ref: '#/components/schemas/BaseRequest'
         - type: object
           properties:
@@ -426,6 +465,7 @@ components:
     SearchAdResponse:
       description: Структура для ответа на запрос поиска объявлений
       allOf:
+        - $ref: '#/components/schemas/BaseMessage'
         - $ref: '#/components/schemas/BaseResponse'
         - type: object
           properties:
@@ -439,15 +479,30 @@ components:
     OffersAdRequest:
       description: Структура для запроса поиска предложений для объявления
       allOf:
+        - $ref: '#/components/schemas/BaseMessage'
         - $ref: '#/components/schemas/BaseRequest'
         - type: object
           properties:
             page:
               $ref: '#/components/schemas/BasePaginatedRequest'
+            deleteAdId:
+              type: string
+            debug:
+              allOf:
+                - $ref: '#/components/schemas/BaseDebugRequest'
+                - type: object
+                  properties:
+                    stub:
+                      type: string
+                      enum:
+                        - success
+                        - emptyId
+                        - databaseError
 
     OffersAdResponse:
       description: Структура для ответа на запрос поиска предложений для объявления
       allOf:
+        - $ref: '#/components/schemas/BaseMessage'
         - $ref: '#/components/schemas/BaseResponse'
         - type: object
           properties:
