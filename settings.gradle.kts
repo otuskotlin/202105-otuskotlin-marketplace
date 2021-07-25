@@ -7,6 +7,7 @@ pluginManagement {
 
         kotlin("jvm") version kotlinVersion
         kotlin("multiplatform") version kotlinVersion
+        kotlin("plugin.serialization") version kotlinVersion
 
         id("org.openapi.generator") version openApiVersion
     }
@@ -21,3 +22,5 @@ include("ok-m1l7-kmp")
 include("ok-m2l2-testing")
 include("ok-m2l4-practice")
 include("ok-marketplace-be-transport-openapi")
+include("ok-marketplace-mp-transport-mp")
+include("ok-marketplace-be-common")
