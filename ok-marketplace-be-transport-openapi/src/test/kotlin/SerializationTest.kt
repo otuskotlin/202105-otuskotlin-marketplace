@@ -12,7 +12,7 @@ class SerializationTest {
             title = "Ad Title",
             description = "Ad Description",
             ownerId = "234",
-            visibility = AdVisibility.REGISTRERED_ONLY,
+            visibility = AdVisibility.REGISTERED_ONLY,
             dealSide = AdDealSide.DEMAND,
         )
     )
@@ -26,7 +26,7 @@ class SerializationTest {
             json.contains(""""messageType":"${createRequest::class.simpleName}"""")
         }
         assertTrue("json must serialize visibility field") {
-            json.contains(""""visibility":"${AdVisibility.REGISTRERED_ONLY.value}"""")
+            json.contains(""""visibility":"${AdVisibility.REGISTERED_ONLY.value}"""")
         }
         assertTrue("json must serialize messageId field") {
             json.contains(""""requestId":"$requestId"""")
@@ -38,7 +38,7 @@ class SerializationTest {
         val json = om.writeValueAsString(createRequest)
         val deserialized = om.readValue(json, BaseMessage::class.java) as CreateAdRequest
 
-        assertEquals(AdVisibility.REGISTRERED_ONLY, deserialized.createAd?.visibility)
+        assertEquals(AdVisibility.REGISTERED_ONLY, deserialized.createAd?.visibility)
         assertEquals(requestId, deserialized.requestId)
     }
 }
