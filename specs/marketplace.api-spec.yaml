@@ -209,7 +209,7 @@ components:
       description: 'Тип видимости объявления. Возможные значения: видит только владелец, только зарегистрированный в системе пользователь, видимо всем'
       enum:
         - ownerOnly
-        - registreredOnly
+        - registeredOnly
         - public
 
     AdDealSide:
