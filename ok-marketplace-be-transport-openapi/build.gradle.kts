@@ -30,10 +30,14 @@ openApiGenerate {
     configOptions.set(mapOf(
         "dateLibrary" to "string",
         "enumPropertyNaming" to "UPPERCASE",
-        "library" to "multiplatform", // Эта опция не отрабатывает. Никакого KMP не генерируется
         "serializationLibrary" to "jackson",
         "collectionType" to "list"
     ))
+
+    /**
+     * Так генерируется KMP версия
+     */
+//    library.set("multiplatform")
 }
 
 /**
