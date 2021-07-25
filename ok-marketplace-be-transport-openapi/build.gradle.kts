@@ -50,6 +50,7 @@ dependencies {
 
 
     implementation(kotlin("stdlib"))
+    testImplementation(kotlin("test-junit"))
 
     /**
      * Зависимости ниже мы забрали из сгенерированного build.gradle. Они нужны для компиляции подпроекта
