@@ -36,31 +36,33 @@ Marketplace -- это площадка, на которой пользовате
     1. и т.д.
 1. И т.д.
 
-
 ## Описание MVP
 
 ![](imgs/design-layout.png)
 
 ### Функции (эндпониты)
+
 1. CRUDS (create, read, update, delete, search) для объявлений (ad)
 1. ad.offers (опционально)
 
 ### Описание сущности ad
+
 1. Info
-   1. Title
-   1. Description
-   1. Owner
-   1. Visibility
+    1. Title
+    1. Description
+    1. Owner
+    1. Visibility
 1. DealSide: Demand/Proposal
 1. ProductType (гаечный ключ, ...)
 1. IPropertyValues - интерфейс, описывающий различные реализации продуктов
-   1. Болты - учебный пример
-      1. Длина
-      1. Толщина
-      1. Резьба
-      1. Форма
+    1. Болты - учебный пример
+        1. Длина
+        1. Толщина
+        1. Резьба
+        1. Форма
 
 # Структура проекта
+
 ## Подпроекты для занятий по языку Kotlin
 
 1. [ok-m1l1](ok-m1l1) - Вводное занятие, создание первой программы на Kotlin
@@ -72,6 +74,13 @@ Marketplace -- это площадка, на которой пользовате
 1. [ok-m2l2-testing](ok-m2l2-testing) - Тестирование проекта, TDD, MDD
 
 ## Транспортные модели, API
+
+1. [specs](specs) - описание API в форме OpenAPI-спецификаций
+1. [ok-marketplace-be-transport-openapi](ok-marketplace-be-transport-openapi) - подпроект для генерации транспортных
+   моделей для бэкенда из спецификаций OpenAPI
+
 ## Фреймворки и транспорты
+
 ## Модули бизнес-логики
+
 ## Хранение, репозитории, базы данных
