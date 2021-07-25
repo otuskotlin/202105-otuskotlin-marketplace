@@ -1,0 +1,459 @@
+openapi: 3.0.1
+info:
+  title: Marketplace
+  description: 'Marketplace - учебный проект курса "Backend разработка на Kotlin"'
+  license:
+    name: MIT open source license
+    url: https://github.com/otuskotlin/202105-otuskotlin-marketplace/blob/main/LICENSE
+  version: 0.0.1
+servers:
+  - url: https://localhost/
+tags:
+  - name: ad
+    description: CRUDS для объявлений
+  - name: offers
+    description: Поиск встречных предложений для объявления
+paths:
+  /ad/init:
+    post:
+      tags:
+        - ad
+      summary: Получить статус при инициализации
+      operationId: initAd
+      requestBody:
+        description: Объект запроса для инициализации при старте приложения
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InitAdRequest'
+        required: true
+      responses:
+        200:
+          description: all responses
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitAdResponse'
+  /ad/create:
+    post:
+      tags:
+        - ad
+      summary: Создать новое объявление
+      operationId: createAd
+      requestBody:
+        description: Объект запроса для создания нового объявления
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAdRequest'
+        required: true
+      responses:
+        200:
+          description: all responses
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateAdResponse'
+  /ad/read:
+    post:
+      tags:
+        - ad
+      summary: Получить информацию об объявлении
+      operationId: readAd
+      requestBody:
+        description: Объект запроса для получения информации об объявлении
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReadAdRequest'
+        required: true
+      responses:
+        200:
+          description: all responses
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReadAdResponse'
+  /ad/update:
+    post:
+      tags:
+        - ad
+      summary: Обновить объявление
+      operationId: updateAd
+      requestBody:
+        description: Объект запроса для обновления объявления
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAdRequest'
+        required: true
+      responses:
+        200:
+          description: all responses
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateAdResponse'
+  /ad/delete:
+    post:
+      tags:
+        - ad
+      summary: Удалить объявление
+      operationId: deleteAd
+      requestBody:
+        description: Объект запроса для удаления объявления
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteAdRequest'
+        required: true
+      responses:
+        200:
+          description: all responses
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteAdResponse'
+  /ad/search:
+    post:
+      tags:
+        - ad
+      summary: Поиск объявлений
+      operationId: searchAd
+      requestBody:
+        description: Объект запроса для поиска объявлений
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchAdRequest'
+        required: true
+      responses:
+        200:
+          description: all responses
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchAdResponse'
+  /ad/offers:
+    post:
+      tags:
+        - offers
+      summary: Поиск предложений для объявления
+      operationId: offersAd
+      requestBody:
+        description: Объект запроса для поиска предложений для объявления
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OffersAdRequest'
+        required: true
+      responses:
+        200:
+          description: all responses
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OffersAdResponse'
+components:
+  schemas:
+
+    BaseMessage:
+      type: object
+      description: Базовый класс как для запросов, так и для ответов
+      properties:
+        messageType:
+          type: string
+          title: Дискриминатор
+          description: Дискриминатор, содержащий тип класса сообщения и использующийся для десериализации
+      discriminator:
+        propertyName: messageType
+
+    BaseRequest:
+      description: Базовый класс для всех запросов
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - type: object
+          properties:
+            requestId:
+              type: string
+
+    BaseResponse:
+      description: Базовый класс для всех ответов
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - type: object
+          properties:
+            requestId:
+              type: string
+            result:
+              type: string
+              enum:
+                - success
+                - error
+            errors:
+              type: array
+              items:
+                $ref: '#/components/schemas/RequestError'
+
+    RequestError:
+      type: object
+      description: Описание ошибки обработки запроса
+      properties:
+        message:
+          type: string
+        field:
+          type: string
+
+    AdVisibility:
+      type: string
+      description: 'Тип видимости объявления. Возможные значения: видит только владелец, только зарегистрированный в системе пользователь, видимо всем'
+      enum:
+        - ownerOnly
+        - registreredOnly
+        - public
+
+    AdDealSide:
+      type: string
+      description: 'Указание на сторону сделки объявления: предложение или потребность'
+      enum:
+        - demand
+        - proposal
+
+    CreateableAd:
+      type: object
+      description: Структура с данными об объявлении для запроса о созадии
+      properties:
+        title:
+          type: string
+          title: Заголовок объявления
+          description: Краткое название объявления
+        description:
+          type: string
+          title: Описание объявления
+          description: Тело объявления с описанием особенностей выставляемой заявки
+        ownerId:
+          type: string
+          title: Идентификатор владельца объявления
+          description: Идентификатор пользователя, который создал и управляет объявлением
+        visibility:
+          $ref: '#/components/schemas/AdVisibility'
+        dealSide:
+          $ref: '#/components/schemas/AdDealSide'
+
+    UpdateableAd:
+      description: Структура для данных об объявлении в запросе на обновление
+      allOf:
+        - $ref: '#/components/schemas/CreateableAd'
+        - type: object
+          properties:
+            id:
+              type: string
+              description: Идентификатор объявления
+
+    ResponseAd:
+      description: Структура, описывающая объявление в ответе
+      allOf:
+        - $ref: '#/components/schemas/UpdateableAd'
+        - type: object
+          properties:
+            permissions:
+              type: array
+              uniqueItems: true
+              items:
+                $ref: '#/components/schemas/AdPermissions'
+
+    AdPermissions:
+      type: string
+      description: Доступы к операциям над объявлением
+      enum:
+        - read
+        - update
+        - contact
+
+    BaseDebugRequest:
+      type: object
+      description: Структура с описанием отладочных параметров запроса
+      properties:
+        mode:
+          type: string
+          default: prod
+          enum:
+            - prod
+            - test
+            - stub
+
+    BasePaginatedRequest:
+      type: object
+      description: Структура с описанием запрашиваемой страницы в запросах списков
+      properties:
+        size:
+          type: integer
+          description: Размер запрашиваемой страницы
+          format: int32
+        lastId:
+          type: string
+          description: Идентификатор последнего объекта предыдущей страницы
+
+    BasePaginatedResponse:
+      type: object
+      description: Структура с описанием страницы в ответе
+      properties:
+        size:
+          type: integer
+          description: Размер запрашиваемой страницы
+          format: int32
+        lastId:
+          type: string
+          description: Идентификатор последнего объекта предыдущей страницы
+        position:
+          type: string
+          enum:
+            - first
+            - middle
+            - last
+
+    InitAdRequest:
+      description: Структура для запроса начального состояния при старте вэб-клиента
+      allOf:
+        - $ref: '#/components/schemas/BaseRequest'
+
+    InitAdResponse:
+      description: Структура для ответа с начальным состоянием при старте вэб-клиента
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+
+
+    CreateAdRequest:
+      description: Структура для запроса создания нового объявления
+      allOf:
+        - $ref: '#/components/schemas/BaseRequest'
+        - type: object
+          properties:
+            createAd:
+              $ref: '#/components/schemas/CreateableAd'
+            debug:
+              allOf:
+                - $ref: '#/components/schemas/BaseDebugRequest'
+                - type: object
+                  properties:
+                    stub:
+                      type: string
+                      enum:
+                        - success
+                        - emptyTitle
+                        - databaseError
+
+    CreateAdResponse:
+      description: Структура для ответа на запрос о создании объявления
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            createdAd:
+              $ref: '#/components/schemas/ResponseAd'
+
+
+
+    ReadAdRequest:
+      description: Структура для получения объявления
+      allOf:
+        - $ref: '#/components/schemas/BaseRequest'
+        - type: object
+
+    ReadAdResponse:
+      description: Структура для ответа на запрос с информацией об объявлении
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            readAd:
+              $ref: '#/components/schemas/ResponseAd'
+
+    UpdateAdRequest:
+      description: Структура для запроса обновления существующего объявления
+      allOf:
+        - $ref: '#/components/schemas/BaseRequest'
+        - type: object
+          properties:
+            createAd:
+              $ref: '#/components/schemas/UpdateableAd'
+            debug:
+              allOf:
+                - $ref: '#/components/schemas/BaseDebugRequest'
+                - type: object
+                  properties:
+                    stub:
+                      type: string
+                      enum:
+                        - success
+                        - emptyTitle
+                        - databaseError
+
+    UpdateAdResponse:
+      description: Структура для ответа на запрос с информацией об объявлении
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            updatedAd:
+              $ref: '#/components/schemas/ResponseAd'
+
+    DeleteAdRequest:
+      description: Структура для запроса удаления объявления
+      allOf:
+        - $ref: '#/components/schemas/BaseRequest'
+        - type: object
+          properties:
+            deletedAd:
+              $ref: '#/components/schemas/ResponseAd'
+
+    DeleteAdResponse:
+      description: Структура для ответа на запрос об удалении объявления
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+
+    SearchAdRequest:
+      description: Структура для запроса поиска объявлений
+      allOf:
+        - $ref: '#/components/schemas/BaseRequest'
+        - type: object
+          properties:
+            page:
+              $ref: '#/components/schemas/BasePaginatedRequest'
+
+    SearchAdResponse:
+      description: Структура для ответа на запрос поиска объявлений
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            page:
+              $ref: '#/components/schemas/BasePaginatedResponse'
+            foundAds:
+              type: array
+              items:
+                $ref: '#/components/schemas/ResponseAd'
+
+    OffersAdRequest:
+      description: Структура для запроса поиска предложений для объявления
+      allOf:
+        - $ref: '#/components/schemas/BaseRequest'
+        - type: object
+          properties:
+            page:
+              $ref: '#/components/schemas/BasePaginatedRequest'
+
+    OffersAdResponse:
+      description: Структура для ответа на запрос поиска предложений для объявления
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            page:
+              $ref: '#/components/schemas/BasePaginatedResponse'
+            offeredAds:
+              type: array
+              items:
+                $ref: '#/components/schemas/ResponseAd'
