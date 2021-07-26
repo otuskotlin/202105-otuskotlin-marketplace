@@ -3,7 +3,7 @@ plugins {
     kotlin("multiplatform") apply false
 }
 
-group = "ru.otus.otuskotlin.marketpalce"
+group = "ru.otus.otuskotlin.marketplace"
 version = "0.0.1"
 
 subprojects {
