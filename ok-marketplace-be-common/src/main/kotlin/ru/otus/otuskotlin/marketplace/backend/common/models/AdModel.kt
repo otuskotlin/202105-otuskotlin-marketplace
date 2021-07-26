@@ -8,4 +8,8 @@ data class AdModel(
     val visibility: AdVisibilityModel = AdVisibilityModel.NONE,
     val dealSide: DealSideModel = DealSideModel.NONE,
     val permissions: MutableSet<PermissionModel> = mutableSetOf(),
-)
+) {
+    companion object {
+        val NONE = AdModel()
+    }
+}
