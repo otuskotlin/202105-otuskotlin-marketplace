@@ -5,10 +5,6 @@ data class PaginatedModel(
     var lastId: AdIdModel = AdIdModel.NONE,
     var position: PositionModel = PositionModel.NONE,
 ) {
-    companion object {
-        val NONE = PaginatedModel()
-    }
-
     enum class PositionModel {
         NONE,
         FIRST,
