@@ -1,11 +1,11 @@
 package ru.otus.otuskotlin.marketplace.backend.common.models
 
 data class AdModel(
-    val id: AdIdModel = AdIdModel.NONE,
-    val title: String = "",
-    val description: String = "",
-    val ownerId: OwnerIdModel = OwnerIdModel.NONE,
-    val visibility: AdVisibilityModel = AdVisibilityModel.NONE,
-    val dealSide: DealSideModel = DealSideModel.NONE,
-    val permissions: MutableSet<PermissionModel> = mutableSetOf(),
+    var id: AdIdModel = AdIdModel.NONE,
+    var title: String = "",
+    var description: String = "",
+    var ownerId: OwnerIdModel = OwnerIdModel.NONE,
+    var visibility: AdVisibilityModel = AdVisibilityModel.NONE,
+    var dealSide: DealSideModel = DealSideModel.NONE,
+    var permissions: MutableSet<PermissionModel> = mutableSetOf(),
 )

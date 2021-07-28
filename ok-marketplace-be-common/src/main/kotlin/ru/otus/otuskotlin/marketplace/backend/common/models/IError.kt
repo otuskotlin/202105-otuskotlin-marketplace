@@ -1,9 +1,9 @@
 package ru.otus.otuskotlin.marketplace.backend.common.models
 
 interface IError {
-    val field: String
-    val level: Level
-    val message: String
+    var field: String
+    var level: Level
+    var message: String
 
     enum class Level {
         ERROR,
