@@ -13,7 +13,7 @@ fun MpContext.toInitResponse() = InitAdResponse(
 
 fun MpContext.toReadResponse() = ReadAdResponse(
     requestId = onRequest.takeIf { it.isNotBlank() },
-    readAd = responseAd.takeIf { it != AdModel.NONE }?.toTransport(),
+    readAd = responseAd.takeIf { it != AdModel() }?.toTransport(),
     errors = errors.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
     result = if (errors.find { it.level == IError.Level.ERROR } == null) ReadAdResponse.Result.SUCCESS
                 else ReadAdResponse.Result.ERROR
@@ -22,7 +22,7 @@ fun MpContext.toReadResponse() = ReadAdResponse(
 fun MpContext.toCreateResponse() = CreateAdResponse(
     requestId = onRequest.takeIf { it.isNotBlank() },
     errors = errors.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
-    createdAd = responseAd.takeIf { it != AdModel.NONE }?.toTransport(),
+    createdAd = responseAd.takeIf { it != AdModel() }?.toTransport(),
     result = if (errors.find { it.level == IError.Level.ERROR } == null) CreateAdResponse.Result.SUCCESS
                 else CreateAdResponse.Result.ERROR
 )
@@ -30,7 +30,7 @@ fun MpContext.toCreateResponse() = CreateAdResponse(
 fun MpContext.toUpdateResponse() = UpdateAdResponse(
     requestId = onRequest.takeIf { it.isNotBlank() },
     errors = errors.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
-    updatedAd = responseAd.takeIf { it != AdModel.NONE }?.toTransport(),
+    updatedAd = responseAd.takeIf { it != AdModel() }?.toTransport(),
     result = if (errors.find { it.level == IError.Level.ERROR } == null) UpdateAdResponse.Result.SUCCESS
                 else UpdateAdResponse.Result.ERROR
 )
@@ -38,7 +38,7 @@ fun MpContext.toUpdateResponse() = UpdateAdResponse(
 fun MpContext.toDeleteResponse() = DeleteAdResponse(
     requestId = onRequest.takeIf { it.isNotBlank() },
     errors = errors.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
-    deletedAd = responseAd.takeIf { it != AdModel.NONE }?.toTransport(),
+    deletedAd = responseAd.takeIf { it != AdModel() }?.toTransport(),
     result = if (errors.find { it.level == IError.Level.ERROR } == null) DeleteAdResponse.Result.SUCCESS
                 else DeleteAdResponse.Result.ERROR
 )
@@ -46,8 +46,8 @@ fun MpContext.toDeleteResponse() = DeleteAdResponse(
 fun MpContext.toOffersResponse() = OffersAdResponse(
     requestId = onRequest.takeIf { it.isNotBlank() },
     errors = errors.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
-    offeredAds = responseAds.takeIf { it.isNotEmpty() }?.filter { it != AdModel.NONE }?.map { it.toTransport() },
-    page = responsePage.takeIf { it != PaginatedModel.NONE }?.toTransport(),
+    offeredAds = responseAds.takeIf { it.isNotEmpty() }?.filter { it != AdModel() }?.map { it.toTransport() },
+    page = responsePage.takeIf { it != PaginatedModel() }?.toTransport(),
     result = if (errors.find { it.level == IError.Level.ERROR } == null) OffersAdResponse.Result.SUCCESS
                 else OffersAdResponse.Result.ERROR
 )
@@ -55,8 +55,8 @@ fun MpContext.toOffersResponse() = OffersAdResponse(
 fun MpContext.toSearchResponse() = SearchAdResponse(
     requestId = onRequest.takeIf { it.isNotBlank() },
     errors = errors.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
-    foundAds = responseAds.takeIf { it.isNotEmpty() }?.filter { it != AdModel.NONE }?.map { it.toTransport() },
-    page = responsePage.takeIf { it != PaginatedModel.NONE }?.toTransport(),
+    foundAds = responseAds.takeIf { it.isNotEmpty() }?.filter { it != AdModel() }?.map { it.toTransport() },
+    page = responsePage.takeIf { it != PaginatedModel() }?.toTransport(),
     result = if (errors.find { it.level == IError.Level.ERROR } == null) SearchAdResponse.Result.SUCCESS
                 else SearchAdResponse.Result.ERROR
 )

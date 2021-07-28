@@ -10,7 +10,7 @@ fun MpContext.setQuery(query: InitAdRequest) = apply {
 
 fun MpContext.setQuery(query: CreateAdRequest) = apply {
     onRequest = query.requestId?:""
-    requestAd = query.createAd?.toModel()?: AdModel.NONE
+    requestAd = query.createAd?.toModel()?: AdModel()
 }
 
 fun MpContext.setQuery(query: ReadAdRequest) = apply {
@@ -20,7 +20,7 @@ fun MpContext.setQuery(query: ReadAdRequest) = apply {
 
 fun MpContext.setQuery(query: UpdateAdRequest) = apply {
     onRequest = query.requestId?:""
-    requestAd = query.createAd?.toModel()?: AdModel.NONE
+    requestAd = query.createAd?.toModel()?: AdModel()
 }
 
 fun MpContext.setQuery(query: DeleteAdRequest) = apply {
@@ -30,13 +30,13 @@ fun MpContext.setQuery(query: DeleteAdRequest) = apply {
 
 fun MpContext.setQuery(query: OffersAdRequest) = apply {
     onRequest = query.requestId?:""
-    requestPage = query.page?.toModel()?: PaginatedModel.NONE
+    requestPage = query.page?.toModel()?: PaginatedModel()
     requestAdId = AdIdModel(query.deleteAdId?:"")
 }
 
 fun MpContext.setQuery(query: SearchAdRequest) = apply {
     onRequest = query.requestId?:""
-    requestPage = query.page?.toModel()?: PaginatedModel.NONE
+    requestPage = query.page?.toModel()?: PaginatedModel()
 }
 
 private fun BasePaginatedRequest.toModel() = PaginatedModel(
