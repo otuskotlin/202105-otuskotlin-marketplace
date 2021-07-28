@@ -8,7 +8,6 @@ pluginManagement {
         kotlin("jvm") version kotlinVersion
         kotlin("multiplatform") version kotlinVersion
         kotlin("plugin.serialization") version kotlinVersion
-
         id("org.openapi.generator") version openApiVersion
     }
 }

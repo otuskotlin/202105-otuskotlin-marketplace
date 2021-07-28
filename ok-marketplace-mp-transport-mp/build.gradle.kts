@@ -14,7 +14,7 @@ repositories {
 }
 
 kotlin {
-    /* Targets configuration omitted. 
+    /* Targets configuration omitted.
     *  To find out how to configure the targets, please follow the link:
     *  https://kotlinlang.org/docs/reference/building-mpp-with-gradle.html#setting-up-targets */
     jvm()
@@ -39,13 +39,35 @@ kotlin {
                 implementation(kotlin("test-annotations-common"))
             }
         }
+        val jsMain by getting {
+            dependencies {
+                implementation(kotlin("stdlib-js"))
+            }
+        }
+        val jsTest by getting {
+            dependencies {
+                implementation(kotlin("test"))
+                implementation(kotlin("test-js"))
+            }
+        }
+        val jvmMain by getting {
+            dependencies {
+                implementation(kotlin("stdlib"))
+            }
+        }
+        val jvmTest by getting {
+            dependencies {
+                implementation(kotlin("test"))
+                implementation(kotlin("test-junit"))
+            }
+        }
     }
 
     /**
      * Настраиваем генерацию здесь
      */
     openApiGenerate {
-        val openapiGroup = "${rootProject.group}.kmp"
+        val openapiGroup = "${rootProject.group}.kmp.transport"
         generatorName.set("kotlin") // Это и есть активный генератор
         library.set("multiplatform") // Используем библиотеку для KMP
         outputDir.set(generatedSourcesDir)
@@ -75,5 +97,14 @@ kotlin {
             )
         )
 
+    }
+
+    /**
+     * Устанавливаем зависимость компиляции от генерации исходников. Компиляция начнется только после генерации
+     */
+    tasks {
+        compileKotlinMetadata {
+            dependsOn(openApiGenerate)
+        }
     }
 }
