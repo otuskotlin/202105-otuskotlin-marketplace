@@ -1,7 +1,7 @@
 package ru.otus.otuskotlin.marketplace.backend.common.models
 
 data class CommonErrorModel(
-    override val field: String = "",
-    override val level: IError.Level = IError.Level.ERROR,
-    override val message: String = "",
+    override var field: String = "",
+    override var level: IError.Level = IError.Level.ERROR,
+    override var message: String = "",
 ): IError
