@@ -1,5 +1,5 @@
 import com.fasterxml.jackson.databind.ObjectMapper
-import ru.otus.otuskotlin.marketpalce.openapi.models.*
+import ru.otus.otuskotlin.marketplace.openapi.models.*
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
