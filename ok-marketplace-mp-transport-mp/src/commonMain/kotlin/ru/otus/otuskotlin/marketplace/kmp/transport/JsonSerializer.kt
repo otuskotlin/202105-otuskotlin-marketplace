@@ -7,6 +7,8 @@ import ru.otus.otuskotlin.marketplace.kmp.transport.models.*
 
 val jsonSerializer = Json {
     prettyPrint = true
+    useAlternativeNames = true
+    classDiscriminator = "messageType"
     serializersModule = SerializersModule {
         polymorphic(BaseMessage::class) {
             subclass(InitAdRequest::class, InitAdRequest.serializer())
@@ -25,5 +27,4 @@ val jsonSerializer = Json {
             subclass(SearchAdResponse::class, SearchAdResponse.serializer())
         }
     }
-    classDiscriminator = "messageType"
 }

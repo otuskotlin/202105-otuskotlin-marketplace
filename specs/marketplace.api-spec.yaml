@@ -239,6 +239,18 @@ components:
           $ref: '#/components/schemas/AdVisibility'
         dealSide:
           $ref: '#/components/schemas/AdDealSide'
+        product:
+          $ref: '#/components/schemas/AdProduct'
+
+    AdProduct:
+      type: object
+      description: 'Описание продукта (товара или услуги) объявления'
+      properties:
+        productType:
+          type: string
+          description: Идентификатор типа продукта для дискриминатора
+      discriminator:
+        propertyName: productType
 
     UpdateableAd:
       description: Структура для данных об объявлении в запросе на обновление
@@ -512,3 +524,25 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/ResponseAd'
+
+
+    # Типы продуктов
+    AdProductBolt:
+      description: Описание продукта Болт
+      allOf:
+        - $ref: '#/components/schemas/AdProduct'
+        - type: object
+          properties:
+            lengh:
+              description: Длина болта в миллиметрах
+              type: number
+              format: double
+            diameter:
+              description: Диаметр болта в миллиметрах
+              type: number
+              format: double
+            threadPitch:
+              description: Размер резьбы
+              type: number
+              format: double
+

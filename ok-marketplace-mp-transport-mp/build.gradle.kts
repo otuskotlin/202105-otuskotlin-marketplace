@@ -100,12 +100,13 @@ kotlin {
 //
 //    }
 
-    /**
-     * Устанавливаем зависимость компиляции от генерации исходников. Компиляция начнется только после генерации
-     */
-//    tasks {
-//        compileKotlinMetadata {
-//            dependsOn(openApiGenerate)
-//        }
-//    }
 }
+
+/**
+ * Устанавливаем зависимость компиляции от генерации исходников. Компиляция начнется только после генерации
+ */
+//tasks {
+//    withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class.java).forEach {
+//        it.dependsOn(openApiGenerate)
+//    }
+//}
