@@ -26,5 +26,8 @@ val jsonSerializer = Json {
             subclass(OffersAdResponse::class, OffersAdResponse.serializer())
             subclass(SearchAdResponse::class, SearchAdResponse.serializer())
         }
+        polymorphic(AdProduct::class) {
+            subclass(AdProductBolt::class, AdProductBolt.serializer())
+        }
     }
 }

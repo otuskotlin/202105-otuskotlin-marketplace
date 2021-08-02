@@ -28,6 +28,7 @@ class SerializationTest {
             requestId = "12345"
         )
         val serializedString = jsonSerializer.encodeToString(dto)
+        println(serializedString)
         assertContains(serializedString, Regex("requestId\":\\s*\"12345"))
         assertContains(serializedString, Regex("messageType\":\\s*\"${CreateAdRequest::class.simpleName}"))
         val deserializedDto = jsonSerializer.decodeFromString<BaseMessage>(serializedString)

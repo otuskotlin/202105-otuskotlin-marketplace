@@ -29,12 +29,13 @@ import kotlinx.serialization.encoding.*
 @Serializable
 data class CreateableAd (
     /* Краткое название объявления */
-    @SerialName(value = "title") val title: kotlin.String? = null,
+    val title: String? = null,
     /* Тело объявления с описанием особенностей выставляемой заявки */
-    @SerialName(value = "description") val description: kotlin.String? = null,
+    val description: String? = null,
     /* Идентификатор пользователя, который создал и управляет объявлением */
-    @SerialName(value = "ownerId") val ownerId: kotlin.String? = null,
-    @SerialName(value = "visibility") val visibility: AdVisibility? = null,
-    @SerialName(value = "dealSide") val dealSide: AdDealSide? = null
+    val ownerId: String? = null,
+    val visibility: AdVisibility? = null,
+    val dealSide: AdDealSide? = null,
+    val product: AdProduct? = null,
 )
 

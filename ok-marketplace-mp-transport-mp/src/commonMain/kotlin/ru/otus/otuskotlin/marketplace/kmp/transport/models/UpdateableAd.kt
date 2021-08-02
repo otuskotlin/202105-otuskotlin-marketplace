@@ -32,6 +32,7 @@ data class UpdateableAd (
     val ownerId: String? = null,
     val visibility: AdVisibility? = null,
     val dealSide: AdDealSide? = null,
+    val product: AdProduct? = null,
     /* Идентификатор объявления */
     val id: String? = null
 )
