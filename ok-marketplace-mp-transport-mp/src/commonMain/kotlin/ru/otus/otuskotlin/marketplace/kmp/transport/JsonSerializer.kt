@@ -24,6 +24,6 @@ val jsonSerializer = Json {
             subclass(OffersAdResponse::class, OffersAdResponse.serializer())
             subclass(SearchAdResponse::class, SearchAdResponse.serializer())
         }
-
     }
+    classDiscriminator = "messageType"
 }

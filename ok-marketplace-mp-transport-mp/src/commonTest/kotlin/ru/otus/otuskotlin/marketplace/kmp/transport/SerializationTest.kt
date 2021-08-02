@@ -27,21 +27,13 @@ class SerializationTest {
 
     @Test
     fun adSerializePolymorphicTest() {
-        val jsonRequest = Json {
-            prettyPrint = true
-            serializersModule = SerializersModule {
-                polymorphic(BaseMessage::class) {
-                    subclass(CreateAdRequest::class, CreateAdRequest.serializer())
-                }
-
-            }
-        }
         val dto: BaseMessage = CreateAdRequest(
             requestId = "12345"
         )
-        val serializedString = jsonRequest.encodeToString(dto)
+        val serializedString = jsonSerializer.encodeToString(dto)
+        println(serializedString)
         assertContains(serializedString, Regex("requestId\":\\s*\"12345"))
-        val deserializedDto = jsonRequest.decodeFromString<BaseMessage>(serializedString)
+        val deserializedDto = jsonSerializer.decodeFromString<BaseMessage>(serializedString)
         assertEquals("12345", (deserializedDto as CreateAdRequest).requestId)
     }
 }
