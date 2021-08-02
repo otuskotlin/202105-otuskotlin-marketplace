@@ -18,6 +18,7 @@ import kotlinx.serialization.*
  * @param requestId 
  */
 @Serializable
+@SerialName("InitAdRequest")
 data class InitAdRequest (
     override val requestId: String? = null
 ) : BaseRequest(requestId)

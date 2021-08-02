@@ -20,6 +20,7 @@ import kotlinx.serialization.*
  * @param debug 
  */
 @Serializable
+@SerialName("DeleteAdRequest")
 data class DeleteAdRequest (
     override val requestId: String? = null,
     val deleteAdId: String? = null,

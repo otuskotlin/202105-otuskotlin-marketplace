@@ -18,6 +18,7 @@ import kotlinx.serialization.*
  * @param page 
  */
 @Serializable
+@SerialName("SearchAdRequest")
 data class SearchAdRequest (
     override val requestId: String? = null,
     val page: BasePaginatedRequest? = null

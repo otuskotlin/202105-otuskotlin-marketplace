@@ -20,6 +20,7 @@ import kotlinx.serialization.*
  * @param errors 
  */
 @Serializable
+@SerialName("InitAdResponse")
 data class InitAdResponse (
     override val requestId: String? = null,
     override val result: Result? = null,

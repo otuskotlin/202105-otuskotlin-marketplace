@@ -20,6 +20,7 @@ import kotlinx.serialization.*
  * @param debug 
  */
 @Serializable
+@SerialName("CreateAdRequest")
 data class CreateAdRequest (
     override val requestId: String? = null,
     val createAd: CreateableAd? = null,

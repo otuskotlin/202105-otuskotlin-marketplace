@@ -21,6 +21,7 @@ import kotlinx.serialization.*
  * @param readAd 
  */
 @Serializable
+@SerialName("ReadAdResponse")
 data class ReadAdResponse (
     override val requestId: String? = null,
     override val result: Result? = null,

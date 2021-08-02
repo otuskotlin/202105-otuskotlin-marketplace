@@ -21,6 +21,7 @@ import kotlinx.serialization.*
  * @param debug 
  */
 @Serializable
+@SerialName("OffersAdRequest")
 data class OffersAdRequest (
     override val requestId: String? = null,
     val page: BasePaginatedRequest? = null,

@@ -22,6 +22,7 @@ import kotlinx.serialization.*
  * @param foundAds 
  */
 @Serializable
+@SerialName("SearchAdResponse")
 data class SearchAdResponse (
     override val requestId: String? = null,
     override val result: Result? = null,

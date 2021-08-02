@@ -21,6 +21,7 @@ import kotlinx.serialization.*
  * @param deletedAd 
  */
 @Serializable
+@SerialName("DeleteAdResponse")
 data class DeleteAdResponse (
     override val requestId: String? = null,
     override val result: Result? = null,
