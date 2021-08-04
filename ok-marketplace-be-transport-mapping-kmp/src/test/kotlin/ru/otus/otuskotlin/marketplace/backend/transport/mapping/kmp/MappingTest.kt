@@ -53,7 +53,7 @@ class MappingTest {
         assertEquals("owner_id-1", response.updatedAd?.ownerId)
         assertEquals(AdVisibility.REGISTERED_ONLY, response.updatedAd?.visibility)
         assertEquals(AdDealSide.DEMAND, response.updatedAd?.dealSide)
-        assertEquals(UpdateAdResponse.Result.SUCCESS, response.result)
+        assertEquals(BaseResponse.Result.SUCCESS, response.result)
         assertEquals(1, response.errors?.size)
     }
 }

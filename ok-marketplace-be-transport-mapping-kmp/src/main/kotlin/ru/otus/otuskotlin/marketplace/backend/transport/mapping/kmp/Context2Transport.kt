@@ -7,40 +7,40 @@ import ru.otus.otuskotlin.marketplace.kmp.transport.models.*
 fun MpContext.toInitResponse() = InitAdResponse(
     requestId = onRequest.takeIf { it.isNotBlank() },
     errors = errors.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
-    result = if (errors.find { it.level == IError.Level.ERROR } == null) InitAdResponse.Result.SUCCESS
-                else InitAdResponse.Result.ERROR
+    result = if (errors.find { it.level == IError.Level.ERROR } == null) BaseResponse.Result.SUCCESS
+                else BaseResponse.Result.ERROR
 )
 
 fun MpContext.toReadResponse() = ReadAdResponse(
     requestId = onRequest.takeIf { it.isNotBlank() },
     readAd = responseAd.takeIf { it != AdModel() }?.toTransport(),
     errors = errors.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
-    result = if (errors.find { it.level == IError.Level.ERROR } == null) ReadAdResponse.Result.SUCCESS
-                else ReadAdResponse.Result.ERROR
+    result = if (errors.find { it.level == IError.Level.ERROR } == null) BaseResponse.Result.SUCCESS
+                else BaseResponse.Result.ERROR
 )
 
 fun MpContext.toCreateResponse() = CreateAdResponse(
     requestId = onRequest.takeIf { it.isNotBlank() },
     errors = errors.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
     createdAd = responseAd.takeIf { it != AdModel() }?.toTransport(),
-    result = if (errors.find { it.level == IError.Level.ERROR } == null) CreateAdResponse.Result.SUCCESS
-                else CreateAdResponse.Result.ERROR
+    result = if (errors.find { it.level == IError.Level.ERROR } == null) BaseResponse.Result.SUCCESS
+                else BaseResponse.Result.ERROR
 )
 
 fun MpContext.toUpdateResponse() = UpdateAdResponse(
     requestId = onRequest.takeIf { it.isNotBlank() },
     errors = errors.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
     updatedAd = responseAd.takeIf { it != AdModel() }?.toTransport(),
-    result = if (errors.find { it.level == IError.Level.ERROR } == null) UpdateAdResponse.Result.SUCCESS
-                else UpdateAdResponse.Result.ERROR
+    result = if (errors.find { it.level == IError.Level.ERROR } == null) BaseResponse.Result.SUCCESS
+                else BaseResponse.Result.ERROR
 )
 
 fun MpContext.toDeleteResponse() = DeleteAdResponse(
     requestId = onRequest.takeIf { it.isNotBlank() },
     errors = errors.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
     deletedAd = responseAd.takeIf { it != AdModel() }?.toTransport(),
-    result = if (errors.find { it.level == IError.Level.ERROR } == null) DeleteAdResponse.Result.SUCCESS
-                else DeleteAdResponse.Result.ERROR
+    result = if (errors.find { it.level == IError.Level.ERROR } == null) BaseResponse.Result.SUCCESS
+                else BaseResponse.Result.ERROR
 )
 
 fun MpContext.toOffersResponse() = OffersAdResponse(
@@ -48,8 +48,8 @@ fun MpContext.toOffersResponse() = OffersAdResponse(
     errors = errors.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
     offeredAds = responseAds.takeIf { it.isNotEmpty() }?.filter { it != AdModel() }?.map { it.toTransport() },
     page = responsePage.takeIf { it != PaginatedModel() }?.toTransport(),
-    result = if (errors.find { it.level == IError.Level.ERROR } == null) OffersAdResponse.Result.SUCCESS
-                else OffersAdResponse.Result.ERROR
+    result = if (errors.find { it.level == IError.Level.ERROR } == null) BaseResponse.Result.SUCCESS
+                else BaseResponse.Result.ERROR
 )
 
 fun MpContext.toSearchResponse() = SearchAdResponse(
@@ -57,8 +57,8 @@ fun MpContext.toSearchResponse() = SearchAdResponse(
     errors = errors.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
     foundAds = responseAds.takeIf { it.isNotEmpty() }?.filter { it != AdModel() }?.map { it.toTransport() },
     page = responsePage.takeIf { it != PaginatedModel() }?.toTransport(),
-    result = if (errors.find { it.level == IError.Level.ERROR } == null) SearchAdResponse.Result.SUCCESS
-                else SearchAdResponse.Result.ERROR
+    result = if (errors.find { it.level == IError.Level.ERROR } == null) BaseResponse.Result.SUCCESS
+                else BaseResponse.Result.ERROR
 )
 
 private fun PaginatedModel.toTransport() = BasePaginatedResponse(

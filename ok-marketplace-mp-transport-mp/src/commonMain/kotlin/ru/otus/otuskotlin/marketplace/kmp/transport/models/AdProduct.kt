@@ -11,12 +11,16 @@
 */
 package ru.otus.otuskotlin.marketplace.kmp.transport.models
 
+import kotlinx.serialization.Serializable
+import ru.otus.otuskotlin.marketplace.kmp.transport.AdProductSerializer
+
 
 /**
  * Описание продукта (товара или услуги) объявления
  * @param productType Идентификатор типа продукта для дискриминатора
  */
+@Serializable(with = AdProductSerializer::class)
 interface AdProduct {
-
+    val productType: String
 }
 

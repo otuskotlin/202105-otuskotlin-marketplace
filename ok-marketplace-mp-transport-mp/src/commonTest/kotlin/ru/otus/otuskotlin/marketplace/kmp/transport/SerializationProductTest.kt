@@ -20,14 +20,15 @@ class SerializationProductTest {
                 lengh = 32.0,
                 diameter = 8.0,
                 threadPitch = 0.6,
+//                productTypessdf = "sdfsd"
             )
         )
     )
 
     @Test
     fun productDiscriminatorTest() {
-        val serializedString = jsonSerializer.encodeToString(CreateAdRequest.serializer(), dto as CreateAdRequest)
-        assertContains(serializedString, Regex("messageType\":\\s*\"${AdProductBolt::class.simpleName}"))
+        val serializedString = jsonSerializer.encodeToString(dto)
+        assertContains(serializedString, Regex("productType\":\\s*\"${AdProductBolt::class.simpleName}"))
     }
 
     @Test

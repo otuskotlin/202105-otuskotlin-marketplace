@@ -1,5 +1,3 @@
-val serializationVersion: String by project
-
 plugins {
     kotlin("multiplatform")
 //    id("org.openapi.generator")
@@ -26,6 +24,8 @@ kotlin {
 //    val generatedSourcesDir = "$buildDir/generated"
 
     sourceSets {
+        val serializationVersion: String by project
+
         val commonMain by getting {
 //            kotlin.srcDirs("$generatedSourcesDir/src/commonMain/kotlin")
             dependencies {

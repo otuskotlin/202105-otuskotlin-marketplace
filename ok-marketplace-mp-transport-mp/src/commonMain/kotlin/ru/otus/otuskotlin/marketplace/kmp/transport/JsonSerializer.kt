@@ -1,6 +1,8 @@
 package ru.otus.otuskotlin.marketplace.kmp.transport
 
-import kotlinx.serialization.json.Json
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.json.*
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 import ru.otus.otuskotlin.marketplace.kmp.transport.models.*
@@ -8,6 +10,7 @@ import ru.otus.otuskotlin.marketplace.kmp.transport.models.*
 val jsonSerializer = Json {
     prettyPrint = true
     useAlternativeNames = true
+    encodeDefaults = true
     classDiscriminator = "messageType"
     serializersModule = SerializersModule {
         polymorphic(BaseMessage::class) {
@@ -26,8 +29,19 @@ val jsonSerializer = Json {
             subclass(OffersAdResponse::class, OffersAdResponse.serializer())
             subclass(SearchAdResponse::class, SearchAdResponse.serializer())
         }
-        polymorphic(AdProduct::class) {
-            subclass(AdProductBolt::class, AdProductBolt.serializer())
-        }
+//        polymorphic(AdProduct::class) {
+//            subclass(AdProductBolt::class, AdProductBolt.serializer())
+//        }
     }
+}
+
+object AdProductSerializer : JsonContentPolymorphicSerializer<AdProduct>(AdProduct::class) {
+    override fun selectDeserializer(element: JsonElement): KSerializer<out AdProduct> =
+        when (val discriminatorValue = element.jsonObject["productType"]?.jsonPrimitive?.content) {
+            AdProductBolt::class.simpleName -> {println("AdProductBolt serializer"); AdProductBolt.serializer()}
+            else -> throw SerializationException(
+                "Unknown value '${discriminatorValue}' in discriminator 'productType' " +
+                        "property of AdProduct implementation"
+            )
+        }
 }

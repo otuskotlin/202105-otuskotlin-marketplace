@@ -78,6 +78,12 @@ Marketplace -- это площадка, на которой пользовате
 1. [specs](specs) - описание API в форме OpenAPI-спецификаций
 1. [ok-marketplace-be-transport-openapi](ok-marketplace-be-transport-openapi) - подпроект для генерации транспортных
    моделей для бэкенда из спецификаций OpenAPI
+1. [ok-marketplace-be-transport-mapping-openapi](ok-marketplace-be-transport-mapping-openapi) - мапинг OpenAPI
+   транспортных моделей во внутренние модели
+1. [ok-marketplace-mp-transport-mp](ok-marketplace-mp-transport-mp) - подпроект с транспортными моделями на Kotlin
+   Multiplatform
+1. [ok-marketplace-be-transport-mapping-openapi](ok-marketplace-be-transport-mapping-openapi) - мапинг KMP транспортных
+   моделей во тренние модели
 
 ## Фреймворки и транспорты
 

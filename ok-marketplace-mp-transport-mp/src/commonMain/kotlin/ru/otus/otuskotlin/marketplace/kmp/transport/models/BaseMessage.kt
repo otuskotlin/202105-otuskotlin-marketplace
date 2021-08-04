@@ -15,12 +15,12 @@ package ru.otus.otuskotlin.marketplace.kmp.transport.models
 import kotlinx.serialization.*
 import kotlinx.serialization.descriptors.*
 import kotlinx.serialization.encoding.*
+import ru.otus.otuskotlin.marketplace.kmp.transport.AdProductSerializer
 
 /**
  * Базовый класс как для запросов, так и для ответов
  * @param requestId 
  */
-
 interface BaseMessage {
 
 }

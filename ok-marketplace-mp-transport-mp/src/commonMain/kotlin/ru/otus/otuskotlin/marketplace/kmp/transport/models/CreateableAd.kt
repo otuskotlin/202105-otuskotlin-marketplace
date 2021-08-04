@@ -17,6 +17,7 @@ import ru.otus.otuskotlin.marketplace.kmp.transport.models.AdVisibility
 import kotlinx.serialization.*
 import kotlinx.serialization.descriptors.*
 import kotlinx.serialization.encoding.*
+import ru.otus.otuskotlin.marketplace.kmp.transport.AdProductSerializer
 
 /**
  * Структура с данными об объявлении для запроса о созадии
@@ -36,6 +37,7 @@ data class CreateableAd (
     val ownerId: String? = null,
     val visibility: AdVisibility? = null,
     val dealSide: AdDealSide? = null,
+//    @Serializable(with = AdProductSerializer::class)
     val product: AdProduct? = null,
 )
 
