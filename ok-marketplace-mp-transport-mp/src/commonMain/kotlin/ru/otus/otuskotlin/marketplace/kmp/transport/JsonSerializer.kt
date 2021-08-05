@@ -39,6 +39,7 @@ object AdProductSerializer : JsonContentPolymorphicSerializer<AdProduct>(AdProdu
     override fun selectDeserializer(element: JsonElement): KSerializer<out AdProduct> =
         when (val discriminatorValue = element.jsonObject["productType"]?.jsonPrimitive?.content) {
             AdProductBolt::class.simpleName -> {println("AdProductBolt serializer"); AdProductBolt.serializer()}
+            AdProductMacbook::class.simpleName -> {println("AdProductMacbook serializer"); AdProductMacbook.serializer()}
             else -> throw SerializationException(
                 "Unknown value '${discriminatorValue}' in discriminator 'productType' " +
                         "property of AdProduct implementation"
