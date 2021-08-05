@@ -9,6 +9,16 @@ pluginManagement {
         kotlin("multiplatform") version kotlinVersion
         kotlin("plugin.serialization") version kotlinVersion
         id("org.openapi.generator") version openApiVersion
+
+        // spring
+        val springBootVersion: String by settings
+        val springDependencyVersion: String by settings
+        val springPluginVersion: String by settings
+
+        id("org.springframework.boot") version springBootVersion
+        id("io.spring.dependency-management") version springDependencyVersion
+        kotlin("plugin.spring") version springPluginVersion
+
     }
 }
 
@@ -25,3 +35,4 @@ include("ok-marketplace-mp-transport-mp")
 include("ok-marketplace-be-common")
 include("ok-marketplace-be-transport-mapping-kmp")
 include("ok-marketplace-be-transport-mapping-openapi")
+include("ok-m4l1-springapp")
