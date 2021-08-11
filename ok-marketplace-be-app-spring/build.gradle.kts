@@ -18,7 +18,6 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin") // from models to json and Vice versa
     implementation("org.jetbrains.kotlin:kotlin-reflect") // for spring-boot app
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8") // for spring-boot app
-    developmentOnly("org.springframework.boot:spring-boot-devtools") // for hot load classes
 
     // transport models
     implementation(project(":ok-marketplace-be-common"))
@@ -43,10 +42,4 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
-}
-
-tasks {
-    bootBuildImage {
-        imageName = "${project.name}:${project.version}"
-    }
 }
