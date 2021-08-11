@@ -20,9 +20,9 @@ class AdController(
     }
 
     @PostMapping("read")
-    fun getAd(@RequestBody readAdRequest: ReadAdRequest) =
+    fun readAd(@RequestBody readAdRequest: ReadAdRequest) =
         MpContext().setQuery(readAdRequest).let {
-            adService.getAd(it)
+            adService.readAd(it)
         }.toReadResponse()
 
     @RequestMapping("update", method = [RequestMethod.POST])
@@ -46,10 +46,4 @@ class AdController(
         MpContext().setQuery(searchAdRequest).let {
             adService.findAd(it)
         }.toSearchResponse()
-
-    @PostMapping("offers")
-    fun getOffers(@RequestBody offersAdRequest: OffersAdRequest) =
-        MpContext().setQuery(offersAdRequest).let {
-            adService.getOffers(it)
-        }.toOffersResponse()
 }
