@@ -44,31 +44,7 @@ Content-Type: application/json
 {
   "messageType": "ReadAdRequest",
   "requestId": "12345",
-  "readAdId": "98765",
-  "debug": {
-    "mode": "stub",
-    "stub": "success"
-  }
-}
-
-### Update on create
-POST http://localhost:8080/ad/update
-Content-Type: application/json
-
-{
-  "messageType": "UpdateAdRequest",
-  "requestId": "666",
-  "createAd": {
-    "title": "Самый крутой болт",
-    "description": "Отличный болт",
-    "ownerId": "9876",
-    "visibility": "ownerOnly",
-    "dealSide": "proposal",
-    "product": {
-      "productType": "AdProductBolt"
-    },
-    "id": "668"
-  },
+  "readAdId": "666",
   "debug": {
     "mode": "stub",
     "stub": "success"
