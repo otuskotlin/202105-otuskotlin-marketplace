@@ -3,6 +3,7 @@ package ru.otus.otuskotlin.marketplace
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.http.*
+import io.ktor.http.content.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.server.netty.*
@@ -35,11 +36,16 @@ fun Application.module(testing: Boolean = false) {
         anyHost() // TODO remove
     }
     install(ContentNegotiation)
+    install(AutoHeadResponse)
     // Generally not needed as it is replaced by a `routing`
     install(Routing)
     routing {
-        get("/") {
-            call.respondText("Hello, world!")
+        get("static") {
+
+        }
+        // Static feature. Try to access `/static/ktor-logo.png`
+        static("static") {
+            resources("static")
         }
     }
 }
