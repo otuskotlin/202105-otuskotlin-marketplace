@@ -6,9 +6,9 @@ import io.ktor.response.*
 import ru.otus.otuskotlin.marketplace.backend.common.context.MpContext
 import ru.otus.otuskotlin.marketplace.backend.transport.mapping.kmp.*
 import ru.otus.otuskotlin.marketplace.openapi.models.*
-import ru.otus.otuskotlin.marketplace.services.AdService
+import ru.otus.otuskotlin.marketplace.services.AdServiceInterface
 
-suspend fun ApplicationCall.initAd(adService: AdService) {
+suspend fun ApplicationCall.initAd(adService: AdServiceInterface) {
     val initAdRequest = receive<InitAdRequest>()
     respond(
         MpContext().setQuery(initAdRequest).let {
@@ -17,7 +17,7 @@ suspend fun ApplicationCall.initAd(adService: AdService) {
     )
 }
 
-suspend fun ApplicationCall.createAd(adService: AdService) {
+suspend fun ApplicationCall.createAd(adService: AdServiceInterface) {
     val readAdRequest = receive<CreateAdRequest>()
     respond(
         MpContext().setQuery(readAdRequest).let {
@@ -26,7 +26,7 @@ suspend fun ApplicationCall.createAd(adService: AdService) {
     )
 }
 
-suspend fun ApplicationCall.readAd(adService: AdService) {
+suspend fun ApplicationCall.readAd(adService: AdServiceInterface) {
     val readAdRequest = receive<ReadAdRequest>()
     respond(
         MpContext().setQuery(readAdRequest).let {
@@ -35,7 +35,7 @@ suspend fun ApplicationCall.readAd(adService: AdService) {
     )
 }
 
-suspend fun ApplicationCall.updateAd(adService: AdService) {
+suspend fun ApplicationCall.updateAd(adService: AdServiceInterface) {
     val updateAdRequest = receive<UpdateAdRequest>()
     respond(
         MpContext().setQuery(updateAdRequest).let {
@@ -44,7 +44,7 @@ suspend fun ApplicationCall.updateAd(adService: AdService) {
     )
 }
 
-suspend fun ApplicationCall.deleteAd(adService: AdService) {
+suspend fun ApplicationCall.deleteAd(adService: AdServiceInterface) {
     val deleteAdRequest = receive<DeleteAdRequest>()
     respond(
         MpContext().setQuery(deleteAdRequest).let {
@@ -53,7 +53,7 @@ suspend fun ApplicationCall.deleteAd(adService: AdService) {
     )
 }
 
-suspend fun ApplicationCall.searchAd(adService: AdService) {
+suspend fun ApplicationCall.searchAd(adService: AdServiceInterface) {
     val searchAdRequest = receive<SearchAdRequest>()
     respond(
         MpContext().setQuery(searchAdRequest).let {
