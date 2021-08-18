@@ -1,4 +1,5 @@
 val ktorVersion: String by project
+val koinVersion: String by project
 //val kotlinVersion: String by project
 
 fun DependencyHandler.ktor(module: String, version: String? = ktorVersion): Any =
@@ -28,6 +29,9 @@ dependencies {
     // Jackson serialization
     implementation(ktor("jackson")) // "io.ktor:ktor-ktor-jackson:$ktorVersion"
 
+    implementation("io.insert-koin:koin-ktor:$koinVersion")
+    implementation("io.insert-koin:koin-logger-slf4j:$koinVersion")
+
     // logging if you want
     implementation("ch.qos.logback:logback-classic:1.2.5")
 
@@ -40,4 +44,5 @@ dependencies {
 
     testImplementation(kotlin("test-junit"))
     testImplementation(ktor("server-test-host")) // "io.ktor:ktor-server-test-host:$ktorVersion"
+    testImplementation("io.insert-koin:koin-test:$koinVersion")
 }
