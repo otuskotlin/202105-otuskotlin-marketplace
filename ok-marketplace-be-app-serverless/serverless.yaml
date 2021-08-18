@@ -1,0 +1,35 @@
+service: marketplace
+
+provider:
+  name: aws
+  runtime: java11
+  lambdaHashingVersion: 20201221
+
+package:
+  artifact: ${env:ARTIFACT}
+
+functions:
+  createAd:
+    handler: ru.otus.otuskotlin.markeplace.app.serverless.CreateAdHandler
+    events:
+      - http: post /ad/create
+  readAd:
+    handler: ru.otus.otuskotlin.markeplace.app.serverless.ReadAdHandler
+    events:
+      - http: post /ad/read
+  updateAd:
+    handler: ru.otus.otuskotlin.markeplace.app.serverless.UpdateAdHandler
+    events:
+      - http: post /ad/update
+  deleteAd:
+    handler: ru.otus.otuskotlin.markeplace.app.serverless.DeleteAdHandler
+    events:
+      - http: post /ad/delete
+  searchAd:
+    handler: ru.otus.otuskotlin.markeplace.app.serverless.SearchAdHandler
+    events:
+      - http: post /ad/search
+  offersAd:
+    handler: ru.otus.otuskotlin.markeplace.app.serverless.OffersAdHandler
+    events:
+      - http: post /ad/offers

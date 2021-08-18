@@ -1,7 +1,9 @@
+import com.github.gradle.node.npm.task.NpxTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm")
+    id("com.github.node-gradle.node") version "3.0.1"
 }
 
 group = rootProject.group
@@ -29,9 +31,34 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.12.4")
 }
 
+node {
+    download.set(false)
+}
+
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
         jvmTarget = "11"
     }
+}
+
+val buildZip by tasks.creating(Zip::class) {
+    archiveBaseName.set("functions")
+    from(tasks.named("compileKotlin"))
+    from(tasks.named("processResources"))
+    into("lib") {
+        from(configurations.runtimeClasspath)
+    }
+}
+
+val build by tasks.getting {
+    dependsOn(buildZip)
+}
+
+val serverlessDeploy by tasks.creating(NpxTask::class) {
+    dependsOn(build, "npmInstall")
+
+    command.set("serverless")
+    args.set(listOf("deploy"))
+    environment.put("ARTIFACT", buildZip.archiveFile.map { it.asFile.absolutePath })
 }
