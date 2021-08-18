@@ -5,37 +5,31 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import ru.otus.otuskotlin.marketplace.openapi.models.*
+import ru.otus.otuskotlin.marketplace.controllers.*
 
 fun Routing.ad() = route("ad") {
     post("init") {
-        val data = call.receive<InitAdRequest>()
-        call.respond(data)
+        call.initAd()
     }
     post("create") {
-        val data = call.receive<CreateAdRequest>()
-        call.respond(data)
+        call.createAd()
     }
     post("read") {
-        val data = call.receive<ReadAdRequest>()
-        call.respond(data)
+        call.readAd()
     }
     post("update") {
-        val data = call.receive<UpdateAdRequest>()
-        call.respond(data)
+        call.updateAd()
     }
     post("delete") {
-        val data = call.receive<DeleteAdRequest>()
-        call.respond(data)
+        call.deleteAd()
     }
     post("search") {
-        val data = call.receive<SearchAdRequest>()
-        call.respond(data)
+        call.searchAd()
     }
 }
 
 fun Routing.offers() = route("ad") {
     post("offers") {
-        val data = call.receive<OffersAdRequest>()
-        call.respond(data)
+        call.offersAd()
     }
 }
