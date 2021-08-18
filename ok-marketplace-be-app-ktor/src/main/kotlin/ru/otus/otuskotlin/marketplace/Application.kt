@@ -40,8 +40,8 @@ fun Application.module(testing: Boolean = false) {
     // Generally not needed as it is replaced by a `routing`
     install(Routing)
     routing {
-        get("static") {
-
+        get("/") {
+            call.respondText("Hello, world!")
         }
         // Static feature. Try to access `/static/ktor-logo.png`
         static("static") {
