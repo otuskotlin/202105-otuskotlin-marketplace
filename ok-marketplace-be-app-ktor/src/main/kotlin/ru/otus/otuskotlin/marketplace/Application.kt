@@ -9,6 +9,7 @@ import io.ktor.http.content.*
 import io.ktor.jackson.*
 import io.ktor.response.*
 import io.ktor.routing.*
+import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import org.koin.ktor.ext.Koin
 import org.koin.ktor.ext.inject
@@ -23,6 +24,7 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 object KtorEmbedded {
     @JvmStatic
     fun main(args: Array<String>) {
+//        io.ktor.server.engine.embeddedServer(Netty, commandLineEnvironment(args))
         io.ktor.server.engine.embeddedServer(Netty, port = 8000) {
             module()
         }.start(wait = true)
@@ -33,6 +35,14 @@ object KtorEmbedded {
 @JvmOverloads
 fun Application.module(testing: Boolean = false) {
     install(DefaultHeaders)
+    install(CallLogging)
+    install(StatusPages) {
+        exception(Exception::class.java) {
+            data class ErrorResponse(val errors: Map<String, List<String?>>)
+            val errorResponse = ErrorResponse(mapOf("error" to listOf("detail", this.toString())))
+            context.respond(HttpStatusCode.InternalServerError, errorResponse)
+        }
+    }
     install(CORS) {
         method(HttpMethod.Options)
         method(HttpMethod.Put)
