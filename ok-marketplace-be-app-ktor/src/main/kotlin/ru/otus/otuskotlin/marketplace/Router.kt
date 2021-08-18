@@ -6,30 +6,32 @@ import io.ktor.response.*
 import io.ktor.routing.*
 import ru.otus.otuskotlin.marketplace.openapi.models.*
 import ru.otus.otuskotlin.marketplace.controllers.*
+import ru.otus.otuskotlin.marketplace.services.AdService
+import ru.otus.otuskotlin.marketplace.services.OfferService
 
-fun Routing.ad() = route("ad") {
+fun Routing.ad(adService: AdService) = route("ad") {
     post("init") {
-        call.initAd()
+        call.initAd(adService)
     }
     post("create") {
-        call.createAd()
+        call.createAd(adService)
     }
     post("read") {
-        call.readAd()
+        call.readAd(adService)
     }
     post("update") {
-        call.updateAd()
+        call.updateAd(adService)
     }
     post("delete") {
-        call.deleteAd()
+        call.deleteAd(adService)
     }
     post("search") {
-        call.searchAd()
+        call.searchAd(adService)
     }
 }
 
-fun Routing.offers() = route("ad") {
+fun Routing.offers(offerService: OfferService) = route("ad") {
     post("offers") {
-        call.offersAd()
+        call.offersAd(offerService)
     }
 }
