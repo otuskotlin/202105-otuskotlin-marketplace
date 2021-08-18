@@ -55,10 +55,24 @@ val build by tasks.getting {
     dependsOn(buildZip)
 }
 
-val serverlessDeploy by tasks.creating(NpxTask::class) {
+val serverlessEnv = project.objects.mapProperty<String, String>().apply {
+    put("ARTIFACT", buildZip.archiveFile.map { it.asFile.absolutePath })
+    put("DOMAIN", "marketplace.otus.kotlin-is.fun")
+    put("CERTIFICATE", "marketplace.otus.kotlin-is.fun")
+}
+
+val serverlessCreateDomain by tasks.creating(NpxTask::class) {
     dependsOn(build, "npmInstall")
 
     command.set("serverless")
+    args.set(listOf("create_domain"))
+    environment.set(serverlessEnv)
+}
+
+val serverlessDeploy by tasks.creating(NpxTask::class) {
+    dependsOn(serverlessCreateDomain, "npmInstall")
+
+    command.set("serverless")
     args.set(listOf("deploy"))
-    environment.put("ARTIFACT", buildZip.archiveFile.map { it.asFile.absolutePath })
+    environment.set(serverlessEnv)
 }

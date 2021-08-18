@@ -33,3 +33,13 @@ functions:
     handler: ru.otus.otuskotlin.markeplace.app.serverless.OffersAdHandler
     events:
       - http: post /ad/offers
+
+plugins:
+  - serverless-domain-manager
+
+custom:
+  customDomain:
+    domainName: ${env:DOMAIN}
+    certificateName: ${env:CERTIFICATE}
+    basePath: ''
+    createRoute53Record: true
