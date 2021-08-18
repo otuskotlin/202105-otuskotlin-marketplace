@@ -53,6 +53,10 @@ fun Application.module(testing: Boolean = false) {
         get("/") {
             call.respondText("Hello, world!")
         }
+        // routing ad
+        ad()
+        // routing offers
+        offers()
         // Static feature. Try to access `/static/ktor-logo.png`
         static("static") {
             resources("static")
