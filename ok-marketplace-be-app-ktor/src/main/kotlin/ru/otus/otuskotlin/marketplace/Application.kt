@@ -1,9 +1,12 @@
 package ru.otus.otuskotlin.marketplace
 
+import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.databind.SerializationFeature
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.http.*
 import io.ktor.http.content.*
+import io.ktor.jackson.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.server.netty.*
@@ -35,7 +38,14 @@ fun Application.module(testing: Boolean = false) {
         allowCredentials = true
         anyHost() // TODO remove
     }
-    install(ContentNegotiation)
+    install(ContentNegotiation) {
+        jackson {
+            disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+
+            enable(SerializationFeature.INDENT_OUTPUT)
+            writerWithDefaultPrettyPrinter()
+        }
+    }
     install(AutoHeadResponse)
     // Generally not needed as it is replaced by a `routing`
     install(Routing)
