@@ -4,9 +4,9 @@ import marketplace.stubs.Bolt
 import ru.otus.otuskotlin.marketplace.backend.common.context.MpContext
 import ru.otus.otuskotlin.marketplace.backend.common.models.AdIdModel
 
-class OfferService {
+class OfferService : OfferServiceInterface {
 
-    fun readOffers(context: MpContext): MpContext {
+    override fun readOffers(context: MpContext): MpContext {
         val lastAdModelIdOnPage = context.requestPage.lastId
         val shouldReturnSingle = lastAdModelIdOnPage != AdIdModel.NONE
 

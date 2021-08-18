@@ -4,15 +4,15 @@ import marketplace.stubs.Bolt
 import ru.otus.otuskotlin.marketplace.backend.common.context.MpContext
 import ru.otus.otuskotlin.marketplace.backend.common.models.IError
 
-class AdService {
+class AdService:AdServiceInterface {
 
-    fun createAd(mpContext: MpContext): MpContext {
+    override fun createAd(mpContext: MpContext): MpContext {
         return mpContext.apply {
             responseAd = Bolt.getModel()
         }
     }
 
-    fun readAd(mpContext: MpContext): MpContext {
+    override fun readAd(mpContext: MpContext): MpContext {
         val requestedId = mpContext.requestAdId.id
         val shouldReturnStub = Bolt.isCorrectId(requestedId)
 
@@ -28,12 +28,12 @@ class AdService {
         }
     }
 
-    fun updateAd(context: MpContext) = context.apply {
+    override fun updateAd(context: MpContext) = context.apply {
         responseAd = requestAd
     }
 
 
-    fun deleteAd(context: MpContext): MpContext {
+    override fun deleteAd(context: MpContext): MpContext {
         val shouldReturnStub = Bolt.isCorrectId(context.requestAdId.id)
 
         return if (shouldReturnStub) {
@@ -49,7 +49,7 @@ class AdService {
         }
     }
 
-    fun findAd(context: MpContext): MpContext {
+    override fun findAd(context: MpContext): MpContext {
         val requestPage = context.requestPage
 
         val idToFind = requestPage.lastId
