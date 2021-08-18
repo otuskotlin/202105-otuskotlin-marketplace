@@ -10,8 +10,11 @@ import io.ktor.jackson.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.server.netty.*
-import ru.otus.otuskotlin.marketplace.services.AdService
-import ru.otus.otuskotlin.marketplace.services.OfferService
+import org.koin.ktor.ext.Koin
+import org.koin.ktor.ext.inject
+import org.koin.logger.slf4jLogger
+import ru.otus.otuskotlin.marketplace.services.AdServiceInterface
+import ru.otus.otuskotlin.marketplace.services.OfferServiceInterface
 
 // function with config (application.conf)
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
@@ -29,9 +32,6 @@ object KtorEmbedded {
 @Suppress("UNUSED_PARAMETER") // Referenced in application.conf
 @JvmOverloads
 fun Application.module(testing: Boolean = false) {
-    val adService = AdService()
-    val offerService = OfferService()
-
     install(DefaultHeaders)
     install(CORS) {
         method(HttpMethod.Options)
@@ -54,6 +54,15 @@ fun Application.module(testing: Boolean = false) {
     install(AutoHeadResponse)
     // Generally not needed as it is replaced by a `routing`
     install(Routing)
+
+    install(Koin) {
+        slf4jLogger()
+        modules(marketplace)
+    }
+
+    val adService by inject<AdServiceInterface>()
+    val offerService by inject<OfferServiceInterface>()
+
     routing {
         get("/") {
             call.respondText("Hello, world!")
