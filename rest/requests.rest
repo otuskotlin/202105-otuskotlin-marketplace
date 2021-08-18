@@ -139,7 +139,7 @@ Content-Type: application/json
 }
 
 ### Delete non-existed
-POST https://localhost/ad/delete
+POST http://localhost:8080/ad/delete
 Content-Type: application/json
 
 {
