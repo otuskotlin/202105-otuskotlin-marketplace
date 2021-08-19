@@ -8,21 +8,12 @@ import ru.otus.otuskotlin.marketplace.backend.transport.mapping.kmp.*
 import ru.otus.otuskotlin.marketplace.openapi.models.*
 import ru.otus.otuskotlin.marketplace.services.AdService
 
-suspend fun ApplicationCall.initAd(adService: AdService) {
-    val initAdRequest = receive<InitAdRequest>()
-    respond(
-        MpContext().setQuery(initAdRequest).let {
-            adService.readAd(it)
-        }.toInitResponse()
-    )
-}
-
 suspend fun ApplicationCall.createAd(adService: AdService) {
-    val readAdRequest = receive<CreateAdRequest>()
+    val createAdRequest = receive<CreateAdRequest>()
     respond(
-        MpContext().setQuery(readAdRequest).let {
-            adService.readAd(it)
-        }.toReadResponse()
+        MpContext().setQuery(createAdRequest).let {
+            adService.createAd(it)
+        }.toCreateResponse()
     )
 }
 
@@ -48,8 +39,8 @@ suspend fun ApplicationCall.deleteAd(adService: AdService) {
     val deleteAdRequest = receive<DeleteAdRequest>()
     respond(
         MpContext().setQuery(deleteAdRequest).let {
-            adService.deleteAd(it).toDeleteResponse()
-        }
+            adService.deleteAd(it)
+        }.toDeleteResponse()
     )
 }
 

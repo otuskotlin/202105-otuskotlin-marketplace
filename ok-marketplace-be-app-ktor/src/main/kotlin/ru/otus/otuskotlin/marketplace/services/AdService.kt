@@ -5,7 +5,6 @@ import ru.otus.otuskotlin.marketplace.backend.common.context.MpContext
 import ru.otus.otuskotlin.marketplace.backend.common.models.IError
 
 class AdService {
-
     fun createAd(mpContext: MpContext): MpContext {
         return mpContext.apply {
             responseAd = Bolt.getModel()

@@ -10,9 +10,6 @@ import ru.otus.otuskotlin.marketplace.services.AdService
 import ru.otus.otuskotlin.marketplace.services.OfferService
 
 fun Routing.ad(adService: AdService) = route("ad") {
-    post("init") {
-        call.initAd(adService)
-    }
     post("create") {
         call.createAd(adService)
     }
