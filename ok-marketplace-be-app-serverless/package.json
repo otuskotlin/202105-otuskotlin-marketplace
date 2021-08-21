@@ -1,0 +1,8 @@
+{
+  "name": "ok-marketplace-be-app-serverless",
+  "version": "1.0.0",
+  "dependencies": {
+    "serverless": "^2.55.0",
+    "serverless-domain-manager": "^5.1.5"
+  }
+}
