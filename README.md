@@ -87,6 +87,11 @@ Marketplace -- это площадка, на которой пользовате
 
 ## Фреймворки и транспорты
 
+1. [ok-marketplace-be-app-spring](ok-marketplace-be-app-spring) - Приложение на Spring Framework
+1. [ok-marketplace-be-app-ktor](ok-marketplace-be-app-ktor) - Приложение на Ktor
+1. [ok-marketplace-be-app-serverless](ok-marketplace-be-app-serverless) - Бессерверное приложение для AWS
+
+
 ## Модули бизнес-логики
 
 ## Хранение, репозитории, базы данных
