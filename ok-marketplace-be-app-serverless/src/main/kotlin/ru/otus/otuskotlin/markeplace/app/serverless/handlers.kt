@@ -4,6 +4,7 @@ import com.amazonaws.services.lambda.runtime.Context
 import com.amazonaws.services.lambda.runtime.RequestHandler
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse
+import kotlinx.coroutines.runBlocking
 import ru.otus.otuskotlin.marketplace.backend.common.context.MpContext
 import ru.otus.otuskotlin.marketplace.backend.transport.mapping.kmp.setQuery
 import ru.otus.otuskotlin.marketplace.backend.transport.mapping.kmp.toCreateResponse
@@ -12,63 +13,124 @@ import ru.otus.otuskotlin.marketplace.backend.transport.mapping.kmp.toOffersResp
 import ru.otus.otuskotlin.marketplace.backend.transport.mapping.kmp.toReadResponse
 import ru.otus.otuskotlin.marketplace.backend.transport.mapping.kmp.toSearchResponse
 import ru.otus.otuskotlin.marketplace.backend.transport.mapping.kmp.toUpdateResponse
-import ru.otus.otuskotlin.marketplace.openapi.models.CreateAdRequest
-import ru.otus.otuskotlin.marketplace.openapi.models.DeleteAdRequest
-import ru.otus.otuskotlin.marketplace.openapi.models.OffersAdRequest
-import ru.otus.otuskotlin.marketplace.openapi.models.ReadAdRequest
-import ru.otus.otuskotlin.marketplace.openapi.models.SearchAdRequest
-import ru.otus.otuskotlin.marketplace.openapi.models.UpdateAdRequest
+import ru.otus.otuskotlin.marketplace.openapi.models.*
+import java.time.Instant
 
 class CreateAdHandler : RequestHandler<APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse> {
-    override fun handleRequest(input: APIGatewayV2HTTPEvent, context: Context): APIGatewayV2HTTPResponse =
-        MpContext()
-            .setQuery(input.toTransportModel<CreateAdRequest>())
-            .let { adService.createAd(it) }
-            .toCreateResponse()
-            .toAPIGatewayV2HTTPResponse()
+    override fun handleRequest(input: APIGatewayV2HTTPEvent, slContext: Context): APIGatewayV2HTTPResponse {
+        val request = input.toTransportModel<CreateAdRequest>()
+        val context = MpContext(
+            startTime = Instant.now()
+        )
+        val result = try {
+            runBlocking {
+                adService.createAd(context, request)
+            }
+        } catch (e: Throwable) {
+            runBlocking { adService.errorAd(context, e) as CreateAdResponse }
+        }
+        return result.toAPIGatewayV2HTTPResponse()
+    }
 }
 
 class ReadAdHandler : RequestHandler<APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse> {
-    override fun handleRequest(input: APIGatewayV2HTTPEvent, context: Context): APIGatewayV2HTTPResponse =
-        MpContext()
-            .setQuery(input.toTransportModel<ReadAdRequest>())
-            .let { adService.readAd(it) }
-            .toReadResponse()
-            .toAPIGatewayV2HTTPResponse()
+    override fun handleRequest(input: APIGatewayV2HTTPEvent, slContext: Context): APIGatewayV2HTTPResponse {
+        val request = input.toTransportModel<ReadAdRequest>()
+        val context = MpContext(
+            startTime = Instant.now()
+        )
+        val result = try {
+            runBlocking {
+                adService.readAd(context, request)
+            }
+        } catch (e: Throwable) {
+            runBlocking { adService.errorAd(context, e) as ReadAdResponse }
+        }
+        return result.toAPIGatewayV2HTTPResponse()
+    }
 }
 
 class UpdateAdHandler : RequestHandler<APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse> {
-    override fun handleRequest(input: APIGatewayV2HTTPEvent, context: Context): APIGatewayV2HTTPResponse =
-        MpContext()
-            .setQuery(input.toTransportModel<UpdateAdRequest>())
-            .let { adService.updateAd(it) }
-            .toUpdateResponse()
-            .toAPIGatewayV2HTTPResponse()
+    override fun handleRequest(input: APIGatewayV2HTTPEvent, slContext: Context): APIGatewayV2HTTPResponse {
+        val request = input.toTransportModel<UpdateAdRequest>()
+        val context = MpContext(
+            startTime = Instant.now()
+        )
+        val result = try {
+            runBlocking {
+                adService.updateAd(context, request)
+            }
+        } catch (e: Throwable) {
+            runBlocking { adService.errorAd(context, e) as UpdateAdResponse }
+        }
+        return result.toAPIGatewayV2HTTPResponse()
+    }
 }
 
 class DeleteAdHandler : RequestHandler<APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse> {
-    override fun handleRequest(input: APIGatewayV2HTTPEvent, context: Context): APIGatewayV2HTTPResponse =
-        MpContext()
-            .setQuery(input.toTransportModel<DeleteAdRequest>())
-            .let { adService.deleteAd(it) }
-            .toDeleteResponse()
-            .toAPIGatewayV2HTTPResponse()
+    override fun handleRequest(input: APIGatewayV2HTTPEvent, slContext: Context): APIGatewayV2HTTPResponse {
+        val request = input.toTransportModel<DeleteAdRequest>()
+        val context = MpContext(
+            startTime = Instant.now()
+        )
+        val result = try {
+            runBlocking {
+                adService.deleteAd(context, request)
+            }
+        } catch (e: Throwable) {
+            runBlocking { adService.errorAd(context, e) as DeleteAdResponse }
+        }
+        return result.toAPIGatewayV2HTTPResponse()
+    }
 }
 
 class SearchAdHandler : RequestHandler<APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse> {
-    override fun handleRequest(input: APIGatewayV2HTTPEvent, context: Context): APIGatewayV2HTTPResponse =
-        MpContext()
-            .setQuery(input.toTransportModel<SearchAdRequest>())
-            .let { adService.searchAd(it) }
-            .toSearchResponse()
-            .toAPIGatewayV2HTTPResponse()
+    override fun handleRequest(input: APIGatewayV2HTTPEvent, slContext: Context): APIGatewayV2HTTPResponse {
+        val request = input.toTransportModel<SearchAdRequest>()
+        val context = MpContext(
+            startTime = Instant.now()
+        )
+        val result = try {
+            runBlocking {
+                adService.searchAd(context, request)
+            }
+        } catch (e: Throwable) {
+            runBlocking { adService.errorAd(context, e) as SearchAdResponse }
+        }
+        return result.toAPIGatewayV2HTTPResponse()
+    }
 }
 
 class OffersAdHandler : RequestHandler<APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse> {
-    override fun handleRequest(input: APIGatewayV2HTTPEvent, context: Context): APIGatewayV2HTTPResponse =
-        MpContext()
-            .setQuery(input.toTransportModel<OffersAdRequest>())
-            .let { adService.offersAd(it) }
-            .toOffersResponse()
-            .toAPIGatewayV2HTTPResponse()
+    override fun handleRequest(input: APIGatewayV2HTTPEvent, slContext: Context): APIGatewayV2HTTPResponse {
+        val request = input.toTransportModel<OffersAdRequest>()
+        val context = MpContext(
+            startTime = Instant.now()
+        )
+        val result = try {
+            runBlocking {
+                adService.offersAd(context, request)
+            }
+        } catch (e: Throwable) {
+            runBlocking { adService.errorAd(context, e) as OffersAdResponse }
+        }
+        return result.toAPIGatewayV2HTTPResponse()
+    }
+}
+
+class InitAdHandler : RequestHandler<APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse> {
+    override fun handleRequest(input: APIGatewayV2HTTPEvent, slContext: Context): APIGatewayV2HTTPResponse {
+        val request = input.toTransportModel<InitAdRequest>()
+        val context = MpContext(
+            startTime = Instant.now()
+        )
+        val result = try {
+            runBlocking {
+                adService.initAd(context, request)
+            }
+        } catch (e: Throwable) {
+            runBlocking { adService.errorAd(context, e) as InitAdResponse }
+        }
+        return result.toAPIGatewayV2HTTPResponse()
+    }
 }

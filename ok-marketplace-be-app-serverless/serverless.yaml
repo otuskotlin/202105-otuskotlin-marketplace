@@ -33,6 +33,10 @@ functions:
     handler: ru.otus.otuskotlin.markeplace.app.serverless.OffersAdHandler
     events:
       - http: post /ad/offers
+  initAd:
+    handler: ru.otus.otuskotlin.markeplace.app.serverless.InitAdHandler
+    events:
+      - http: post /ad/init
 
 plugins:
   - serverless-domain-manager
