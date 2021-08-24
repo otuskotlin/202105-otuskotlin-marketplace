@@ -67,7 +67,7 @@ Marketplace -- это площадка, на которой пользовате
 
 1. [ok-m1l1](ok-m1l1) - Вводное занятие, создание первой программы на Kotlin
 1. [ok-m1l3-oop](ok-m1l3-oop) - Объектно-ориентированное программирование
-1. [ok-m1l4](ok-m1l4) - Предментно ориентированные языки (DSL)
+1. [ok-m1l4](ok-m1l4) - Предметно ориентированные языки (DSL)
 1. [ok-m1l5](ok-m1l5) - Асинхронное и многопоточное программирование с корутинами
 1. [ok-m1l6-flows-and-channels](ok-m1l6-flows-and-channels) - Асинхронное и многопоточное программирование с каналами
 1. [ok-m1l7-kmp](ok-m1l7-kmp) - Kotlin Multiplatform и интероперабельность с JVM, JS
@@ -87,11 +87,14 @@ Marketplace -- это площадка, на которой пользовате
 
 ## Фреймворки и транспорты
 
+1. [ok-marketplace-be-service-openapi](ok-marketplace-be-service-openapi) - Сервис для OpenAPI-реализации. Предназначен
+   для унификации вызовов бизнес-логики при использовании разных транспортных моделей
 1. [ok-marketplace-be-app-spring](ok-marketplace-be-app-spring) - Приложение на Spring Framework
 1. [ok-marketplace-be-app-ktor](ok-marketplace-be-app-ktor) - Приложение на Ktor
 1. [ok-marketplace-be-app-serverless](ok-marketplace-be-app-serverless) - Бессерверное приложение для AWS
 
-
 ## Модули бизнес-логики
+
+1. [ok-marketplace-be-stubs](ok-marketplace-be-stubs) - Стабы для ответов сервиса
 
 ## Хранение, репозитории, базы данных

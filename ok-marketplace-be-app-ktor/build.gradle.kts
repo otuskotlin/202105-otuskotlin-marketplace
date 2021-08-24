@@ -39,11 +39,6 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
     implementation(ktor("server-core")) // "io.ktor:ktor-server-core:$ktorVersion"
     implementation(ktor("server-netty")) // "io.ktor:ktor-ktor-server-netty:$ktorVersion"
-    // Gson serialization
-    // implementation(ktor("gson")) // "io.ktor:ktor-ktor-gson:$ktorVersion"
-    // Kotlinx serialization
-    // implementation(ktor("serialization")) // "io.ktor:ktor-ktor-serialization:$ktorVersion"
-    // Jackson serialization
     implementation(ktor("jackson")) // "io.ktor:ktor-ktor-jackson:$ktorVersion"
 
     // logging if you want
@@ -53,8 +48,8 @@ dependencies {
     implementation(project(":ok-marketplace-be-common"))
     implementation(project(":ok-marketplace-be-transport-openapi"))
     implementation(project(":ok-marketplace-be-transport-mapping-openapi"))
-    // stubs
-    implementation(project(":ok-marketplace-be-stubs"))
+    // service
+    implementation(project(":ok-marketplace-be-service-openapi"))
 
     testImplementation(kotlin("test-junit"))
     testImplementation(ktor("server-test-host")) // "io.ktor:ktor-server-test-host:$ktorVersion"
