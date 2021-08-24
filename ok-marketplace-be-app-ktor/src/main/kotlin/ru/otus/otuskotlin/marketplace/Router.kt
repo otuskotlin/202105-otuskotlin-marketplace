@@ -4,10 +4,9 @@ import io.ktor.application.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
+import ru.otus.otuskotlin.marketplace.backend.services.AdService
 import ru.otus.otuskotlin.marketplace.openapi.models.*
 import ru.otus.otuskotlin.marketplace.controllers.*
-import ru.otus.otuskotlin.marketplace.services.AdService
-import ru.otus.otuskotlin.marketplace.services.OfferService
 
 fun Routing.ad(adService: AdService) = route("ad") {
     post("create") {
@@ -27,8 +26,8 @@ fun Routing.ad(adService: AdService) = route("ad") {
     }
 }
 
-fun Routing.offers(offerService: OfferService) = route("ad") {
+fun Routing.offers(adService: AdService) = route("ad") {
     post("offers") {
-        call.offersAd(offerService)
+        call.offersAd(adService)
     }
 }

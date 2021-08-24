@@ -10,8 +10,7 @@ import io.ktor.jackson.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.server.netty.*
-import ru.otus.otuskotlin.marketplace.services.AdService
-import ru.otus.otuskotlin.marketplace.services.OfferService
+import ru.otus.otuskotlin.marketplace.backend.services.AdService
 
 // function with config (application.conf)
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
@@ -30,7 +29,6 @@ object KtorEmbedded {
 @JvmOverloads
 fun Application.module(testing: Boolean = false) {
     val adService = AdService()
-    val offerService = OfferService()
 
     install(DefaultHeaders)
     install(CORS) {
@@ -61,7 +59,7 @@ fun Application.module(testing: Boolean = false) {
         // routing ad
         ad(adService)
         // routing offers
-        offers(offerService)
+        offers(adService)
         // Static feature. Try to access `/static/ktor-logo.png`
         static("static") {
             resources("static")
