@@ -5,36 +5,43 @@ import ru.otus.otuskotlin.marketplace.backend.common.models.*
 import ru.otus.otuskotlin.marketplace.openapi.models.*
 
 fun MpContext.setQuery(query: InitAdRequest) = apply {
+    operation = MpContext.MpOperations.INIT
     onRequest = query.requestId?:""
 }
 
 fun MpContext.setQuery(query: CreateAdRequest) = apply {
+    operation = MpContext.MpOperations.CREATE
     onRequest = query.requestId?:""
     requestAd = query.createAd?.toModel()?: AdModel()
 }
 
 fun MpContext.setQuery(query: ReadAdRequest) = apply {
+    operation = MpContext.MpOperations.READ
     onRequest = query.requestId?:""
     requestAdId = AdIdModel(query.readAdId?:"")
 }
 
 fun MpContext.setQuery(query: UpdateAdRequest) = apply {
+    operation = MpContext.MpOperations.UPDATE
     onRequest = query.requestId?:""
     requestAd = query.createAd?.toModel()?: AdModel()
 }
 
 fun MpContext.setQuery(query: DeleteAdRequest) = apply {
+    operation = MpContext.MpOperations.DELETE
     onRequest = query.requestId?:""
     requestAdId = AdIdModel(query.deleteAdId?:"")
 }
 
 fun MpContext.setQuery(query: OffersAdRequest) = apply {
+    operation = MpContext.MpOperations.OFFER
     onRequest = query.requestId?:""
     requestPage = query.page?.toModel()?: PaginatedModel()
     requestAdId = AdIdModel(query.deleteAdId?:"")
 }
 
 fun MpContext.setQuery(query: SearchAdRequest) = apply {
+    operation = MpContext.MpOperations.SEARCH
     onRequest = query.requestId?:""
     requestPage = query.page?.toModel()?: PaginatedModel()
 }
