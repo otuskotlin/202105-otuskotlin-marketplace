@@ -87,11 +87,14 @@ Marketplace -- это площадка, на которой пользовате
 
 ## Фреймворки и транспорты
 
+1. [ok-marketplace-be-service-openapi](ok-marketplace-be-service-openapi) - Сервис для OpenAPI-реализации. Предназначен
+   для унификации вызовов бизнес-логики при использовании разных транспортных моделей
 1. [ok-marketplace-be-app-spring](ok-marketplace-be-app-spring) - Приложение на Spring Framework
 1. [ok-marketplace-be-app-ktor](ok-marketplace-be-app-ktor) - Приложение на Ktor
 1. [ok-marketplace-be-app-serverless](ok-marketplace-be-app-serverless) - Бессерверное приложение для AWS
 
-
 ## Модули бизнес-логики
+
+1. [ok-marketplace-be-stubs](ok-marketplace-be-stubs) - Стабы для ответов сервиса
 
 ## Хранение, репозитории, базы данных
