@@ -4,11 +4,23 @@ pluginManagement {
     plugins {
         val kotlinVersion: String by settings
         val openApiVersion: String by settings
+        val bmuschkoVersion: String by settings
 
         kotlin("jvm") version kotlinVersion
         kotlin("multiplatform") version kotlinVersion
         kotlin("plugin.serialization") version kotlinVersion
         id("org.openapi.generator") version openApiVersion
+        id("com.bmuschko.docker-java-application") version bmuschkoVersion
+
+        // spring
+        val springBootVersion: String by settings
+        val springDependencyVersion: String by settings
+        val springPluginVersion: String by settings
+
+        id("org.springframework.boot") version springBootVersion
+        id("io.spring.dependency-management") version springDependencyVersion
+        kotlin("plugin.spring") version springPluginVersion
+
     }
 }
 
@@ -25,4 +37,9 @@ include("ok-marketplace-mp-transport-mp")
 include("ok-marketplace-be-common")
 include("ok-marketplace-be-transport-mapping-kmp")
 include("ok-marketplace-be-transport-mapping-openapi")
+include("ok-marketplace-be-app-ktor")
+include("ok-marketplace-be-app-spring")
+include("ok-marketplace-be-app-serverless")
+include("ok-marketplace-be-stubs")
+include("ok-marketplace-be-service-openapi")
 include("ok-marketplace-mp-common-cor")

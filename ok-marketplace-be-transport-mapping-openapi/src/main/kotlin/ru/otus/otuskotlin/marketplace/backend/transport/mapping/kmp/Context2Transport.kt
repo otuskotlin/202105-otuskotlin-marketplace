@@ -1,6 +1,7 @@
 package ru.otus.otuskotlin.marketplace.backend.transport.mapping.kmp
 
 import ru.otus.otuskotlin.marketplace.backend.common.context.MpContext
+import ru.otus.otuskotlin.marketplace.backend.common.exceptions.MpOperationNotSet
 import ru.otus.otuskotlin.marketplace.backend.common.models.*
 import ru.otus.otuskotlin.marketplace.openapi.models.*
 
@@ -60,6 +61,17 @@ fun MpContext.toSearchResponse() = SearchAdResponse(
     result = if (errors.find { it.level == IError.Level.ERROR } == null) SearchAdResponse.Result.SUCCESS
                 else SearchAdResponse.Result.ERROR
 )
+
+fun MpContext.toResponse() = when(operation) {
+    MpContext.MpOperations.INIT -> toInitResponse()
+    MpContext.MpOperations.CREATE -> toCreateResponse()
+    MpContext.MpOperations.READ -> toReadResponse()
+    MpContext.MpOperations.UPDATE -> toUpdateResponse()
+    MpContext.MpOperations.DELETE -> toDeleteResponse()
+    MpContext.MpOperations.SEARCH -> toSearchResponse()
+    MpContext.MpOperations.OFFER -> toOffersResponse()
+    MpContext.MpOperations.NONE -> throw MpOperationNotSet("Operation for error response is not set")
+}
 
 private fun PaginatedModel.toTransport() = BasePaginatedResponse(
     size = size.takeIf { it != Int.MIN_VALUE },
