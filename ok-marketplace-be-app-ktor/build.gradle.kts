@@ -1,5 +1,4 @@
 val ktorVersion: String by project
-//val kotlinVersion: String by project
 
 fun DependencyHandler.ktor(module: String, version: String? = ktorVersion): Any =
     "io.ktor:ktor-$module:$version"
@@ -36,13 +35,14 @@ docker {
 }
 
 dependencies {
+    val logbackVersion: String by project
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
     implementation(ktor("server-core")) // "io.ktor:ktor-server-core:$ktorVersion"
     implementation(ktor("server-netty")) // "io.ktor:ktor-ktor-server-netty:$ktorVersion"
     implementation(ktor("jackson")) // "io.ktor:ktor-ktor-jackson:$ktorVersion"
 
     // logging if you want
-    implementation("ch.qos.logback:logback-classic:1.2.5")
+    implementation("ch.qos.logback:logback-classic:$logbackVersion")
 
     // transport models
     implementation(project(":ok-marketplace-be-common"))

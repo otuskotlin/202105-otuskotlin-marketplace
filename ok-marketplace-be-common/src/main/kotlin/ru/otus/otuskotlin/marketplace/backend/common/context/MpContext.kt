@@ -14,7 +14,7 @@ data class MpContext(
     var requestPage: PaginatedModel = PaginatedModel(),
     var responsePage: PaginatedModel = PaginatedModel(),
     var responseAds: MutableList<AdModel> = mutableListOf(),
-    var errors: MutableList<IError> = mutableListOf(),
+    val errors: MutableList<IError> = mutableListOf(),
     var status: CorStatus = CorStatus.STARTED,
 ) {
     enum class MpOperations {
@@ -31,15 +31,21 @@ data class MpContext(
     /**
      * Добавляет ошибку в контекст
      *
+     * @param error Ошибка, которую необходимо добавить в контекст
      * @param failingStatus Необходимо ли установить статус выполнения в FAILING (true/false)
-     * @param
      */
-    fun addError(failingStatus: Boolean = true, lambda: CommonErrorModel.() -> Unit) = apply {
+    fun addError(error: IError, failingStatus: Boolean = true) = apply {
         if (failingStatus) status = CorStatus.FAILING
-        errors.add(
-            CommonErrorModel(
-                field = "_", level = IError.Level.ERROR
-            ).apply(lambda)
-        )
+        errors.add(error)
+    }
+
+
+    fun addError(
+        e: Throwable,
+        level: IError.Level = IError.Level.ERROR,
+        field: String = "",
+        failingStatus: Boolean = true
+    ) {
+        addError(CommonErrorModel(e, field = field, level = level), failingStatus)
     }
 }

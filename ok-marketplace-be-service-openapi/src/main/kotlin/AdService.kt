@@ -40,9 +40,7 @@ class AdService {
     }
 
     fun errorAd(context: MpContext, e: Throwable): BaseMessage {
-        context.addError {
-            from(e)
-        }
+        context.addError(e)
         return context.toReadResponse()
     }
 
