@@ -1,9 +1,10 @@
 package ru.otus.otuskotlin.marketplace.backend.common.models
 
 interface IError {
-    var field: String
-    var level: Level
-    var message: String
+    val field: String
+    val level: Level
+    val message: String
+    val exception: Throwable
 
     enum class Level {
         ERROR,

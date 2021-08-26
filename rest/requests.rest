@@ -1,0 +1,157 @@
+POST http://127.0.0.1:8080/ad/create
+Content-Type: application/json
+
+{
+  "messageType": "CreateAdRequest",
+  "requestId": "12345",
+  "createAd": {
+    "title": "Болт",
+    "description": "КРУТЕЙШИЙ",
+    "ownerId": "9435",
+    "visibility": "public",
+    "dealSide": "demand",
+    "product": {
+      "productType": "AdProductBolt",
+      "threadPitch": 13.0,
+      "diameter": 2.0,
+      "lengh": 10.3
+    }
+  },
+  "debug": {
+    "mode": "stub",
+    "stub": "success"
+  }
+}
+
+### With unexisted ID
+POST http://127.0.0.1:8080/ad/read
+Content-Type: application/json
+
+{
+  "messageType": "ReadAdRequest",
+  "requestId": "12345",
+  "readAdId": "99999",
+  "debug": {
+    "mode": "stub",
+    "stub": "success"
+  }
+}
+
+### With Existed id
+POST http://127.0.0.1:8080/ad/read
+Content-Type: application/json
+
+{
+  "messageType": "ReadAdRequest",
+  "requestId": "12345",
+  "readAdId": "666",
+  "debug": {
+    "mode": "stub",
+    "stub": "success"
+  }
+}
+
+### Update
+POST http://localhost:8080/ad/update
+Content-Type: application/json
+
+{
+  "messageType": "UpdateAdRequest",
+  "requestId": "666",
+  "createAd": {
+    "title": "Уже не крутой болт",
+    "description": "Перестал быть крутым",
+    "ownerId": "9876",
+    "visibility": "ownerOnly",
+    "dealSide": "proposal",
+    "product": {
+      "productType": "AdProductBolt"
+    },
+    "id": "668"
+  },
+  "debug": {
+    "mode": "stub",
+    "stub": "success"
+  }
+}
+
+###
+POST http://localhost:8080/ad/search
+Content-Type: application/json
+
+{
+  "messageType": "SearchAdRequest",
+  "requestId": "99",
+  "page": {
+    "size": 3,
+    "lastId": "666"
+  }
+}
+
+### Get concrete offers
+POST http://localhost:8080/ad/offers
+Content-Type: application/json
+
+{
+  "messageType": "OffersAdRequest",
+  "requestId": "987622",
+  "page": {
+    "size": 2,
+    "lastId": "666"
+  },
+  "deleteAdId": "98765",
+  "debug": {
+    "mode": "stub",
+    "stub": "success"
+  }
+}
+
+### Get all offers
+POST http://localhost:8080/ad/offers
+Content-Type: application/json
+
+{
+  "messageType": "OffersAdRequest",
+  "requestId": "987622",
+  "page": {
+    "size": 2,
+    "lastId": "666"
+  },
+  "deleteAdId": null,
+  "debug": {
+    "mode": "stub",
+    "stub": "success"
+  }
+}
+
+### Delete existed
+POST http://localhost:8080/ad/delete
+Content-Type: application/json
+
+{
+  "messageType": "DeleteAdRequest",
+  "requestId": null,
+  "deleteAdId": "98765",
+  "debug": {
+    "mode": "stub",
+    "stub": "success"
+  }
+}
+
+### Delete non-existed
+POST http://localhost:8080/ad/delete
+Content-Type: application/json
+
+{
+  "messageType": "DeleteAdRequest",
+  "requestId": null,
+  "deleteAdId": "666",
+  "debug": {
+    "mode": "stub",
+    "stub": "success"
+  }
+}
+
+
+
+
