@@ -15,7 +15,8 @@ class AdCrudTest {
     fun initTest() {
         val crud = AdCrud()
         val context = MpContext(
-            stubCase = MpStubCase.INIT_SUCCESS
+            stubCase = MpStubCase.SUCCESS,
+            operation = MpContext.MpOperations.INIT,
         )
         runBlocking {
             crud.init(context)
@@ -27,8 +28,9 @@ class AdCrudTest {
     fun createSuccessTest() {
         val crud = AdCrud()
         val context = MpContext(
-            stubCase = MpStubCase.CREATE_SUCCESS,
+            stubCase = MpStubCase.SUCCESS,
             requestAd = Bolt.getModel { id = AdIdModel.NONE },
+            operation = MpContext.MpOperations.CREATE,
         )
         runBlocking {
             crud.create(context)
@@ -50,8 +52,9 @@ class AdCrudTest {
     fun readSuccessTest() {
         val crud = AdCrud()
         val context = MpContext(
-            stubCase = MpStubCase.READ_SUCCESS,
+            stubCase = MpStubCase.SUCCESS,
             requestAdId = Bolt.getModel().id,
+            operation = MpContext.MpOperations.READ,
         )
         runBlocking {
             crud.read(context)
@@ -73,8 +76,9 @@ class AdCrudTest {
     fun updateSuccessTest() {
         val crud = AdCrud()
         val context = MpContext(
-            stubCase = MpStubCase.UPDATE_SUCCESS,
+            stubCase = MpStubCase.SUCCESS,
             requestAd = Bolt.getModel(),
+            operation = MpContext.MpOperations.UPDATE,
         )
         runBlocking {
             crud.update(context)
@@ -96,8 +100,9 @@ class AdCrudTest {
     fun deleteSuccessTest() {
         val crud = AdCrud()
         val context = MpContext(
-            stubCase = MpStubCase.DELETE_SUCCESS,
+            stubCase = MpStubCase.SUCCESS,
             requestAdId = Bolt.getModel().id,
+            operation = MpContext.MpOperations.DELETE,
         )
         runBlocking {
             crud.delete(context)
@@ -119,8 +124,9 @@ class AdCrudTest {
     fun searchSuccessTest() {
         val crud = AdCrud()
         val context = MpContext(
-            stubCase = MpStubCase.SEARCH_SUCCESS,
+            stubCase = MpStubCase.SUCCESS,
             requestPage = PaginatedModel(),
+            operation = MpContext.MpOperations.SEARCH,
         )
         runBlocking {
             crud.search(context)
@@ -136,9 +142,10 @@ class AdCrudTest {
     fun offersSuccessTest() {
         val crud = AdCrud()
         val context = MpContext(
-            stubCase = MpStubCase.OFFERS_SUCCESS,
+            stubCase = MpStubCase.SUCCESS,
             requestPage = PaginatedModel(),
-            requestAdId = Bolt.getModel().id
+            requestAdId = Bolt.getModel().id,
+            operation = MpContext.MpOperations.OFFER
         )
         runBlocking {
             crud.offer(context)
