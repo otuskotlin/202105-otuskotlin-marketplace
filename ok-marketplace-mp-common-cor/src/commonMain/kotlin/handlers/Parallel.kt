@@ -3,7 +3,9 @@ package ru.otus.otuskotlin.marketplace.common.cor.handlers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import ru.otus.otuskotlin.marketplace.common.cor.*
+import ru.otus.otuskotlin.marketplace.common.cor.ru.otus.otuskotlin.marketplace.common.cor.CorDslMarker
 
+@CorDslMarker
 fun <T> ICorChainDsl<T>.parallel(function: CorParallelDsl<T>.() -> Unit) {
     add(CorParallelDsl<T>().apply(function))
 }
@@ -24,6 +26,7 @@ class CorParallel<T>(
     }
 }
 
+@CorDslMarker
 class CorParallelDsl<T>(
     override var title: String = "",
     override var description: String = "",

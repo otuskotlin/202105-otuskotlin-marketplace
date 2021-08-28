@@ -4,7 +4,9 @@ import ru.otus.otuskotlin.marketplace.common.cor.ICorChainDsl
 import ru.otus.otuskotlin.marketplace.common.cor.ICorExec
 import ru.otus.otuskotlin.marketplace.common.cor.ICorExecDsl
 import ru.otus.otuskotlin.marketplace.common.cor.ICorWorker
+import ru.otus.otuskotlin.marketplace.common.cor.ru.otus.otuskotlin.marketplace.common.cor.CorDslMarker
 
+@CorDslMarker
 fun <T> ICorChainDsl<T>.chain(function: CorChainDsl<T>.() -> Unit) {
     add(CorChainDsl<T>().apply(function))
 }
@@ -24,6 +26,7 @@ class CorChain<T>(
     }
 }
 
+@CorDslMarker
 class CorChainDsl<T>(
     override var title: String = "",
     override var description: String = "",
