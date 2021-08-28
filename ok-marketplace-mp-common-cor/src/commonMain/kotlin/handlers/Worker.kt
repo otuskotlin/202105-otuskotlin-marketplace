@@ -4,7 +4,9 @@ import ru.otus.otuskotlin.marketplace.common.cor.ICorChainDsl
 import ru.otus.otuskotlin.marketplace.common.cor.ICorExec
 import ru.otus.otuskotlin.marketplace.common.cor.ICorWorker
 import ru.otus.otuskotlin.marketplace.common.cor.ICorWorkerDsl
+import ru.otus.otuskotlin.marketplace.common.cor.ru.otus.otuskotlin.marketplace.common.cor.CorDslMarker
 
+@CorDslMarker
 fun <T> ICorChainDsl<T>.worker(
     function: CorWorkerDsl<T>.() -> Unit
 ) {
@@ -13,6 +15,7 @@ fun <T> ICorChainDsl<T>.worker(
     )
 }
 
+@CorDslMarker
 fun <T> ICorChainDsl<T>.worker(
     title: String,
     description: String = "",
@@ -39,6 +42,7 @@ class CorWorker<T>(
     override suspend fun except(context: T, e: Throwable) = blockExcept(context, e)
 }
 
+@CorDslMarker
 class CorWorkerDsl<T>(
     override var title: String = "",
     override var description: String = "",
