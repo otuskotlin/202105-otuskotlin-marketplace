@@ -39,7 +39,8 @@ data class BaseDebugRequest (
 
     @Serializable
     enum class StubCase {
-        SUCCESS
+        SUCCESS,
+        DATABASE_ERROR;
     }
 }
 
