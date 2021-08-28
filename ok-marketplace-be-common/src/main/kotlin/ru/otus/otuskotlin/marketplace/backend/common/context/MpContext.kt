@@ -6,6 +6,7 @@ import java.time.Instant
 data class MpContext(
     var startTime : Instant = Instant.MIN,
     var operation: MpOperations = MpOperations.NONE,
+    var stubCase: MpStubCase = MpStubCase.NONE,
 
     var onRequest: String = "",
     var requestAdId: AdIdModel = AdIdModel.NONE,
