@@ -293,6 +293,10 @@ components:
             - prod
             - test
             - stub
+        stubCase:
+          type: string
+          enum:
+            - success
 
     BasePaginatedRequest:
       type: object

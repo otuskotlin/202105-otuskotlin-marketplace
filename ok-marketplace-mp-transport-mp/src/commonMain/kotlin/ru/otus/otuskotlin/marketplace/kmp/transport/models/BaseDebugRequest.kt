@@ -22,7 +22,8 @@ import kotlinx.serialization.encoding.*
  */
 @Serializable
 data class BaseDebugRequest (
-    @SerialName(value = "mode") val mode: BaseDebugRequest.Mode? = null
+    @SerialName(value = "mode") val mode: BaseDebugRequest.Mode? = null,
+    val stubCase: StubCase? = null,
 ) {
 
     /**
@@ -34,6 +35,11 @@ data class BaseDebugRequest (
         @SerialName(value = "prod") PROD("prod"),
         @SerialName(value = "test") TEST("test"),
         @SerialName(value = "stub") STUB("stub");
+    }
+
+    @Serializable
+    enum class StubCase {
+        SUCCESS
     }
 }
 

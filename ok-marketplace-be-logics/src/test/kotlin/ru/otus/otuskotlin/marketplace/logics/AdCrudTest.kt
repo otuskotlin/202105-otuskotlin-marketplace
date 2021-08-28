@@ -10,12 +10,17 @@ import ru.otus.otuskotlin.marketplace.backend.common.models.PaginatedModel
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
+/**
+ * @crud - экземпляр класса-фасада бизнес-логики
+ * @context - контекст, смапленный из транспортной модели запроса
+ */
 class AdCrudTest {
     @Test
     fun initTest() {
         val crud = AdCrud()
         val context = MpContext(
-            stubCase = MpStubCase.INIT_SUCCESS
+            stubCase = MpStubCase.INIT_SUCCESS,
+            operation = MpContext.MpOperations.INIT,
         )
         runBlocking {
             crud.init(context)
@@ -29,6 +34,7 @@ class AdCrudTest {
         val context = MpContext(
             stubCase = MpStubCase.CREATE_SUCCESS,
             requestAd = Bolt.getModel { id = AdIdModel.NONE },
+            operation = MpContext.MpOperations.CREATE,
         )
         runBlocking {
             crud.create(context)
@@ -52,6 +58,7 @@ class AdCrudTest {
         val context = MpContext(
             stubCase = MpStubCase.READ_SUCCESS,
             requestAdId = Bolt.getModel().id,
+            operation = MpContext.MpOperations.READ,
         )
         runBlocking {
             crud.read(context)
@@ -75,6 +82,7 @@ class AdCrudTest {
         val context = MpContext(
             stubCase = MpStubCase.UPDATE_SUCCESS,
             requestAd = Bolt.getModel(),
+            operation = MpContext.MpOperations.UPDATE,
         )
         runBlocking {
             crud.update(context)
@@ -98,6 +106,7 @@ class AdCrudTest {
         val context = MpContext(
             stubCase = MpStubCase.DELETE_SUCCESS,
             requestAdId = Bolt.getModel().id,
+            operation = MpContext.MpOperations.DELETE,
         )
         runBlocking {
             crud.delete(context)
@@ -121,6 +130,7 @@ class AdCrudTest {
         val context = MpContext(
             stubCase = MpStubCase.SEARCH_SUCCESS,
             requestPage = PaginatedModel(),
+            operation = MpContext.MpOperations.SEARCH,
         )
         runBlocking {
             crud.search(context)
@@ -138,7 +148,8 @@ class AdCrudTest {
         val context = MpContext(
             stubCase = MpStubCase.OFFERS_SUCCESS,
             requestPage = PaginatedModel(),
-            requestAdId = Bolt.getModel().id
+            requestAdId = Bolt.getModel().id,
+            operation = MpContext.MpOperations.OFFER,
         )
         runBlocking {
             crud.offer(context)
