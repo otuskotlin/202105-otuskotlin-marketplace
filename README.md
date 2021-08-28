@@ -96,5 +96,6 @@ Marketplace -- это площадка, на которой пользовате
 ## Модули бизнес-логики
 
 1. [ok-marketplace-be-stubs](ok-marketplace-be-stubs) - Стабы для ответов сервиса
+1. [ok-marketplace-mp-common-cor](ok-marketplace-mp-common-cor) - Библиотека для реализации шаблона Цепочка обязанностей
 
 ## Хранение, репозитории, базы данных
