@@ -8,6 +8,10 @@ import kotlin.test.Test
 class CorBaseTest {
     @Test
     fun createCor() {
+
+    }
+
+    companion object {
         val chain = chain<TestContext> {
             worker {
                 title = "Инициализация статуса"
@@ -25,7 +29,7 @@ class CorBaseTest {
                     title = "Лямбда обработчик",
                     description = "Пример использования обработчика в виде лямбды"
                 ) {
-                    some = 0
+                    some += 4
                 }
 
             }
@@ -42,9 +46,8 @@ class CorBaseTest {
             printResult()
 
         }.build()
+
     }
-
-
 }
 
 private fun ICorChainDsl<TestContext>.printResult() = worker(title = "Print example") {
