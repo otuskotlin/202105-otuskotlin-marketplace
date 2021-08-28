@@ -12,9 +12,12 @@ kotlin {
     }
 
     sourceSets {
+        val coroutinesVersion: String by project
+
         val commonMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-common"))
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
             }
         }
         val commonTest by getting {
