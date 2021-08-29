@@ -11,6 +11,7 @@ import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.server.netty.*
 import ru.otus.otuskotlin.marketplace.backend.services.AdService
+import ru.otus.otuskotlin.marketplace.logics.AdCrud
 
 // function with config (application.conf)
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
@@ -28,7 +29,8 @@ object KtorEmbedded {
 @Suppress("UNUSED_PARAMETER") // Referenced in application.conf
 @JvmOverloads
 fun Application.module(testing: Boolean = false) {
-    val adService = AdService()
+    val crud = AdCrud()
+    val adService = AdService(crud)
 
     install(DefaultHeaders)
     install(CORS) {

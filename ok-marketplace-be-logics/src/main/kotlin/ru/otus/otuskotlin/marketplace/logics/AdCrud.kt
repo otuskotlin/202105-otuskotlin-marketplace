@@ -30,5 +30,5 @@ class AdCrud {
     }
 
     // Метод для установки параметров чейна в контекст, параметры передаются в конструкторе класса
-    private fun MpContext.initSettings() = apply {  }
+    private fun MpContext.initSettings() = apply { println("Context: $this") }
 }

@@ -24,6 +24,7 @@ dependencies {
     implementation(project(":ok-marketplace-be-transport-mapping-openapi"))
     // service
     implementation(project(":ok-marketplace-be-service-openapi"))
+    implementation(project(":ok-marketplace-be-logics"))
 
     implementation("com.amazonaws:aws-lambda-java-core:1.2.1")
     implementation("com.amazonaws:aws-lambda-java-log4j:1.0.1")

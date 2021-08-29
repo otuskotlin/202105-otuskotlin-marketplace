@@ -9,4 +9,5 @@ dependencies {
     implementation(project(":ok-marketplace-be-transport-openapi"))
     implementation(project(":ok-marketplace-be-transport-mapping-openapi"))
     implementation(project(":ok-marketplace-be-stubs"))
+    implementation(project(":ok-marketplace-be-logics"))
 }

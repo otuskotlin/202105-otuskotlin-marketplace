@@ -12,7 +12,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
-class AdRouterTest : RouterTest() {
+class AdRouterStubTest : RouterTest() {
     @Test
     fun testPostAdCreate() {
         val data = CreateAdRequest(createAd = stubCreatableAd, debug = Utils.stubSuccessDebug)

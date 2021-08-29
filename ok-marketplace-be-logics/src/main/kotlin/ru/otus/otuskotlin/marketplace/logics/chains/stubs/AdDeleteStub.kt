@@ -1,10 +1,9 @@
 package ru.otus.otuskotlin.marketplace.logics.chains.stubs
 
-import marketplace.stubs.Bolt
+import ru.otus.otuskotlin.marketplace.stubs.Bolt
 import ru.otus.otuskotlin.marketplace.backend.common.context.CorStatus
 import ru.otus.otuskotlin.marketplace.backend.common.context.MpContext
 import ru.otus.otuskotlin.marketplace.backend.common.exceptions.MpStubCaseNotFound
-import ru.otus.otuskotlin.marketplace.backend.common.models.IError
 import ru.otus.otuskotlin.marketplace.backend.common.models.MpStubCase
 import ru.otus.otuskotlin.marketplace.common.cor.ICorExecDsl
 import ru.otus.otuskotlin.marketplace.common.cor.chain
@@ -18,7 +17,7 @@ object AdDeleteStub: ICorExecDsl<MpContext> by chain({
         title = "Успешный стабкейс для DELETE"
         on { stubCase == MpStubCase.SUCCESS }
         handle {
-            responseAd = Bolt.getModel { id = requestAdId }
+            responseAd = Bolt.getModel().copy(id = requestAdId )
             status = CorStatus.FINISHING
         }
     }

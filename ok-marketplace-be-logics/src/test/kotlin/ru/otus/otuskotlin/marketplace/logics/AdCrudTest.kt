@@ -1,7 +1,7 @@
 package ru.otus.otuskotlin.marketplace.logics
 
 import kotlinx.coroutines.runBlocking
-import marketplace.stubs.Bolt
+import ru.otus.otuskotlin.marketplace.stubs.Bolt
 import ru.otus.otuskotlin.marketplace.backend.common.context.CorStatus
 import ru.otus.otuskotlin.marketplace.backend.common.context.MpContext
 import ru.otus.otuskotlin.marketplace.backend.common.models.AdIdModel

@@ -1,6 +1,6 @@
 package ru.otus.otuskotlin.marketplace.controllers
 
-import marketplace.stubs.Bolt
+import ru.otus.otuskotlin.marketplace.stubs.Bolt
 import org.junit.Test
 import ru.otus.otuskotlin.marketplace.Utils
 import ru.otus.otuskotlin.marketplace.Utils.assertListEquals
@@ -12,7 +12,7 @@ import kotlin.test.assertNull
 class OffersRouterTest : RouterTest() {
     @Test
     fun testPostAdCreate() {
-        val data = OffersAdRequest(debug = Utils.stubDebug)
+        val data = OffersAdRequest(debug = Utils.stubSuccessDebug)
 
         testPostRequest<OffersAdResponse>(data, "/ad/offers") {
             assertEquals(OffersAdResponse.Result.SUCCESS, result)

@@ -1,7 +1,7 @@
 package ru.otus.otuskotlin.marketplace
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import marketplace.stubs.Bolt
+import ru.otus.otuskotlin.marketplace.stubs.Bolt
 import ru.otus.otuskotlin.marketplace.openapi.models.*
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -20,7 +20,7 @@ object Utils {
         }
     }
 
-    val stubDebug = BaseDebugRequest(mode = BaseDebugRequest.Mode.STUB)
+    val stubSuccessDebug = BaseDebugRequest(mode = BaseDebugRequest.Mode.STUB, stubCase = BaseDebugRequest.StubCase.SUCCESS)
 
     val stubResponseAd = ResponseAd(
         title = Bolt.getModel().title,
@@ -30,6 +30,14 @@ object Utils {
         dealSide = AdDealSide.valueOf(Bolt.getModel().dealSide.toString()),
         id = Bolt.getModel().id.id,
         permissions = Bolt.getModel().permissions.map { AdPermissions.valueOf(it.toString()) }.toSet()
+    )
+
+    val stubCreatableAd = CreateableAd(
+        title = stubResponseAd.title,
+        description = stubResponseAd.description,
+        ownerId = stubResponseAd.ownerId,
+        visibility = stubResponseAd.visibility,
+        dealSide = stubResponseAd.dealSide,
     )
 
     val stubUpdateableAd = UpdateableAd(

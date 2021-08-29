@@ -1,41 +1,36 @@
 package ru.otus.otuskotlin.marketplace.backend.services
 
-import marketplace.stubs.Bolt
 import ru.otus.otuskotlin.marketplace.backend.common.context.MpContext
-import ru.otus.otuskotlin.marketplace.backend.common.exceptions.MpOperationNotSet
-import ru.otus.otuskotlin.marketplace.backend.common.models.IError
 import ru.otus.otuskotlin.marketplace.backend.transport.mapping.kmp.*
+import ru.otus.otuskotlin.marketplace.logics.AdCrud
 import ru.otus.otuskotlin.marketplace.openapi.models.*
 
-class AdService {
+class AdService(
+    private val crud: AdCrud,
+) {
     suspend fun createAd(context: MpContext, request: CreateAdRequest): CreateAdResponse {
-        context.setQuery(request)
-        context.responseAd = Bolt.getModel()
+        crud.create(context.setQuery(request))
         return context.toCreateResponse()
     }
 
     suspend fun readAd(context: MpContext, request: ReadAdRequest): ReadAdResponse {
-        context.setQuery(request)
-        context.responseAd = Bolt.getModel()
+        crud.read(context.setQuery(request))
         return context.toReadResponse()
     }
 
     suspend fun updateAd(context: MpContext, request: UpdateAdRequest): UpdateAdResponse {
-        context.setQuery(request)
-        context.responseAd = Bolt.getModel()
+        crud.update(context.setQuery(request))
         return context.toUpdateResponse()
     }
 
 
     suspend fun deleteAd(context: MpContext, request: DeleteAdRequest): DeleteAdResponse {
-        context.setQuery(request)
-        context.responseAd = Bolt.getModel()
+        crud.delete(context.setQuery(request))
         return context.toDeleteResponse()
     }
 
     suspend fun searchAd(context: MpContext, request: SearchAdRequest): SearchAdResponse {
-        context.setQuery(request)
-        context.responseAds = Bolt.getModels().toMutableList()
+        crud.search(context.setQuery(request))
         return context.toSearchResponse()
     }
 
@@ -50,8 +45,7 @@ class AdService {
     }
 
     suspend fun offersAd(context: MpContext, request: OffersAdRequest): OffersAdResponse {
-        context.setQuery(request)
-        context.responseAds = Bolt.getModels().toMutableList()
+        crud.offer(context.setQuery(request))
         return context.toOffersResponse()
     }
 

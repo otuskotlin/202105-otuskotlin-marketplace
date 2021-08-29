@@ -50,7 +50,10 @@ dependencies {
     implementation(project(":ok-marketplace-be-transport-mapping-openapi"))
     // service
     implementation(project(":ok-marketplace-be-service-openapi"))
+    // logic
+    implementation(project(":ok-marketplace-be-logics"))
 
     testImplementation(kotlin("test-junit"))
     testImplementation(ktor("server-test-host")) // "io.ktor:ktor-server-test-host:$ktorVersion"
+    testImplementation(project(":ok-marketplace-be-stubs"))
 }
