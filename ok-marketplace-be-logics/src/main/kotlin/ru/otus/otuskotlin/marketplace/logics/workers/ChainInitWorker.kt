@@ -15,7 +15,4 @@ object ChainInitWorker: ICorExecDsl<MpContext> by worker({
         handle {
             status = CorStatus.RUNNING
         }
-        except {
-            status = CorStatus.ERROR
-        }
 })

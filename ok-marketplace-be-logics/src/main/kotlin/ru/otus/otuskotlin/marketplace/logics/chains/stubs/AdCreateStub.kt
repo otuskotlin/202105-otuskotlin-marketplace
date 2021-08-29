@@ -3,6 +3,8 @@ package ru.otus.otuskotlin.marketplace.logics.chains.stubs
 import marketplace.stubs.Bolt
 import ru.otus.otuskotlin.marketplace.backend.common.context.CorStatus
 import ru.otus.otuskotlin.marketplace.backend.common.context.MpContext
+import ru.otus.otuskotlin.marketplace.backend.common.exceptions.MpStubCaseNotFound
+import ru.otus.otuskotlin.marketplace.backend.common.models.IError
 import ru.otus.otuskotlin.marketplace.backend.common.models.MpStubCase
 import ru.otus.otuskotlin.marketplace.common.cor.ICorExecDsl
 import ru.otus.otuskotlin.marketplace.common.cor.chain
@@ -26,6 +28,9 @@ object AdCreateStub: ICorExecDsl<MpContext> by chain({
         on { status == CorStatus.RUNNING }
         handle {
             status = CorStatus.FAILING
+            addError(
+                e = MpStubCaseNotFound(stubCase.name),
+            )
         }
     }
 
