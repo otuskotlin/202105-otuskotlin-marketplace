@@ -6,5 +6,5 @@ enum class CorStatus {
     FAILING,
     SUCCESS,
     ERROR,
-    FINISING;
+    FINISHING;
 }

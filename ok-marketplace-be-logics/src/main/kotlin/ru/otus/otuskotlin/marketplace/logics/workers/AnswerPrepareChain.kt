@@ -10,7 +10,7 @@ object AnswerPrepareChain: ICorExecDsl<MpContext> by chain({
     title = "Подготовка ответа"
     worker {
         title = "Обработчик успешного чейна"
-        on { status in setOf(CorStatus.RUNNING, CorStatus.FINISING) }
+        on { status in setOf(CorStatus.RUNNING, CorStatus.FINISHING) }
         handle {
             status = CorStatus.SUCCESS
         }
