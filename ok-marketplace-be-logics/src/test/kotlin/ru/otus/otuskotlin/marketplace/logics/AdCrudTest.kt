@@ -15,18 +15,6 @@ import kotlin.test.assertEquals
  * @context - контекст, смапленный из транспортной модели запроса
  */
 class AdCrudTest {
-    @Test
-    fun initTest() {
-        val crud = AdCrud()
-        val context = MpContext(
-            stubCase = MpStubCase.SUCCESS,
-            operation = MpContext.MpOperations.INIT,
-        )
-        runBlocking {
-            crud.init(context)
-        }
-        assertEquals(CorStatus.SUCCESS, context.status)
-    }
 
     @Test
     fun createSuccessTest() {

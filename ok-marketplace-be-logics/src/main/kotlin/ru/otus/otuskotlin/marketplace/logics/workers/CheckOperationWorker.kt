@@ -3,11 +3,15 @@ package ru.otus.otuskotlin.marketplace.logics.workers
 import ru.otus.otuskotlin.marketplace.backend.common.context.CorStatus
 import ru.otus.otuskotlin.marketplace.backend.common.context.MpContext
 import ru.otus.otuskotlin.marketplace.backend.common.exceptions.MpIllegalOperation
-import ru.otus.otuskotlin.marketplace.common.cor.ICorExecDsl
-import ru.otus.otuskotlin.marketplace.common.cor.worker
+import ru.otus.otuskotlin.marketplace.common.cor.ICorChainDsl
+import ru.otus.otuskotlin.marketplace.common.cor.handlers.worker
 
-class CheckOperationWorker(targetOperation: MpContext.MpOperations): ICorExecDsl<MpContext> by worker({
-    title = "Проверка, что операция соответствует выбранному чейну"
+internal fun ICorChainDsl<MpContext>.checkOperationWorker(
+    targetOperation: MpContext.MpOperations,
+    title: String
+) = worker{
+    this.title = title
+    description = "Если в контексте недопустимая операция, то чейн неуспешен"
     on { operation != targetOperation }
     handle {
         status = CorStatus.FAILING
@@ -15,4 +19,4 @@ class CheckOperationWorker(targetOperation: MpContext.MpOperations): ICorExecDsl
             e = MpIllegalOperation("Expexted ${targetOperation.name} but was ${operation.name}")
         )
     }
-})
+}

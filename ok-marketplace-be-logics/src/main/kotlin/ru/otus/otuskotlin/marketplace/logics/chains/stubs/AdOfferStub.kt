@@ -5,16 +5,16 @@ import ru.otus.otuskotlin.marketplace.backend.common.context.CorStatus
 import ru.otus.otuskotlin.marketplace.backend.common.context.MpContext
 import ru.otus.otuskotlin.marketplace.backend.common.exceptions.MpStubCaseNotFound
 import ru.otus.otuskotlin.marketplace.backend.common.models.MpStubCase
-import ru.otus.otuskotlin.marketplace.common.cor.ICorExecDsl
-import ru.otus.otuskotlin.marketplace.common.cor.chain
+import ru.otus.otuskotlin.marketplace.common.cor.ICorChainDsl
+import ru.otus.otuskotlin.marketplace.common.cor.handlers.chain
 import ru.otus.otuskotlin.marketplace.common.cor.handlers.worker
 
-object AdOfferStub: ICorExecDsl<MpContext> by chain({
-    title = "Обработка стабкейса для OFFER"
+internal fun ICorChainDsl<MpContext>.adOfferStub(title: String) = chain{
+    this.title = title
     on { status == CorStatus.RUNNING && stubCase != MpStubCase.NONE }
 
     worker {
-        title = "Успешный стабкейс для OFFER"
+        this.title = "Успешный стабкейс для OFFER"
         on { stubCase == MpStubCase.SUCCESS }
         handle {
             responseAds = Bolt.getModels().toMutableList()
@@ -24,7 +24,7 @@ object AdOfferStub: ICorExecDsl<MpContext> by chain({
     }
 
     worker {
-        title = "Обработка отсутствия подходящего стабкейса"
+        this.title = "Обработка отсутствия подходящего стабкейса"
         on { status == CorStatus.RUNNING }
         handle {
             status = CorStatus.FAILING
@@ -34,4 +34,4 @@ object AdOfferStub: ICorExecDsl<MpContext> by chain({
         }
     }
 
-})
+}
