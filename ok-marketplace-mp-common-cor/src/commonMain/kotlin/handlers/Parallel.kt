@@ -3,7 +3,7 @@ package ru.otus.otuskotlin.marketplace.common.cor.handlers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import ru.otus.otuskotlin.marketplace.common.cor.*
-import ru.otus.otuskotlin.marketplace.common.cor.ru.otus.otuskotlin.marketplace.common.cor.CorDslMarker
+import ru.otus.otuskotlin.marketplace.common.cor.CorDslMarker
 
 @CorDslMarker
 fun <T> ICorChainDsl<T>.parallel(function: CorParallelDsl<T>.() -> Unit) {
@@ -22,7 +22,10 @@ class CorParallel<T>(
     override suspend fun except(context: T, e: Throwable) = blockExcept(context, e)
 
     override suspend fun handle(context: T): Unit = coroutineScope {
-        execs.map { launch { it.exec(context) } }
+        execs
+            .map { launch { it.exec(context) } }
+            .toList()
+            .forEach { it.join() }
     }
 }
 
