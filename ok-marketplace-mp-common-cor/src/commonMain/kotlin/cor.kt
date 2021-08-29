@@ -1,6 +1,7 @@
 package ru.otus.otuskotlin.marketplace.common.cor
 
 import ru.otus.otuskotlin.marketplace.common.cor.handlers.CorChainDsl
+import ru.otus.otuskotlin.marketplace.common.cor.handlers.CorWorkerDsl
 
 interface ICorExecDsl<T> {
     var title: String
@@ -44,4 +45,5 @@ interface ICorHandlerDsl<T> {
 }
 
 fun <T> chain(function: CorChainDsl<T>.() -> Unit) = CorChainDsl<T>().apply(function)
+fun <T> worker(function: CorWorkerDsl<T>.() -> Unit) = CorWorkerDsl<T>().apply(function)
 

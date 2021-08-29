@@ -16,7 +16,7 @@ data class MpContext(
     var responsePage: PaginatedModel = PaginatedModel(),
     var responseAds: MutableList<AdModel> = mutableListOf(),
     val errors: MutableList<IError> = mutableListOf(),
-    var status: CorStatus = CorStatus.STARTED,
+    var status: CorStatus = CorStatus.NONE,
 ) {
     enum class MpOperations {
         NONE,
