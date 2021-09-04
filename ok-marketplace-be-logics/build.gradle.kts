@@ -10,6 +10,7 @@ dependencies {
     implementation(project(":ok-marketplace-be-common"))
     implementation(project(":ok-marketplace-mp-common-cor"))
     implementation(project(":ok-marketplace-be-stubs"))
+    implementation(project(":ok-marketplace-be-validation"))
 
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit"))
