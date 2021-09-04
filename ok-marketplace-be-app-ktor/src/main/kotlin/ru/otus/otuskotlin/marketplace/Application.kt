@@ -11,6 +11,7 @@ import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.server.netty.*
 import ru.otus.otuskotlin.marketplace.backend.services.AdService
+import ru.otus.otuskotlin.marketplace.controllers.*
 import ru.otus.otuskotlin.marketplace.logics.AdCrud
 
 // function with config (application.conf)
@@ -59,9 +60,29 @@ fun Application.module(testing: Boolean = false) {
             call.respondText("Hello, world!")
         }
         // routing ad
-        ad(adService)
+        route("ad") {
+            post("create") {
+                call.createAd(adService)
+            }
+            post("read") {
+                call.readAd(adService)
+            }
+            post("update") {
+                call.updateAd(adService)
+            }
+            post("delete") {
+                call.deleteAd(adService)
+            }
+            post("search") {
+                call.searchAd(adService)
+            }
+        }
         // routing offers
-        offers(adService)
+        route("ad") {
+            post("offers") {
+                call.offersAd(adService)
+            }
+        }
         // Static feature. Try to access `/static/ktor-logo.png`
         static("static") {
             resources("static")
