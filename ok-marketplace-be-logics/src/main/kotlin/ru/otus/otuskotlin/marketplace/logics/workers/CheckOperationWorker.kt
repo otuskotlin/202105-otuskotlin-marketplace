@@ -16,7 +16,7 @@ internal fun ICorChainDsl<MpContext>.checkOperationWorker(
     handle {
         status = CorStatus.FAILING
         addError(
-            e = MpIllegalOperation("Expexted ${targetOperation.name} but was ${operation.name}")
+            e = MpIllegalOperation("Expected ${targetOperation.name} but was ${operation.name}")
         )
     }
 }
