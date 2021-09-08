@@ -13,24 +13,28 @@ fun MpContext.setQuery(query: CreateAdRequest) = apply {
     operation = MpContext.MpOperations.CREATE
     onRequest = query.requestId?:""
     requestAd = query.createAd?.toModel()?: AdModel()
+    stubCase = query.debug?.stubCase.toModel()
 }
 
 fun MpContext.setQuery(query: ReadAdRequest) = apply {
     operation = MpContext.MpOperations.READ
     onRequest = query.requestId?:""
     requestAdId = AdIdModel(query.readAdId?:"")
+    stubCase = query.debug?.stubCase.toModel()
 }
 
 fun MpContext.setQuery(query: UpdateAdRequest) = apply {
     operation = MpContext.MpOperations.UPDATE
     onRequest = query.requestId?:""
     requestAd = query.createAd?.toModel()?: AdModel()
+    stubCase = query.debug?.stubCase.toModel()
 }
 
 fun MpContext.setQuery(query: DeleteAdRequest) = apply {
     operation = MpContext.MpOperations.DELETE
     onRequest = query.requestId?:""
     requestAdId = AdIdModel(query.deleteAdId?:"")
+    stubCase = query.debug?.stubCase.toModel()
 }
 
 fun MpContext.setQuery(query: OffersAdRequest) = apply {
@@ -38,12 +42,14 @@ fun MpContext.setQuery(query: OffersAdRequest) = apply {
     onRequest = query.requestId?:""
     requestPage = query.page?.toModel()?: PaginatedModel()
     requestAdId = AdIdModel(query.deleteAdId?:"")
+    stubCase = query.debug?.stubCase.toModel()
 }
 
 fun MpContext.setQuery(query: SearchAdRequest) = apply {
     operation = MpContext.MpOperations.SEARCH
     onRequest = query.requestId?:""
     requestPage = query.page?.toModel()?: PaginatedModel()
+    stubCase = query.debug?.stubCase.toModel()
 }
 
 private fun BasePaginatedRequest.toModel() = PaginatedModel(
@@ -67,3 +73,9 @@ private fun CreateableAd.toModel() = AdModel(
     visibility = visibility?.let { AdVisibilityModel.valueOf(it.name) }?:AdVisibilityModel.NONE,
     dealSide = dealSide?.let { DealSideModel.valueOf(it.name) }?:DealSideModel.NONE,
 )
+
+private fun BaseDebugRequest.StubCase?.toModel() = when(this) {
+    BaseDebugRequest.StubCase.SUCCESS -> MpStubCase.SUCCESS
+    BaseDebugRequest.StubCase.DATABASE_ERROR -> MpStubCase.DATABASE_ERROR
+    null -> MpStubCase.NONE
+}

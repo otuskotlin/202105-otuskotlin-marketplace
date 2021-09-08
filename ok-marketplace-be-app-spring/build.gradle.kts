@@ -31,6 +31,7 @@ dependencies {
     implementation(project(":ok-marketplace-be-transport-mapping-openapi"))
 
     implementation(project(":ok-marketplace-be-service-openapi"))
+    implementation(project(":ok-marketplace-be-logics"))
 
     // tests
     testImplementation("org.springframework.boot:spring-boot-starter-test")

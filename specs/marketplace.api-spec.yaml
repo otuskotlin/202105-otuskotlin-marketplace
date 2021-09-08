@@ -293,6 +293,11 @@ components:
             - prod
             - test
             - stub
+        stubCase:
+          type: string
+          enum:
+            - success
+            - database_error
 
     BasePaginatedRequest:
       type: object
@@ -473,6 +478,8 @@ components:
           properties:
             page:
               $ref: '#/components/schemas/BasePaginatedRequest'
+            debug:
+              $ref: '#/components/schemas/BaseDebugRequest'
 
     SearchAdResponse:
       description: Структура для ответа на запрос поиска объявлений

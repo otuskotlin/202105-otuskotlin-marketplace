@@ -6,6 +6,7 @@ import java.time.Instant
 data class MpContext(
     var startTime : Instant = Instant.MIN,
     var operation: MpOperations = MpOperations.NONE,
+    var stubCase: MpStubCase = MpStubCase.NONE,
 
     var onRequest: String = "",
     var requestAdId: AdIdModel = AdIdModel.NONE,
@@ -15,7 +16,7 @@ data class MpContext(
     var responsePage: PaginatedModel = PaginatedModel(),
     var responseAds: MutableList<AdModel> = mutableListOf(),
     val errors: MutableList<IError> = mutableListOf(),
-    var status: CorStatus = CorStatus.STARTED,
+    var status: CorStatus = CorStatus.NONE,
 ) {
     enum class MpOperations {
         NONE,
