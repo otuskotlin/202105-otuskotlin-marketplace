@@ -38,6 +38,7 @@ dependencies {
 
     testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
     testImplementation("com.ninja-squad:springmockk:3.0.1") // mockking beans
+    testImplementation("org.assertj:assertj-core:3.9.1")
 }
 
 tasks.withType<KotlinCompile> {

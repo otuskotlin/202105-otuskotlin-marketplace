@@ -18,32 +18,8 @@ Content-Type: application/json
     }
   },
   "debug": {
-    "mode": "test"
-  }
-}
-
-### With unexisted ID
-POST http://127.0.0.1:8080/ad/create
-Content-Type: application/json
-
-{
-  "messageType": "CreateAdRequest",
-  "requestId": "12345",
-  "createAd": {
-    "title": "",
-    "description": "КРУТЕЙШИЙ",
-    "ownerId": "9435",
-    "visibility": "public",
-    "dealSide": "demand",
-    "product": {
-      "productType": "AdProductBolt",
-      "threadPitch": 13.0,
-      "diameter": 2.0,
-      "lengh": 10.3
-    }
-  },
-  "debug": {
-    "mode": "test"
+    "mode": "stub",
+    "stubCase": "success"
   }
 }
 
@@ -56,7 +32,8 @@ Content-Type: application/json
   "requestId": "12345",
   "readAdId": "99999",
   "debug": {
-    "mode": "test"
+    "mode": "stub",
+    "stubCase": "success"
   }
 }
 
@@ -69,7 +46,8 @@ Content-Type: application/json
   "requestId": "12345",
   "readAdId": "666",
   "debug": {
-    "mode": "test"
+    "mode": "stub",
+    "stubCase": "success"
   }
 }
 
@@ -92,7 +70,8 @@ Content-Type: application/json
     "id": "668"
   },
   "debug": {
-    "mode": "test"
+    "mode": "stub",
+    "stubCase": "success"
   }
 }
 
@@ -122,7 +101,8 @@ Content-Type: application/json
   },
   "deleteAdId": "98765",
   "debug": {
-    "mode": "test"
+    "mode": "stub",
+    "stubCase": "success"
   }
 }
 
@@ -139,7 +119,8 @@ Content-Type: application/json
   },
   "deleteAdId": null,
   "debug": {
-    "mode": "test"
+    "mode": "stub",
+    "stubCase": "success"
   }
 }
 
@@ -152,7 +133,8 @@ Content-Type: application/json
   "requestId": null,
   "deleteAdId": "98765",
   "debug": {
-    "mode": "test"
+    "mode": "stub",
+    "stubCase": "success"
   }
 }
 
@@ -165,7 +147,8 @@ Content-Type: application/json
   "requestId": null,
   "deleteAdId": "666",
   "debug": {
-    "mode": "test"
+    "mode": "stub",
+    "stubCase": "success"
   }
 }
 
