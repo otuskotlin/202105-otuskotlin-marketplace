@@ -2,17 +2,16 @@ plugins {
     kotlin("jvm")
 }
 
-dependencies {
-    val coroutinesVersion: String by project
+val coroutinesVersion: String by project
 
+dependencies {
     implementation(kotlin("stdlib"))
 
     implementation(project(":ok-marketplace-be-common"))
     implementation(project(":ok-marketplace-mp-common-cor"))
-    implementation(project(":ok-marketplace-be-stubs"))
-    implementation(project(":ok-marketplace-be-validation"))
 
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit"))
+
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
 }

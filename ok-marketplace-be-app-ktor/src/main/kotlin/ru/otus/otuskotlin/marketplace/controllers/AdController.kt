@@ -5,6 +5,8 @@ import io.ktor.request.*
 import io.ktor.response.*
 import ru.otus.otuskotlin.marketplace.backend.common.context.MpContext
 import ru.otus.otuskotlin.marketplace.backend.services.AdService
+import ru.otus.otuskotlin.marketplace.backend.transport.mapping.kmp.toCreateResponse
+import ru.otus.otuskotlin.marketplace.backend.transport.mapping.kmp.toReadResponse
 import ru.otus.otuskotlin.marketplace.openapi.models.*
 import java.time.Instant
 
@@ -14,7 +16,7 @@ suspend fun ApplicationCall.initAd(adService: AdService) {
         startTime = Instant.now()
     )
     val result = try {
-            adService.initAd(context, request)
+        adService.initAd(context, request)
     } catch (e: Throwable) {
         adService.errorAd(context, e) as InitAdResponse
     }
@@ -22,14 +24,14 @@ suspend fun ApplicationCall.initAd(adService: AdService) {
 }
 
 suspend fun ApplicationCall.createAd(adService: AdService) {
-    val request = receive<CreateAdRequest>()
-    val context = MpContext(
-        startTime = Instant.now()
-    )
+    val context = MpContext(startTime = Instant.now())
+
     val result = try {
-            adService.createAd(context, request)
+        val request = receive<CreateAdRequest>()
+        adService.createAd(context, request)
     } catch (e: Throwable) {
-        adService.errorAd(context, e) as CreateAdResponse
+        context.addError(e)
+        context.toCreateResponse()
     }
     respond(result)
 }
