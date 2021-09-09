@@ -8,7 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 abstract class RabbitProcessorBase(
-    config: RabbitConfig,
+    private val config: RabbitConfig,
     val consumerTag: String,
 ) {
     private val connectionString = "amqp://${config.user}:${config.password}@${config.host}:${config.port}"
@@ -16,11 +16,15 @@ abstract class RabbitProcessorBase(
 
     suspend fun process() {
         withContext(Dispatchers.IO) {
-            factory.newConnection(connectionString).use { connection ->
-                val channel = connection.createChannel()
-                val deliveryCallback = channel.getDeliveryCallback()
-                val cancelCallback = channel.getCancelCallback()
-                channel.listen(deliveryCallback, cancelCallback)
+            ConnectionFactory().apply {
+                host = config.host
+                port = config.port
+            }.newConnection().use { connection ->
+                connection.createChannel().use { channel ->
+                    val deliveryCallback = channel.getDeliveryCallback()
+                    val cancelCallback = channel.getCancelCallback()
+                    channel.listen(deliveryCallback, cancelCallback)
+                }
             }
         }
     }

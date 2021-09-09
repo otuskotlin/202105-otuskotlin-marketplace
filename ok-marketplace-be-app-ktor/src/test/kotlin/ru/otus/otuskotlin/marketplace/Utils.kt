@@ -28,7 +28,7 @@ object Utils {
         ownerId = Bolt.getModel().ownerId.id,
         visibility = AdVisibility.valueOf(Bolt.getModel().visibility.toString()),
         dealSide = AdDealSide.valueOf(Bolt.getModel().dealSide.toString()),
-        id = Bolt.getModel().id.id,
+        id = Bolt.getModel().id.asString(),
         permissions = Bolt.getModel().permissions.map { AdPermissions.valueOf(it.toString()) }.toSet()
     )
 
