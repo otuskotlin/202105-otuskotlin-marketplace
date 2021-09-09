@@ -8,7 +8,7 @@ import java.lang.RuntimeException
 import java.util.concurrent.Executors
 
 class RabbitController(
-    private val processors: Set<RabbitDirectProcessor>
+    private val processors: Set<RabbitProcessorBase>
 ) {
     private val scope = CoroutineScope(
         Executors.newSingleThreadExecutor()

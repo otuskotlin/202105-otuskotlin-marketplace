@@ -3,49 +3,27 @@ package ru.otus.otuskotlin.marketplace.backend.app.rabbit
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.rabbitmq.client.CancelCallback
 import com.rabbitmq.client.Channel
-import com.rabbitmq.client.ConnectionFactory
 import com.rabbitmq.client.DeliverCallback
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import ru.otus.otuskotlin.marketplace.backend.common.context.CorStatus
 import ru.otus.otuskotlin.marketplace.backend.common.context.MpContext
 import ru.otus.otuskotlin.marketplace.backend.services.AdService
 import ru.otus.otuskotlin.marketplace.backend.transport.mapping.kmp.toInitResponse
 import ru.otus.otuskotlin.marketplace.openapi.models.*
 import java.time.Instant
-import java.util.*
 
 class RabbitDirectProcessor(
     config: RabbitConfig,
+    consumerTag: String = "",
     private val keyIn: String,
     private val keyOut: String,
     private val exchange: String,
     private val queue: String,
     private val service: AdService,
-    val consumerTag: String = "",
-){
-    private val connectionString = "amqp://${config.user}:${config.password}@${config.host}:${config.port}"
-    private val factory = ConnectionFactory()
+): RabbitProcessorBase(config, consumerTag){
     private val jacksonMapper = ObjectMapper()
 
-    suspend fun process() {
-        withContext(Dispatchers.IO){
-            factory.newConnection(connectionString).use { connection ->
-                val channel = connection.createChannel()
-                val deliveryCallback = channel.getDeliveryCallback()
-                val cancelCallback = channel.getCancelCallback()
-                channel.exchangeDeclare(exchange, "direct")
-                channel.queueDeclare(queue, false, false, false, null)
-                channel.queueBind(queue, exchange, keyIn)
-                channel.basicConsume(queue, true, consumerTag, deliveryCallback, cancelCallback)
-                while (channel.isOpen) {}
-                println("Channel for [$consumerTag] was closed.")
-            }
-        }
-    }
-
-    private fun Channel.getDeliveryCallback(): DeliverCallback  {
+    override fun Channel.getDeliveryCallback(): DeliverCallback  {
         val channel = this
         return DeliverCallback { tag, message ->
             runBlocking {
@@ -83,7 +61,6 @@ class RabbitDirectProcessor(
                             jacksonMapper.writeValueAsBytes(response)
                         }
                         else -> {
-                            println(query)
                             null
                         }// тут должно отдаваться сообщение с ошибкой}
                     }?.also {
@@ -102,7 +79,16 @@ class RabbitDirectProcessor(
         }
     }
 
-    private fun Channel.getCancelCallback() = CancelCallback {
+    override fun Channel.getCancelCallback() = CancelCallback {
         println("[$it] was cancelled")
+    }
+
+    override fun Channel.listen(deliveryCallback: DeliverCallback, cancelCallback: CancelCallback) {
+        exchangeDeclare(exchange, "direct")
+        queueDeclare(queue, false, false, false, null)
+        queueBind(queue, exchange, keyIn)
+        basicConsume(queue, true, consumerTag, deliveryCallback, cancelCallback)
+        while (isOpen) {}
+        println("Channel for [$consumerTag] was closed.")
     }
 }
