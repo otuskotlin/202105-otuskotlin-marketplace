@@ -38,6 +38,7 @@ class AdController(
                 adService.createAd(context, request)
             }
         } catch (e: Throwable) {
+            println("ERROR: $e")
             return adService.errorAd(context, e) as CreateAdResponse
         }
     }

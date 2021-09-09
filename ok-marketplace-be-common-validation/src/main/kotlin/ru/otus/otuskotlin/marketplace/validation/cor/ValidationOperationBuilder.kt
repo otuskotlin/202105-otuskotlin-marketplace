@@ -1,6 +1,6 @@
 package ru.otus.otuskotlin.marketplace.validation.cor
 
-import ru.otus.otuskotlin.marketplace.common.cor.ru.otus.otuskotlin.marketplace.common.cor.CorDslMarker
+import ru.otus.otuskotlin.marketplace.common.cor.CorDslMarker
 import ru.otus.otuskotlin.marketplace.validation.IValidator
 import ru.otus.otuskotlin.marketplace.validation.ValidationResult
 
