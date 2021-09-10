@@ -35,6 +35,7 @@ internal class RabbitMqTest {
 //                withQueue(queueIn, false, true, null)
 //                withBinding(exchangeIn, queueIn)
 //                withExposedPorts(5672, 15672)
+                withUser("guest", "guest")
                 start()
             }
         }
@@ -78,6 +79,8 @@ internal class RabbitMqTest {
         ConnectionFactory().apply {
             host = config.host
             port = config.port
+            username = "guest"
+            password = "guest"
         }.newConnection().use { connection ->
             connection.createChannel().use { channel ->
                 var responseJson = ""
