@@ -8,6 +8,8 @@ data class MpContext(
     var operation: MpOperations = MpOperations.NONE,
     var stubCase: MpStubCase = MpStubCase.NONE,
 
+    val userSession: IUserSession<*> = EmptySession,
+
     var onRequest: String = "",
     var requestAdId: AdIdModel = AdIdModel.NONE,
     var requestAd: AdModel = AdModel(),

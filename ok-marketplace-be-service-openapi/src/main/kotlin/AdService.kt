@@ -44,10 +44,13 @@ class AdService(
         return context.toInitResponse()
     }
 
+    fun finishAd(context: MpContext) {
+        // TODO handle user disconnection
+    }
+
     suspend fun offersAd(context: MpContext, request: OffersAdRequest): OffersAdResponse {
         crud.offer(context.setQuery(request))
         return context.toOffersResponse()
     }
-
 }
 
