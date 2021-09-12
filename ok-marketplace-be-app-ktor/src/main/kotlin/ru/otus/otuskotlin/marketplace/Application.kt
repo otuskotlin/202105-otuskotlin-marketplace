@@ -2,16 +2,37 @@ package ru.otus.otuskotlin.marketplace
 
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature
-import io.ktor.application.*
-import io.ktor.features.*
-import io.ktor.http.*
-import io.ktor.http.content.*
-import io.ktor.jackson.*
-import io.ktor.response.*
-import io.ktor.routing.*
-import io.ktor.server.netty.*
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import io.ktor.application.Application
+import io.ktor.application.call
+import io.ktor.application.install
+import io.ktor.features.AutoHeadResponse
+import io.ktor.features.CORS
+import io.ktor.features.ContentNegotiation
+import io.ktor.features.DefaultHeaders
+import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpMethod
+import io.ktor.http.content.resources
+import io.ktor.http.content.static
+import io.ktor.jackson.jackson
+import io.ktor.response.respondText
+import io.ktor.routing.Routing
+import io.ktor.routing.get
+import io.ktor.routing.post
+import io.ktor.routing.route
+import io.ktor.routing.routing
+import io.ktor.server.netty.Netty
+import io.ktor.websocket.WebSockets
+import io.ktor.websocket.webSocket
 import ru.otus.otuskotlin.marketplace.backend.services.AdService
-import ru.otus.otuskotlin.marketplace.controllers.*
+import ru.otus.otuskotlin.marketplace.controllers.KtorUserSession
+import ru.otus.otuskotlin.marketplace.controllers.createAd
+import ru.otus.otuskotlin.marketplace.controllers.deleteAd
+import ru.otus.otuskotlin.marketplace.controllers.handleSession
+import ru.otus.otuskotlin.marketplace.controllers.offersAd
+import ru.otus.otuskotlin.marketplace.controllers.readAd
+import ru.otus.otuskotlin.marketplace.controllers.searchAd
+import ru.otus.otuskotlin.marketplace.controllers.updateAd
 import ru.otus.otuskotlin.marketplace.logics.AdCrud
 
 // function with config (application.conf)
@@ -30,6 +51,8 @@ object KtorEmbedded {
 @Suppress("UNUSED_PARAMETER") // Referenced in application.conf
 @JvmOverloads
 fun Application.module(testing: Boolean = false) {
+    val userSessions = mutableSetOf<KtorUserSession>()
+    val objectMapper = jacksonObjectMapper()
     val crud = AdCrud()
     val adService = AdService(crud)
 
@@ -55,6 +78,7 @@ fun Application.module(testing: Boolean = false) {
     install(AutoHeadResponse)
     // Generally not needed as it is replaced by a `routing`
     install(Routing)
+    install(WebSockets)
     routing {
         get("/") {
             call.respondText("Hello, world!")
@@ -86,6 +110,9 @@ fun Application.module(testing: Boolean = false) {
         // Static feature. Try to access `/static/ktor-logo.png`
         static("static") {
             resources("static")
+        }
+        webSocket("ws") {
+            this.handleSession(objectMapper, adService, userSessions)
         }
     }
 }

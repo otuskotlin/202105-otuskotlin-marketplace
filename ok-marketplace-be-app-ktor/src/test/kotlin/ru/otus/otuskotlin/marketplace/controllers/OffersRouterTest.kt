@@ -17,7 +17,7 @@ class OffersRouterTest : RouterTest() {
         testPostRequest<OffersAdResponse>(data, "/ad/offers") {
             assertEquals(OffersAdResponse.Result.SUCCESS, result)
             assertNull(errors)
-            assertListEquals(offeredAds!!.map { it.id }, Bolt.getModels().map { it.id.id }, false)
+            assertListEquals(offeredAds!!.map { it.id }, Bolt.getModels().map { it.id.asString() }, false)
         }
     }
 
