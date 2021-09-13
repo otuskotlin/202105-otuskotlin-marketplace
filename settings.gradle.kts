@@ -21,6 +21,9 @@ pluginManagement {
         id("io.spring.dependency-management") version springDependencyVersion
         kotlin("plugin.spring") version springPluginVersion
 
+        val shadowJarVersion: String by settings
+        id("com.github.johnrengelman.shadow") version shadowJarVersion
+
     }
 }
 
@@ -45,3 +48,4 @@ include("ok-marketplace-be-service-openapi")
 include("ok-marketplace-mp-common-cor")
 include("ok-marketplace-be-logics")
 include("ok-marketplace-be-common-validation")
+include("ok-marketplace-be-app-kafka")
