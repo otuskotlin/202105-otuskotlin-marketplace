@@ -14,8 +14,8 @@ class CorParallel<T>(
     private val execs: List<ICorExec<T>>,
     override val title: String,
     override val description: String = "",
-    val blockOn: T.() -> Boolean = { true },
-    val blockExcept: T.(Throwable) -> Unit = {},
+    val blockOn: suspend T.() -> Boolean = { true },
+    val blockExcept: suspend T.(Throwable) -> Unit = {},
 ) : ICorWorker<T> {
 
     override suspend fun on(context: T): Boolean = blockOn(context)
@@ -34,8 +34,8 @@ class CorParallelDsl<T>(
     override var title: String = "",
     override var description: String = "",
     private val workers: MutableList<ICorExecDsl<T>> = mutableListOf(),
-    private var blockOn: T.() -> Boolean = { true },
-    private var blockExcept: T.(e: Throwable) -> Unit = { e: Throwable -> throw e }
+    private var blockOn: suspend T.() -> Boolean = { true },
+    private var blockExcept: suspend T.(e: Throwable) -> Unit = { e: Throwable -> throw e }
 ): ICorChainDsl<T>, ICorHandlerDsl<T> {
     override fun build(): ICorExec<T> = CorParallel<T>(
         title = title,
@@ -49,11 +49,11 @@ class CorParallelDsl<T>(
         workers.add(worker)
     }
 
-    override fun on(function: T.() -> Boolean) {
+    override fun on(function: suspend T.() -> Boolean) {
         blockOn = function
     }
 
-    override fun except(function: T.(e: Throwable) -> Unit) {
+    override fun except(function: suspend T.(e: Throwable) -> Unit) {
         blockExcept = function
     }
 }

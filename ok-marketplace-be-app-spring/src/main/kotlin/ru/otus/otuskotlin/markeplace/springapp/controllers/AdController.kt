@@ -24,7 +24,7 @@ class AdController(
                 adService.initAd(context, request)
             }
         } catch (e: Throwable) {
-            return adService.errorAd(context, e) as InitAdResponse
+            return runBlocking { adService.errorAd(context, e) as InitAdResponse }
         }
     }
 
@@ -39,7 +39,7 @@ class AdController(
             }
         } catch (e: Throwable) {
             println("ERROR: $e")
-            return adService.errorAd(context, e) as CreateAdResponse
+            return runBlocking { adService.errorAd(context, e) as CreateAdResponse }
         }
     }
 
@@ -53,7 +53,7 @@ class AdController(
                 adService.readAd(context, request)
             }
         } catch (e: Throwable) {
-            return adService.errorAd(context, e) as ReadAdResponse
+            return runBlocking { adService.errorAd(context, e) as ReadAdResponse }
         }
     }
 
@@ -67,7 +67,7 @@ class AdController(
                 adService.updateAd(context, request)
             }
         } catch (e: Throwable) {
-            return adService.errorAd(context, e) as UpdateAdResponse
+            return runBlocking { adService.errorAd(context, e) as UpdateAdResponse }
         }
     }
 
@@ -81,7 +81,7 @@ class AdController(
                 adService.deleteAd(context, request)
             }
         } catch (e: Throwable) {
-            return adService.errorAd(context, e) as DeleteAdResponse
+            return runBlocking { adService.errorAd(context, e) as DeleteAdResponse }
         }
     }
 
@@ -95,7 +95,7 @@ class AdController(
                 adService.searchAd(context, request)
             }
         } catch (e: Throwable) {
-            return adService.errorAd(context, e) as SearchAdResponse
+            return runBlocking { adService.errorAd(context, e) as SearchAdResponse }
         }
     }
 

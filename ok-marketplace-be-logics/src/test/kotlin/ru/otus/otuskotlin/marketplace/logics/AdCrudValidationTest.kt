@@ -34,7 +34,7 @@ class AdCrudValidationTest {
     fun `create failing`() {
         val crud = AdCrud()
         val context = MpContext(
-            stubCase = MpStubCase.SUCCESS,
+            stubCase = MpStubCase.DATABASE_ERROR,
             requestAd = Bolt.getModel { id = AdIdModel.NONE },
             operation = MpContext.MpOperations.CREATE,
         )

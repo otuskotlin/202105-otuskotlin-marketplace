@@ -8,7 +8,7 @@ data class MpContext(
     var operation: MpOperations = MpOperations.NONE,
     var stubCase: MpStubCase = MpStubCase.NONE,
 
-    val userSession: IUserSession<*> = EmptySession,
+    val userSession: IUserSession<*> = IUserSession.Companion.EmptySession,
 
     var onRequest: String = "",
     var requestAdId: AdIdModel = AdIdModel.NONE,
@@ -37,13 +37,13 @@ data class MpContext(
      * @param error Ошибка, которую необходимо добавить в контекст
      * @param failingStatus Необходимо ли установить статус выполнения в FAILING (true/false)
      */
-    fun addError(error: IError, failingStatus: Boolean = true) = apply {
+    suspend fun addError(error: IError, failingStatus: Boolean = true) = apply {
         if (failingStatus) status = CorStatus.FAILING
         errors.add(error)
     }
 
 
-    fun addError(
+    suspend fun addError(
         e: Throwable,
         level: IError.Level = IError.Level.ERROR,
         field: String = "",

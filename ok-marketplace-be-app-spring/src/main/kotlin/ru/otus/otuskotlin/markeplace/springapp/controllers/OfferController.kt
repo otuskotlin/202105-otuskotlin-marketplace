@@ -27,7 +27,7 @@ class OfferController(
                 service.offersAd(context, request)
             }
         } catch (e: Throwable) {
-            return service.errorAd(context, e) as OffersAdResponse
+            return runBlocking { service.errorAd(context, e) as OffersAdResponse }
         }
     }
 

@@ -13,10 +13,6 @@ application {
     mainClass.set("io.ktor.server.netty.EngineMain")
 }
 
-repositories {
-    mavenCentral()
-}
-
 docker {
     javaApplication {
         mainClassName.set(application.mainClass.get())
