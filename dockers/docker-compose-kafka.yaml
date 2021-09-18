@@ -33,6 +33,7 @@ services:
       - kafka
     links:
       - zookeeper
+      - kafka
     environment:
       KAFKA_HOSTS: kafka:9092
       KAFKA_TOPIC_IN: marketplace-in
