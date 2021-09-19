@@ -20,10 +20,10 @@ class RabbitDirectProcessor(
     private val exchange: String,
     private val queue: String,
     private val service: AdService,
-): RabbitProcessorBase(config, consumerTag){
+) : RabbitProcessorBase(config, consumerTag) {
     private val jacksonMapper = ObjectMapper()
 
-    override fun Channel.getDeliveryCallback(): DeliverCallback  {
+    override fun Channel.getDeliveryCallback(): DeliverCallback {
         val channel = this
         return DeliverCallback { tag, message ->
             runBlocking {
@@ -31,39 +31,9 @@ class RabbitDirectProcessor(
                     startTime = Instant.now()
                 )
                 try {
-                    when (val query = jacksonMapper.readValue(message.body, BaseMessage::class.java)) {
-                        is InitAdRequest -> {
-                            val response = service.initAd(context, query)
-                            jacksonMapper.writeValueAsBytes(response)
-                        }
-                        is CreateAdRequest -> {
-                            val response = service.createAd(context, query)
-                            jacksonMapper.writeValueAsBytes(response)
-                        }
-                        is ReadAdRequest -> {
-                            val response = service.readAd(context, query)
-                            jacksonMapper.writeValueAsBytes(response)
-                        }
-                        is UpdateAdRequest -> {
-                            val response = service.updateAd(context, query)
-                            jacksonMapper.writeValueAsBytes(response)
-                        }
-                        is DeleteAdRequest -> {
-                            val response = service.deleteAd(context, query)
-                            jacksonMapper.writeValueAsBytes(response)
-                        }
-                        is SearchAdRequest -> {
-                            val response = service.searchAd(context, query)
-                            jacksonMapper.writeValueAsBytes(response)
-                        }
-                        is OffersAdRequest -> {
-                            val response = service.offersAd(context, query)
-                            jacksonMapper.writeValueAsBytes(response)
-                        }
-                        else -> {
-                            null
-                        }// тут должно отдаваться сообщение с ошибкой}
-                    }?.also {
+                    val query = jacksonMapper.readValue(message.body, BaseMessage::class.java)
+                    val response = service.handleAd(context, query)
+                    jacksonMapper.writeValueAsBytes(response).also {
                         channel.basicPublish(exchange, keyOut, null, it)
                     }
                 } catch (e: Throwable) {
@@ -93,7 +63,13 @@ class RabbitDirectProcessor(
         queueBind(queue, exchange, keyIn)
         // запуск консьюмера с автоотправкой подтверждение при получении сообщения
         basicConsume(queue, true, consumerTag, deliverCallback, cancelCallback)
-        while (isOpen) {}
+        while (isOpen) {
+            try {
+                Thread.sleep(100)
+            } catch (e: InterruptedException) {
+                e.printStackTrace()
+            }
+        }
         println("Channel for [$consumerTag] was closed.")
     }
 }

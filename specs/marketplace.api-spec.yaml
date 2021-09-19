@@ -504,7 +504,7 @@ components:
           properties:
             page:
               $ref: '#/components/schemas/BasePaginatedRequest'
-            deleteAdId:
+            offersAdId:
               type: string
             debug:
               allOf:

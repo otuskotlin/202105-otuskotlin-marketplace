@@ -20,7 +20,7 @@ object AdRead: ICorExec<MpContext> by chain<MpContext>({
 
     mpValidation {
         validate<String?> {
-            on { requestAd.id.asString() }
+            on { requestAdId.asString() }
             validator(ValidatorStringNonEmpty(field = "id"))
         }
     }

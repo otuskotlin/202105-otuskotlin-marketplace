@@ -14,7 +14,7 @@ interface ICorChainDsl<T> : ICorExecDsl<T>, ICorHandlerDsl<T> {
 }
 
 interface ICorWorkerDsl<T> : ICorExecDsl<T>, ICorHandlerDsl<T> {
-    fun handle(function: T.() -> Unit)
+    fun handle(function: suspend T.() -> Unit)
 }
 
 interface ICorExec<T> {
@@ -40,8 +40,8 @@ interface ICorWorker<T> : ICorExec<T> {
 }
 
 interface ICorHandlerDsl<T> {
-    fun on(function: T.() -> Boolean)
-    fun except(function: T.(e: Throwable) -> Unit)
+    fun on(function: suspend T.() -> Boolean)
+    fun except(function: suspend T.(e: Throwable) -> Unit)
 }
 
 fun <T> chain(function: CorChainDsl<T>.() -> Unit) = CorChainDsl<T>().apply(function)

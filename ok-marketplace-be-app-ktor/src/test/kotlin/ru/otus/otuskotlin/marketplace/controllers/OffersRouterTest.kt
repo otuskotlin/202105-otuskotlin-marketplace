@@ -12,7 +12,7 @@ import kotlin.test.assertNull
 class OffersRouterTest : RouterTest() {
     @Test
     fun testPostAdCreate() {
-        val data = OffersAdRequest(debug = Utils.stubSuccessDebug)
+        val data = OffersAdRequest(offersAdId = "111", debug = Utils.stubSuccessDebug)
 
         testPostRequest<OffersAdResponse>(data, "/ad/offers") {
             assertEquals(OffersAdResponse.Result.SUCCESS, result)

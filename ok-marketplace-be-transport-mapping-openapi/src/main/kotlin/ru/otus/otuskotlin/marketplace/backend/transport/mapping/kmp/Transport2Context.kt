@@ -41,7 +41,7 @@ fun MpContext.setQuery(query: OffersAdRequest) = apply {
     operation = MpContext.MpOperations.OFFER
     onRequest = query.requestId?:""
     requestPage = query.page?.toModel()?: PaginatedModel()
-    requestAdId = AdIdModel(query.deleteAdId?:"")
+    requestAdId = AdIdModel(query.offersAdId?:"")
     stubCase = query.debug?.stubCase.toModel()
 }
 
