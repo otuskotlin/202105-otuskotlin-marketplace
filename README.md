@@ -92,6 +92,8 @@ Marketplace -- это площадка, на которой пользовате
 1. [ok-marketplace-be-app-spring](ok-marketplace-be-app-spring) - Приложение на Spring Framework
 1. [ok-marketplace-be-app-ktor](ok-marketplace-be-app-ktor) - Приложение на Ktor
 1. [ok-marketplace-be-app-serverless](ok-marketplace-be-app-serverless) - Бессерверное приложение для AWS
+1. [ok-marketplace-be-app-rabbit](ok-marketplace-be-app-rabbit) - Микросервис на RabbitMQ
+1. [ok-marketplace-be-app-kafka](ok-marketplace-be-app-kafka) - Микросервис на Kafka
 
 ## Модули бизнес-логики
 
