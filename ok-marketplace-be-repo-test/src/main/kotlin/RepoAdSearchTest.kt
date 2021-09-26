@@ -1,7 +1,7 @@
 package ru.otus.otuskotlin.marketplace.backend.repo.test
 
 import kotlinx.coroutines.runBlocking
-import org.junit.jupiter.api.Test
+import org.junit.Test
 import ru.otus.otuskotlin.marketplace.backend.common.models.*
 import ru.otus.otuskotlin.marketplace.backend.repo.common.DbAdFilterRequest
 import ru.otus.otuskotlin.marketplace.backend.repo.common.IRepoAd
@@ -16,7 +16,7 @@ abstract class RepoAdSearchTest {
         val result = runBlocking { repo.search(DbAdFilterRequest(ownerId = searchOwnerId)) }
         assertEquals(true, result.isSuccess)
         val expected = listOf(initObjects[1], initObjects[3])
-        assertEquals(expected, result.result)
+        assertEquals(expected, result.result.sortedBy { it.id.asString() })
         assertEquals(emptyList(), result.errors)
     }
 

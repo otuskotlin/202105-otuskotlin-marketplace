@@ -1,7 +1,7 @@
 package ru.otus.otuskotlin.marketplace.backend.repo.test
 
 import kotlinx.coroutines.runBlocking
-import org.junit.jupiter.api.Test
+import org.junit.Test
 import ru.otus.otuskotlin.marketplace.backend.common.models.*
 import ru.otus.otuskotlin.marketplace.backend.repo.common.DbAdIdRequest
 import ru.otus.otuskotlin.marketplace.backend.repo.common.IRepoAd

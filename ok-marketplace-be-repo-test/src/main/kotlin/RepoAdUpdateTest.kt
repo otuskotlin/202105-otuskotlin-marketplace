@@ -1,12 +1,11 @@
 package ru.otus.otuskotlin.marketplace.backend.repo.test
 
 import kotlinx.coroutines.runBlocking
-import org.junit.jupiter.api.Test
+import org.junit.Test
 import ru.otus.otuskotlin.marketplace.backend.common.models.*
 import ru.otus.otuskotlin.marketplace.backend.repo.common.DbAdModelRequest
 import ru.otus.otuskotlin.marketplace.backend.repo.common.IRepoAd
 import kotlin.test.assertEquals
-import kotlin.test.assertNotEquals
 
 
 abstract class RepoAdUpdateTest {
@@ -32,8 +31,8 @@ abstract class RepoAdUpdateTest {
         override val initObjects: List<AdModel> = listOf(
             createInitTestModel("update")
         )
-        val updateId = initObjects.first().id
-        val updateIdNotFound = AdIdModel("ad-repo-update-not-found")
+        private val updateId = initObjects.first().id
+        private val updateIdNotFound = AdIdModel("ad-repo-update-not-found")
 
         private val updateObj = AdModel(
             id = updateId,
@@ -42,7 +41,6 @@ abstract class RepoAdUpdateTest {
             ownerId = OwnerIdModel("owner-123"),
             visibility = AdVisibilityModel.REGISTERED_ONLY,
             dealSide = DealSideModel.PROPOSAL,
-            permissions = mutableSetOf(PermissionModel.READ, PermissionModel.CONTACT)
         )
 
         private val updateObjNotFound = AdModel(
@@ -52,7 +50,6 @@ abstract class RepoAdUpdateTest {
             ownerId = OwnerIdModel("owner-123"),
             visibility = AdVisibilityModel.REGISTERED_ONLY,
             dealSide = DealSideModel.PROPOSAL,
-            permissions = mutableSetOf(PermissionModel.READ, PermissionModel.CONTACT)
         )
     }
 }

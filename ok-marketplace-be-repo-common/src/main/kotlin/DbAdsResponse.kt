@@ -6,5 +6,5 @@ import ru.otus.otuskotlin.marketplace.backend.common.models.CommonErrorModel
 class DbAdsResponse(
     override val result: List<AdModel>,
     override val isSuccess: Boolean,
-    override val errors: List<CommonErrorModel>
+    override val errors: List<CommonErrorModel> = emptyList()
 ) : IDbResponse<List<AdModel>>
