@@ -27,15 +27,15 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
 
-  app:
-    image: ok-marketplace-be-app-kafka:0.0.1
-    depends_on:
-      - kafka
-    links:
-      - zookeeper
-      - kafka
-    environment:
-      KAFKA_HOSTS: kafka:9092
-      KAFKA_TOPIC_IN: marketplace-in
-      KAFKA_TOPIC_OUT: marketplace-out
+#  app:
+#    image: ok-marketplace-be-app-kafka:0.0.1
+#    depends_on:
+#      - kafka
+#    links:
+#      - zookeeper
+#      - kafka
+#    environment:
+#      KAFKA_HOSTS: kafka:9092
+#      KAFKA_TOPIC_IN: marketplace-in
+#      KAFKA_TOPIC_OUT: marketplace-out
 

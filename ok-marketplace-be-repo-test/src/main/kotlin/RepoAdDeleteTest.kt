@@ -8,20 +8,20 @@ import ru.otus.otuskotlin.marketplace.backend.repo.common.IRepoAd
 import kotlin.test.assertEquals
 
 
-abstract class RepoAdReadTest {
+abstract class RepoAdDeleteTest {
     abstract val repo: IRepoAd
 
     @Test
-    fun readSuccess() {
-        val result = runBlocking { repo.read(DbAdIdRequest(successId)) }
+    fun deleteSuccess() {
+        val result = runBlocking { repo.delete(DbAdIdRequest(successId)) }
 
         assertEquals(true, result.isSuccess)
-        assertEquals(readSuccessStub, result.result)
+        assertEquals(deleteSuccessStub, result.result)
         assertEquals(emptyList(), result.errors)
     }
 
     @Test
-    fun readNotFound() {
+    fun deleteNotFound() {
         val result = runBlocking { repo.read(DbAdIdRequest(notFoundId)) }
 
         assertEquals(false, result.isSuccess)
@@ -33,20 +33,11 @@ abstract class RepoAdReadTest {
     }
 
     companion object: BaseInitAds("search") {
-        val successId = AdIdModel("ad-repo-read-success")
-        val notFoundId = AdIdModel("ad-repo-read-notFound")
-
-        private val readSuccessStub = AdModel(
-            id = successId,
-            title = "read success",
-            description = "read success description",
-            ownerId = OwnerIdModel("owner-123"),
-            visibility = AdVisibilityModel.REGISTERED_ONLY,
-            dealSide = DealSideModel.PROPOSAL,
-            permissions = mutableSetOf(PermissionModel.READ, PermissionModel.UPDATE)
-        )
         override val initObjects: List<AdModel> = listOf(
-            createInitTestModel("read")
+            createInitTestModel("delete")
         )
+        private val deleteSuccessStub = initObjects.first()
+        val successId = deleteSuccessStub.id
+        val notFoundId = AdIdModel("ad-repo-delete-notFound")
     }
 }
