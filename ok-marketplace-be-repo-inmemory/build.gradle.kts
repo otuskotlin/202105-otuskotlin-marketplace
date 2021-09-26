@@ -9,7 +9,6 @@ dependencies {
 
     implementation(kotlin("stdlib"))
     implementation(project(":ok-marketplace-be-common"))
-    implementation(project(":ok-marketplace-be-repo-common"))
 
     implementation("org.ehcache:ehcache:$ehcacheVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
