@@ -6,7 +6,6 @@ import ru.otus.otuskotlin.marketplace.backend.common.models.*
 import ru.otus.otuskotlin.marketplace.backend.repo.common.DbAdModelRequest
 import ru.otus.otuskotlin.marketplace.backend.repo.common.IRepoAd
 import kotlin.test.assertEquals
-import kotlin.test.assertNotEquals
 
 
 abstract class RepoAdUpdateTest {
