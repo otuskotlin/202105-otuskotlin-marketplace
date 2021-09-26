@@ -50,7 +50,6 @@ dependencies {
     // logic
     implementation(project(":ok-marketplace-be-logics"))
     // DB
-    implementation(project(":ok-marketplace-be-repo-common"))
     implementation(project(":ok-marketplace-be-repo-inmemory"))
 
     testImplementation(kotlin("test-junit"))

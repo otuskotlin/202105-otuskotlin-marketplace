@@ -11,10 +11,7 @@ import org.ehcache.config.builders.CacheConfigurationBuilder
 import org.ehcache.config.builders.CacheManagerBuilder
 import org.ehcache.config.builders.ExpiryPolicyBuilder
 import org.ehcache.config.builders.ResourcePoolsBuilder
-import ru.otus.otuskotlin.marketplace.backend.common.models.AdIdModel
-import ru.otus.otuskotlin.marketplace.backend.common.models.AdModel
-import ru.otus.otuskotlin.marketplace.backend.common.models.CommonErrorModel
-import ru.otus.otuskotlin.marketplace.backend.common.models.OwnerIdModel
+import ru.otus.otuskotlin.marketplace.backend.common.models.*
 import ru.otus.otuskotlin.marketplace.backend.repo.common.*
 import ru.otus.otuskotlin.marketplace.backend.repo.inmemory.models.AdRow
 import java.time.Duration
@@ -22,7 +19,7 @@ import java.util.*
 
 
 class RepoAdInMemory(
-    private val initObjects: List<AdModel>,
+    private val initObjects: List<AdModel> = listOf(),
     private val ttl: Duration = Duration.ofMinutes(1)
 ) : IRepoAd {
 
@@ -45,7 +42,9 @@ class RepoAdInMemory(
     }
 
     init {
-        runBlocking { initObjects.forEach { save(it) } }
+        runBlocking { initObjects.forEach {
+            save(it)
+        } }
     }
 
     private suspend fun save(item: AdModel): DbAdResponse {
@@ -146,6 +145,10 @@ class RepoAdInMemory(
             .filter {
                 if (rq.ownerId == OwnerIdModel.NONE) return@filter true
                 rq.ownerId.asString() == it.value.ownerId
+            }
+            .filter {
+                if (rq.dealSide == DealSideModel.NONE) return@filter true
+                rq.dealSide.name == it.value.dealSide
             }
             .map { it.value.toInternal() }
             .toList()

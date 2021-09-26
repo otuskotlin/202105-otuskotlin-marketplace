@@ -12,10 +12,19 @@ abstract class RepoAdSearchTest {
     abstract val repo: IRepoAd
 
     @Test
-    fun searchSuccess() {
+    fun searchOwner() {
         val result = runBlocking { repo.search(DbAdFilterRequest(ownerId = searchOwnerId)) }
         assertEquals(true, result.isSuccess)
         val expected = listOf(initObjects[1], initObjects[3])
+        assertEquals(expected, result.result.sortedBy { it.id.asString() })
+        assertEquals(emptyList(), result.errors)
+    }
+
+    @Test
+    fun searchDealSide() {
+        val result = runBlocking { repo.search(DbAdFilterRequest(dealSide = DealSideModel.PROPOSAL)) }
+        assertEquals(true, result.isSuccess)
+        val expected = listOf(initObjects[2], initObjects[4])
         assertEquals(expected, result.result.sortedBy { it.id.asString() })
         assertEquals(emptyList(), result.errors)
     }
@@ -26,9 +35,9 @@ abstract class RepoAdSearchTest {
         override val initObjects: List<AdModel> = listOf(
             createInitTestModel("ad1"),
             createInitTestModel("ad2", ownerId = searchOwnerId),
-            createInitTestModel("ad3"),
+            createInitTestModel("ad3", dealSide = DealSideModel.PROPOSAL),
             createInitTestModel("ad4", ownerId = searchOwnerId),
-            createInitTestModel("ad5"),
+            createInitTestModel("ad5", dealSide = DealSideModel.PROPOSAL),
         )
     }
 }

@@ -5,9 +5,11 @@ import ru.otus.otuskotlin.marketplace.common.cor.ICorExec
 import ru.otus.otuskotlin.marketplace.common.cor.chain
 import ru.otus.otuskotlin.marketplace.logics.chains.helpers.mpValidation
 import ru.otus.otuskotlin.marketplace.logics.chains.stubs.adReadStub
+import ru.otus.otuskotlin.marketplace.logics.workers.*
 import ru.otus.otuskotlin.marketplace.logics.workers.answerPrepareChain
 import ru.otus.otuskotlin.marketplace.logics.workers.chainInitWorker
 import ru.otus.otuskotlin.marketplace.logics.workers.checkOperationWorker
+import ru.otus.otuskotlin.marketplace.logics.workers.chooseDb
 import ru.otus.otuskotlin.marketplace.validation.validators.ValidatorStringNonEmpty
 
 object AdRead: ICorExec<MpContext> by chain<MpContext>({
@@ -16,6 +18,7 @@ object AdRead: ICorExec<MpContext> by chain<MpContext>({
         targetOperation = MpContext.MpOperations.READ,
     )
     chainInitWorker(title = "Инициализация чейна")
+    chooseDb(title = "Выбираем БД или STUB")
     adReadStub(title = "Обработка стабкейса для READ")
 
     mpValidation {
@@ -25,7 +28,7 @@ object AdRead: ICorExec<MpContext> by chain<MpContext>({
         }
     }
 
-    // TODO: продовая логика, работа с БД
+    repoRead(title = "Чтение объекта из БД")
 
     answerPrepareChain(title = "Подготовка ответа")
 }).build()

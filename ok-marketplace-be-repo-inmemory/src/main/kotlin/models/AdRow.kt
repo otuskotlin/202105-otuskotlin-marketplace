@@ -1,6 +1,7 @@
 package ru.otus.otuskotlin.marketplace.backend.repo.inmemory.models
 
 import ru.otus.otuskotlin.marketplace.backend.common.models.*
+import java.io.Serializable
 
 data class AdRow(
     val id: String? = null,
@@ -9,7 +10,7 @@ data class AdRow(
     val ownerId: String? = null,
     val visibility: String? = null,
     val dealSide: String? = null,
-) {
+): Serializable {
     constructor(internal: AdModel): this(
         id = internal.id.asString().takeIf { it.isNotBlank() },
         title = internal.title.takeIf { it.isNotBlank() },

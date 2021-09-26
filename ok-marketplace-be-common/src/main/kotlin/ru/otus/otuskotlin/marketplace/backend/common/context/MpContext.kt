@@ -1,19 +1,24 @@
 package ru.otus.otuskotlin.marketplace.backend.common.context
 
 import ru.otus.otuskotlin.marketplace.backend.common.models.*
+import ru.otus.otuskotlin.marketplace.backend.repo.common.DbAdFilterRequest
+import ru.otus.otuskotlin.marketplace.backend.repo.common.IRepoAd
 import java.time.Instant
 
 data class MpContext(
     var startTime : Instant = Instant.MIN,
     var operation: MpOperations = MpOperations.NONE,
+    var workMode: WorkMode = WorkMode.PROD,
     var stubCase: MpStubCase = MpStubCase.NONE,
     var config: ContextConfig = ContextConfig(),
 
     val userSession: IUserSession<*> = IUserSession.Companion.EmptySession,
+    var adRepo: IRepoAd = IRepoAd.NONE,
 
     var onRequest: String = "",
     var requestAdId: AdIdModel = AdIdModel.NONE,
     var requestAd: AdModel = AdModel(),
+    var requestFilter: DbAdFilterRequest = DbAdFilterRequest(),
     var responseAd: AdModel = AdModel(),
     var requestPage: PaginatedModel = PaginatedModel(),
     var responsePage: PaginatedModel = PaginatedModel(),

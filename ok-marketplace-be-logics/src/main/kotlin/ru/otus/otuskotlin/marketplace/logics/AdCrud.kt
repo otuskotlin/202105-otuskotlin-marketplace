@@ -8,7 +8,7 @@ import ru.otus.otuskotlin.marketplace.logics.chains.*
 /**
  * Класс-фасад, содержащий все методы бизнес-логики
  */
-class AdCrud(val config: ContextConfig) {
+class AdCrud(val config: ContextConfig = ContextConfig()) {
     suspend fun create(context: MpContext) {
         AdCreate.exec(context.initSettings())
     }
@@ -30,7 +30,6 @@ class AdCrud(val config: ContextConfig) {
 
     // Метод для установки параметров чейна в контекст, параметры передаются в конструкторе класса
     private fun MpContext.initSettings() = apply {
-        require(config.repoProd != IRepoAd.NONE)
-        this.config = config
+        config = this@AdCrud.config
     }
 }

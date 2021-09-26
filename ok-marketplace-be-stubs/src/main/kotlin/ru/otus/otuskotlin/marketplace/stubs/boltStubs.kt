@@ -23,7 +23,7 @@ object Bolt {
         permissions = mutableSetOf(PermissionModel.NONE)
     )
 
-    fun getModel(model: (AdModel.() -> Unit)? = null) = stubReady.also { stub ->
+    fun getModel(model: (AdModel.() -> Unit)? = null) = stubReady.copy().also { stub ->
         model?.let { stub.apply(it) }
     }
 

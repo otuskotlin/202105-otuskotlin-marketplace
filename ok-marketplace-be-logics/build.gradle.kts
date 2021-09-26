@@ -11,9 +11,10 @@ dependencies {
     implementation(project(":ok-marketplace-mp-common-cor"))
     implementation(project(":ok-marketplace-be-stubs"))
     implementation(project(":ok-marketplace-be-common-validation"))
-    implementation(project(":ok-marketplace-be-repo-common"))
 
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit"))
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+    testImplementation(project(":ok-marketplace-be-repo-inmemory"))
+
 }
