@@ -17,11 +17,13 @@ import ru.otus.otuskotlin.marketplace.backend.common.models.CommonErrorModel
 import ru.otus.otuskotlin.marketplace.backend.common.models.OwnerIdModel
 import ru.otus.otuskotlin.marketplace.backend.repo.common.*
 import ru.otus.otuskotlin.marketplace.backend.repo.inmemory.models.AdRow
+import java.time.Duration
 import java.util.*
 
 
 class RepoAdInMemory(
-    val initObjects: List<AdModel>
+    private val initObjects: List<AdModel>,
+    private val ttl: Duration = Duration.ofMinutes(1)
 ) : IRepoAd {
 
     private val cache: Cache<String, AdRow> = let {
@@ -37,7 +39,7 @@ class RepoAdInMemory(
                     AdRow::class.java,
                     ResourcePoolsBuilder.heap(100)
                 )
-                .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(java.time.Duration.ofMinutes(1)))
+                .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(ttl))
                 .build()
         )
     }

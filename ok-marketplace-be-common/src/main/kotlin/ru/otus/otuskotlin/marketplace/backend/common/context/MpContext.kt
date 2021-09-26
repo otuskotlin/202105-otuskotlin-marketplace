@@ -7,6 +7,7 @@ data class MpContext(
     var startTime : Instant = Instant.MIN,
     var operation: MpOperations = MpOperations.NONE,
     var stubCase: MpStubCase = MpStubCase.NONE,
+    var config: ContextConfig = ContextConfig(),
 
     val userSession: IUserSession<*> = IUserSession.Companion.EmptySession,
 
