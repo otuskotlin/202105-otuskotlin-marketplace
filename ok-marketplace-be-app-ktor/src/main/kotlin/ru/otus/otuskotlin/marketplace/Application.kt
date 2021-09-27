@@ -50,10 +50,10 @@ object KtorEmbedded {
 
 @Suppress("UNUSED_PARAMETER") // Referenced in application.conf
 @JvmOverloads
-fun Application.module(testing: Boolean = false) {
-    val userSessions = mutableSetOf<KtorUserSession>()
-    val objectMapper = jacksonObjectMapper()
-    val crud = AdCrud()
+fun Application.module(config: AppKtorConfig = AppKtorConfig()) {
+    val userSessions = config.userSessions
+    val objectMapper = config.objectMapper
+    val crud = config.crud
     val adService = AdService(crud)
 
     install(DefaultHeaders)

@@ -1,12 +1,14 @@
 package ru.otus.otuskotlin.marketplace.logics
 
+import ru.otus.otuskotlin.marketplace.backend.common.context.ContextConfig
 import ru.otus.otuskotlin.marketplace.backend.common.context.MpContext
+import ru.otus.otuskotlin.marketplace.backend.repo.common.IRepoAd
 import ru.otus.otuskotlin.marketplace.logics.chains.*
 
 /**
  * Класс-фасад, содержащий все методы бизнес-логики
  */
-class AdCrud {
+class AdCrud(val config: ContextConfig = ContextConfig()) {
     suspend fun create(context: MpContext) {
         AdCreate.exec(context.initSettings())
     }
@@ -27,5 +29,7 @@ class AdCrud {
     }
 
     // Метод для установки параметров чейна в контекст, параметры передаются в конструкторе класса
-    private fun MpContext.initSettings() = apply { }
+    private fun MpContext.initSettings() = apply {
+        config = this@AdCrud.config
+    }
 }

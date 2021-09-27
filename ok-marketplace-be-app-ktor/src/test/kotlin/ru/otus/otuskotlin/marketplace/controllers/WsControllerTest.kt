@@ -16,7 +16,7 @@ import kotlin.test.assertIs
 class WsControllerTest {
     @Test
     fun test() {
-        withTestApplication({ module(testing = true) }) {
+        withTestApplication({ module() }) {
             handleWebSocketConversation("/ws") { incoming, outgoing ->
                 run {
                     val responseFrame = incoming.receive()

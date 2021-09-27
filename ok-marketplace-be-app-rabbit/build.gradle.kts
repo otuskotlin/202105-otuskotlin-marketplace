@@ -22,6 +22,8 @@ dependencies {
     implementation(project(":ok-marketplace-be-common"))
     implementation(project(":ok-marketplace-be-logics"))
     implementation(project(":ok-marketplace-be-stubs"))
+    // DB
+    implementation(project(":ok-marketplace-be-repo-inmemory"))
 
     testImplementation("org.testcontainers:rabbitmq:$testContainersVersion")
     testImplementation(kotlin("test"))

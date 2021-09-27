@@ -5,9 +5,11 @@ import ru.otus.otuskotlin.marketplace.common.cor.ICorExec
 import ru.otus.otuskotlin.marketplace.common.cor.chain
 import ru.otus.otuskotlin.marketplace.logics.chains.helpers.mpValidation
 import ru.otus.otuskotlin.marketplace.logics.chains.stubs.adUpdateStub
+import ru.otus.otuskotlin.marketplace.logics.workers.*
 import ru.otus.otuskotlin.marketplace.logics.workers.answerPrepareChain
 import ru.otus.otuskotlin.marketplace.logics.workers.chainInitWorker
 import ru.otus.otuskotlin.marketplace.logics.workers.checkOperationWorker
+import ru.otus.otuskotlin.marketplace.logics.workers.chooseDb
 import ru.otus.otuskotlin.marketplace.validation.validators.ValidatorStringNonEmpty
 
 object AdUpdate: ICorExec<MpContext> by chain<MpContext>({
@@ -16,6 +18,7 @@ object AdUpdate: ICorExec<MpContext> by chain<MpContext>({
         targetOperation = MpContext.MpOperations.UPDATE,
     )
     chainInitWorker(title = "Инициализация чейна")
+    chooseDb(title = "Выбираем БД или STUB")
     adUpdateStub(title = "Обработка стабкейса для UPDATE")
 
     mpValidation {
@@ -29,7 +32,7 @@ object AdUpdate: ICorExec<MpContext> by chain<MpContext>({
         }
     }
 
-    // TODO: продовая логика, работа с БД
+    repoUpdate(title = "Обновление данных об объекте в БД")
 
     answerPrepareChain(title = "Подготовка ответа")
 }).build()

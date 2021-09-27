@@ -4,4 +4,10 @@ enum class DealSideModel {
     NONE,
     DEMAND,
     PROPOSAL;
+
+    fun opposite(): DealSideModel = when(this) {
+        DEMAND -> PROPOSAL
+        PROPOSAL -> DEMAND
+        NONE -> NONE
+    }
 }
