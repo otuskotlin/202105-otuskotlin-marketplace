@@ -102,3 +102,6 @@ Marketplace -- это площадка, на которой пользовате
 3. [ok-marketplace-be-common-validation](ok-marketplace-be-common-validation) - Библиотека для валидации
 
 ## Хранение, репозитории, базы данных
+
+1. [ok-marketplace-be-repo-test](ok-marketplace-be-repo-test) - Базовые тесты для репозиториев всех баз данных
+1. [ok-marketplace-be-repo-inmemory](ok-marketplace-be-repo-inmemory) - Репозиторий на базе EhCache для тестирования

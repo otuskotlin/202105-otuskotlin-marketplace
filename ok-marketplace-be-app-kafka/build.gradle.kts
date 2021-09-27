@@ -41,6 +41,8 @@ dependencies {
     implementation(project(":ok-marketplace-be-service-openapi"))
     // logic
     implementation(project(":ok-marketplace-be-logics"))
+    // DB
+    implementation(project(":ok-marketplace-be-repo-inmemory"))
 
     testImplementation(kotlin("test-junit"))
 }

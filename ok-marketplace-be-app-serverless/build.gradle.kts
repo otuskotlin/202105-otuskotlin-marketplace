@@ -25,15 +25,17 @@ dependencies {
     // service
     implementation(project(":ok-marketplace-be-service-openapi"))
     implementation(project(":ok-marketplace-be-logics"))
+    // DB
+    implementation(project(":ok-marketplace-be-repo-inmemory"))
 
     implementation("com.amazonaws:aws-lambda-java-core:1.2.1")
     implementation("com.amazonaws:aws-lambda-java-log4j:1.0.1")
-    implementation("com.amazonaws:aws-lambda-java-events:3.9.0")
+    implementation("com.amazonaws:aws-lambda-java-events:3.10.0")
 
-    implementation("com.fasterxml.jackson.core:jackson-core:2.12.4")
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.12.4")
-    implementation("com.fasterxml.jackson.core:jackson-annotations:2.12.4")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.12.4")
+    implementation("com.fasterxml.jackson.core:jackson-core:2.12.5")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.12.5")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:2.12.5")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.12.5")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
 }

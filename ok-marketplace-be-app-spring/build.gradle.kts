@@ -32,6 +32,8 @@ dependencies {
 
     implementation(project(":ok-marketplace-be-service-openapi"))
     implementation(project(":ok-marketplace-be-logics"))
+    // DB
+    implementation(project(":ok-marketplace-be-repo-inmemory"))
 
     // tests
     testImplementation("org.springframework.boot:spring-boot-starter-test")
