@@ -25,7 +25,7 @@ class SqlConnector(
         when {
             url.startsWith("jdbc:mysql://") -> DbType.MYSQL
             url.startsWith("jdbc:postgresql://") -> DbType.POSTGRESQL
-            else -> error("Cannot parse database type from url: $url")
+            else -> error("Cannot parse database type from url: $url. `jdbc:mysql://...` and `jdbc:postgresql://` are supported only.")
         }
     }.also { properties.setProperty("driverClassName", it.driver) }
 
