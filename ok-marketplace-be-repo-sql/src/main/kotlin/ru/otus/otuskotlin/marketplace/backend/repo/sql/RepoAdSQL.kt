@@ -8,6 +8,7 @@ import ru.otus.otuskotlin.marketplace.backend.common.models.AdModel
 import ru.otus.otuskotlin.marketplace.backend.common.models.CommonErrorModel
 import ru.otus.otuskotlin.marketplace.backend.repo.common.*
 import ru.otus.otuskotlin.marketplace.backend.repo.sql.tables.AdTable
+import ru.otus.otuskotlin.marketplace.backend.repo.sql.tables.selectNotDeleted
 import java.sql.SQLException
 import java.util.*
 
@@ -46,7 +47,6 @@ class RepoAdSQL(initObjects: Collection<AdModel> = emptyList()) : IRepoAd {
         })
     }
 
-
     override suspend fun create(req: DbAdModelRequest): DbAdResponse {
         val id = if (req.ad.id != AdIdModel.NONE) req.ad.id else AdIdModel(UUID.randomUUID().toString())
         return save(req.ad.copy(id = id))
@@ -54,7 +54,9 @@ class RepoAdSQL(initObjects: Collection<AdModel> = emptyList()) : IRepoAd {
 
     override suspend fun read(req: DbAdIdRequest): DbAdResponse {
         return safeTransaction({
-            val result = AdTable.select { AdTable.id.eq(req.id.asString()) }.single()
+            val result = AdTable.selectNotDeleted {
+                AdTable.id.eq(req.id.asUUID()) and (AdTable.isDeleted eq false)
+            }.single()
 
             DbAdResponse(AdTable.from(result), true)
         }, {
@@ -91,8 +93,12 @@ class RepoAdSQL(initObjects: Collection<AdModel> = emptyList()) : IRepoAd {
 
     override suspend fun delete(req: DbAdIdRequest): DbAdResponse {
         return safeTransaction({
-            val result = AdTable.select { AdTable.id.eq(req.id.asString()) }.single()
-            AdTable.deleteWhere { AdTable.id eq req.id.asString() }
+            val result = AdTable.select { AdTable.id.eq(req.id.asUUID()) }.single()
+            // AdTable.deleteWhere { AdTable.id eq req.id.asUUID() }
+            // We do not delete our objects, but mark them with the flag "deleted"
+            AdTable.update({ AdTable.id.eq(req.id.asUUID()) }) {
+                it[isDeleted] = true
+            }
 
             DbAdResponse(result = AdTable.from(result), isSuccess = true)
         }, {
@@ -106,8 +112,8 @@ class RepoAdSQL(initObjects: Collection<AdModel> = emptyList()) : IRepoAd {
 
     override suspend fun search(req: DbAdFilterRequest): DbAdsResponse {
         return safeTransaction({
-            val results = AdTable.select {
-                (AdTable.ownerId eq req.ownerId.asString()) or (AdTable.dealSide eq req.dealSide)
+            val results = AdTable.selectNotDeleted {
+                (AdTable.ownerId eq req.ownerId.asUUID()) or (AdTable.dealSide eq req.dealSide)
             }
 
             DbAdsResponse(result = results.map { AdTable.from(it) }, isSuccess = true)
