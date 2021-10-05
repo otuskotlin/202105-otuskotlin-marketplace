@@ -6,10 +6,10 @@ import org.jetbrains.exposed.sql.statements.InsertStatement
 import ru.otus.otuskotlin.marketplace.backend.common.models.*
 
 object AdTable : Table("Ads") {
-    val id = varchar("id", 128)
+    val id = uuid("id").autoGenerate()
     val title = varchar("title", 128)
     val description = varchar("description", 512)
-    val ownerId = varchar("ownerId", 128)
+    val ownerId = uuid("ownerId")
     val visibility = enumeration("visibility", AdVisibilityModel::class)
     val dealSide = enumeration("dealSide", DealSideModel::class)
 
