@@ -68,10 +68,10 @@ class RepoAdInMemory(
         )
     }
 
-    override suspend fun create(rq: DbAdModelRequest): DbAdResponse =
-        save(rq.ad.copy(id = AdIdModel(UUID.randomUUID().toString())))
+    override suspend fun create(req: DbAdModelRequest): DbAdResponse =
+        save(req.ad.copy(id = AdIdModel(UUID.randomUUID().toString())))
 
-    override suspend fun read(rq: DbAdIdRequest): DbAdResponse = cache.get(rq.id.asString())?.let {
+    override suspend fun read(req: DbAdIdRequest): DbAdResponse = cache.get(req.id.asString())?.let {
         DbAdResponse(
             result = it.toInternal(),
             isSuccess = true
@@ -87,8 +87,8 @@ class RepoAdInMemory(
         )
     )
 
-    override suspend fun update(rq: DbAdModelRequest): DbAdResponse {
-        val key = rq.ad.id.takeIf { it != AdIdModel.NONE }?.asString()
+    override suspend fun update(req: DbAdModelRequest): DbAdResponse {
+        val key = req.ad.id.takeIf { it != AdIdModel.NONE }?.asString()
             ?: return DbAdResponse(
                 result = null,
                 isSuccess = false,
@@ -98,9 +98,9 @@ class RepoAdInMemory(
             )
 
         return if (cache.containsKey(key)) {
-            save(rq.ad)
+            save(req.ad)
             DbAdResponse(
-                result = rq.ad,
+                result = req.ad,
                 isSuccess = true
             )
         } else {
@@ -117,8 +117,8 @@ class RepoAdInMemory(
         }
     }
 
-    override suspend fun delete(rq: DbAdIdRequest): DbAdResponse {
-        val key = rq.id.takeIf { it != AdIdModel.NONE }?.asString()
+    override suspend fun delete(req: DbAdIdRequest): DbAdResponse {
+        val key = req.id.takeIf { it != AdIdModel.NONE }?.asString()
             ?: return DbAdResponse(
                 result = null,
                 isSuccess = false,
@@ -140,15 +140,15 @@ class RepoAdInMemory(
         )
     }
 
-    override suspend fun search(rq: DbAdFilterRequest): DbAdsResponse {
+    override suspend fun search(req: DbAdFilterRequest): DbAdsResponse {
         val results = cache.asFlow()
             .filter {
-                if (rq.ownerId == OwnerIdModel.NONE) return@filter true
-                rq.ownerId.asString() == it.value.ownerId
+                if (req.ownerId == OwnerIdModel.NONE) return@filter true
+                req.ownerId.asString() == it.value.ownerId
             }
             .filter {
-                if (rq.dealSide == DealSideModel.NONE) return@filter true
-                rq.dealSide.name == it.value.dealSide
+                if (req.dealSide == DealSideModel.NONE) return@filter true
+                req.dealSide.name == it.value.dealSide
             }
             .map { it.value.toInternal() }
             .toList()
