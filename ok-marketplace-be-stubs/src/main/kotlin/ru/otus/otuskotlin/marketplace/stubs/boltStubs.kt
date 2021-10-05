@@ -4,7 +4,7 @@ import ru.otus.otuskotlin.marketplace.backend.common.models.*
 
 object Bolt {
     private val stubReady = AdModel(
-        id = AdIdModel(id = "666"),
+        id = AdIdModel(id = "11111111-1111-1111-1111-111111111666"),
         title = "Болт наружний",
         description = "Лучшего болта вы в мире не найдёте",
         ownerId = OwnerIdModel(id = "1945"),
@@ -14,7 +14,7 @@ object Bolt {
     )
 
     private val stubInProgrss = AdModel(
-        id = AdIdModel(id = "12345678"),
+        id = AdIdModel(id = "11111111-1111-1111-1111-111112345678"),
         title = "Пока не знаю какой болт",
         description = "Еще не придумал описание",
         ownerId = OwnerIdModel(id = "1990"),

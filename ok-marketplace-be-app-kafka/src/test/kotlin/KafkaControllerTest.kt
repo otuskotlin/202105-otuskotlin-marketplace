@@ -32,7 +32,7 @@ class KafkaControllerTest {
                     0L,
                     "test-1",
                     CreateAdRequest(
-                        requestId = "123",
+                        requestId = "11111111-1111-1111-1111-111111111111",
                         createAd = CreateableAd(
                             title = "Some Ad",
                             description = "some testing ad to check them all",
@@ -65,7 +65,7 @@ class KafkaControllerTest {
 
         val message = producer.history().first()
         val result = message.value().fromJson<CreateAdResponse>()
-        assertEquals("123", result.requestId)
+        assertEquals("11111111-1111-1111-1111-111111111111", result.requestId)
         assertEquals("Some Ad", result.createdAd?.title)
     }
 

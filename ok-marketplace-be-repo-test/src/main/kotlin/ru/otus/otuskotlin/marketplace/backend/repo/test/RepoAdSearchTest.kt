@@ -5,6 +5,7 @@ import org.junit.Test
 import ru.otus.otuskotlin.marketplace.backend.common.models.*
 import ru.otus.otuskotlin.marketplace.backend.repo.common.DbAdFilterRequest
 import ru.otus.otuskotlin.marketplace.backend.repo.common.IRepoAd
+import java.util.*
 import kotlin.test.assertEquals
 
 
@@ -29,9 +30,9 @@ abstract class RepoAdSearchTest {
         assertEquals(emptyList(), result.errors)
     }
 
-    companion object: BaseInitAds("search") {
+    companion object: BaseInitAds() {
 
-        val searchOwnerId = OwnerIdModel("owner-124")
+        val searchOwnerId = OwnerIdModel(UUID.randomUUID())
         override val initObjects: List<AdModel> = listOf(
             createInitTestModel("ad1"),
             createInitTestModel("ad2", ownerId = searchOwnerId),

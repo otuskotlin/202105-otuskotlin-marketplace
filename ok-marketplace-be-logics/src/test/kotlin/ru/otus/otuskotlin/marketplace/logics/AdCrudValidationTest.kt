@@ -15,7 +15,7 @@ class AdCrudValidationTest {
         val crud = AdCrud()
         val context = MpContext(
             stubCase = MpStubCase.SUCCESS,
-            requestAd = Bolt.getModel { id = AdIdModel("123") },
+            requestAd = Bolt.getModel { id = AdIdModel("11111111-1111-1111-1111-111111111111") },
             operation = MpContext.MpOperations.CREATE,
         )
         runBlocking {
