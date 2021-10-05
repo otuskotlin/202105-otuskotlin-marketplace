@@ -15,6 +15,7 @@ class SqlConnector(
     private val properties: Properties = loadFromFile("datasource.properties"),
     private val databaseConfig: DatabaseConfig = DatabaseConfig { defaultIsolationLevel = DEFAULT_ISOLATION_LEVEL }
 ) {
+    // Sample of describing different db drivers in case of multiple DB connections with different data bases
     private enum class DbType(val driver: String) {
         MYSQL("com.mysql.cj.jdbc.Driver"),
         POSTGRESQL("org.postgresql.Driver")
@@ -28,6 +29,7 @@ class SqlConnector(
         }
     }.also { properties.setProperty("driverClassName", it.driver) }
 
+    // Load data source from hikari config properties (default placed at resources)
     private val dataSource = object : HikariDataSource(HikariConfig(properties.withoutCustom())) {
         override fun getConnection(): Connection {
             return object : Connection by super.getConnection() {
@@ -40,8 +42,10 @@ class SqlConnector(
         }
     }
 
+    // Global connection to PSQL
     private val globalConnection = Database.connect(dataSource, databaseConfig = databaseConfig)
 
+    // Ensure creation of new connection with options to migrate/pre-drop database
     fun connect(vararg tables: Table): Database {
         val schemaName = dataSource.schema
 

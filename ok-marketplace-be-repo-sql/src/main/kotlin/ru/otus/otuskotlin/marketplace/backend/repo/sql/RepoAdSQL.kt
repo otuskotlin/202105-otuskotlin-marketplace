@@ -114,6 +114,9 @@ class RepoAdSQL(initObjects: Collection<AdModel> = emptyList()) : IRepoAd {
         })
     }
 
+    /**
+     * Transaction wrapper to safely handle caught exception and throw all sql-like exceptions. Also remove lot's of duplication code
+     */
     private fun <T> safeTransaction(statement: Transaction.() -> T, handleException: Exception.() -> T): T {
         return try {
             transaction(db, statement)

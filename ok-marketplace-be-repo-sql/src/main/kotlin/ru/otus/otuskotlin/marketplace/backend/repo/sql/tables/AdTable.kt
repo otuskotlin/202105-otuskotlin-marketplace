@@ -15,6 +15,7 @@ object AdTable : Table("Ads") {
 
     override val primaryKey = PrimaryKey(id)
 
+    // Mapper functions from sql-like table to AdModel
     fun from(res: InsertStatement<Number>) = AdModel(
         id = AdIdModel(res[id]),
         title = res[title],
