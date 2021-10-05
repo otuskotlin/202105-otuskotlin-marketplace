@@ -112,7 +112,7 @@ class RepoAdSQL(initObjects: Collection<AdModel> = emptyList()) : IRepoAd {
         return safeTransaction({
             // Select only if options are provided
             val results = AdTable.selectNotDeleted {
-                (if (req.ownerId == OwnerIdModel.NONE) Op.TRUE else AdTable.ownerId eq req.ownerId.asUUID()) or
+                (if (req.ownerId == OwnerIdModel.NONE) Op.TRUE else AdTable.ownerId eq req.ownerId.asUUID()) and
                         (if (req.dealSide == DealSideModel.NONE) Op.TRUE else AdTable.dealSide eq req.dealSide)
             }
 
