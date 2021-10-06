@@ -13,7 +13,7 @@ object AdTable : Table("Ads") {
     val visibility = enumeration("visibility", AdVisibilityModel::class)
     val dealSide = enumeration("dealSide", DealSideModel::class)
 
-    val isDeleted = bool("is_deleted").nullable().default(false)
+    val isDeleted = bool("is_deleted").nullable()
 
     override val primaryKey = PrimaryKey(id)
 
