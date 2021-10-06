@@ -1,7 +1,7 @@
 package ru.otus.otuskotlin.marketplace.backend.repo.sql.tables
 
-import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.ResultRow
+import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.statements.InsertStatement
 import ru.otus.otuskotlin.marketplace.backend.common.models.*
 
@@ -12,8 +12,6 @@ object AdTable : Table("Ads") {
     val ownerId = uuid("ownerId")
     val visibility = enumeration("visibility", AdVisibilityModel::class)
     val dealSide = enumeration("dealSide", DealSideModel::class)
-
-    val isDeleted = bool("is_deleted").nullable()
 
     override val primaryKey = PrimaryKey(id)
 
@@ -36,7 +34,3 @@ object AdTable : Table("Ads") {
         dealSide = res[dealSide]
     )
 }
-
-fun AdTable.selectNotDeleted(where: SqlExpressionBuilder.() -> Op<Boolean>) = select(
-    SqlExpressionBuilder.where() and (isDeleted eq false)
-)
