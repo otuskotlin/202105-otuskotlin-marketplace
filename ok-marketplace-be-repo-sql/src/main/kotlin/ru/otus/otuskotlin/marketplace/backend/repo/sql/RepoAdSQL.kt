@@ -3,7 +3,9 @@ package ru.otus.otuskotlin.marketplace.backend.repo.sql
 import kotlinx.coroutines.runBlocking
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
-import ru.otus.otuskotlin.marketplace.backend.common.models.*
+import ru.otus.otuskotlin.marketplace.backend.common.models.AdIdModel
+import ru.otus.otuskotlin.marketplace.backend.common.models.AdModel
+import ru.otus.otuskotlin.marketplace.backend.common.models.CommonErrorModel
 import ru.otus.otuskotlin.marketplace.backend.repo.common.*
 import ru.otus.otuskotlin.marketplace.backend.repo.sql.tables.AdTable
 import ru.otus.otuskotlin.marketplace.backend.repo.sql.tables.selectNotDeleted
@@ -110,10 +112,8 @@ class RepoAdSQL(initObjects: Collection<AdModel> = emptyList()) : IRepoAd {
 
     override suspend fun search(req: DbAdFilterRequest): DbAdsResponse {
         return safeTransaction({
-            // Select only if options are provided
             val results = AdTable.selectNotDeleted {
-                (if (req.ownerId == OwnerIdModel.NONE) Op.TRUE else AdTable.ownerId eq req.ownerId.asUUID()) or
-                        (if (req.dealSide == DealSideModel.NONE) Op.TRUE else AdTable.dealSide eq req.dealSide)
+                (AdTable.ownerId eq req.ownerId.asUUID()) or (AdTable.dealSide eq req.dealSide)
             }
 
             DbAdsResponse(result = results.map { AdTable.from(it) }, isSuccess = true)
@@ -125,12 +125,12 @@ class RepoAdSQL(initObjects: Collection<AdModel> = emptyList()) : IRepoAd {
     /**
      * Transaction wrapper to safely handle caught exception and throw all sql-like exceptions. Also remove lot's of duplication code
      */
-    private fun <T> safeTransaction(statement: Transaction.() -> T, handleException: Throwable.() -> T): T {
+    private fun <T> safeTransaction(statement: Transaction.() -> T, handleException: Exception.() -> T): T {
         return try {
             transaction(db, statement)
         } catch (e: SQLException) {
             throw e
-        } catch (e: Throwable) {
+        } catch (e: Exception) {
             e.printStackTrace()
             return handleException(e)
         }
