@@ -3,3 +3,4 @@
 /build/
 **/build/
 **/*.hprof
+/dockers/postgres-data

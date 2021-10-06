@@ -1,0 +1,18 @@
+version: "3.3"
+services:
+  psql:
+    image: postgres
+    container_name: postgresql
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    expose:
+      - "5432"
+    environment:
+      POSTGRES_PASSWORD: marketplace
+      POSTGRES_USER: postgres
+      POSTGRES_DB: marketplacedevdb
+
+volumes:
+  postgres-data:
