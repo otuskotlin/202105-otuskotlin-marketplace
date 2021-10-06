@@ -40,7 +40,7 @@ class MappingTest {
                 id = AdIdModel("11111111-1111-1111-1111-111111111id1"),
                 title = "title-1",
                 description = "description-1",
-                ownerId = OwnerIdModel(UUID.randomUUID()),
+                ownerId = OwnerIdModel("21111111-1111-1111-1111-111111111id1"),
                 visibility = AdVisibilityModel.REGISTERED_ONLY,
                 dealSide = DealSideModel.DEMAND,
             ),
@@ -48,10 +48,10 @@ class MappingTest {
         )
         val response = context.toUpdateResponse()
         assertEquals("12345", response.requestId)
-        assertEquals("id-1", response.updatedAd?.id)
+        assertEquals(context.responseAd.id.asString(), response.updatedAd?.id)
         assertEquals("title-1", response.updatedAd?.title)
         assertEquals("description-1", response.updatedAd?.description)
-        assertEquals("owner_id-1", response.updatedAd?.ownerId)
+        assertEquals(context.responseAd.ownerId.asString(), response.updatedAd?.ownerId)
         assertEquals(AdVisibility.REGISTERED_ONLY, response.updatedAd?.visibility)
         assertEquals(AdDealSide.DEMAND, response.updatedAd?.dealSide)
         assertEquals(BaseResponse.Result.SUCCESS, response.result)

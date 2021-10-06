@@ -1,7 +1,9 @@
-package ru.otus.otuskotlin.marketplace.backend.transport.mapping.kmp
+package ru.otus.otuskotlin.marketplace.backend.transport.mapping.openapi
 
 import ru.otus.otuskotlin.marketplace.backend.common.context.MpContext
 import ru.otus.otuskotlin.marketplace.backend.common.models.*
+import ru.otus.otuskotlin.marketplace.backend.transport.mapping.kmp.setQuery
+import ru.otus.otuskotlin.marketplace.backend.transport.mapping.kmp.toUpdateResponse
 import ru.otus.otuskotlin.marketplace.openapi.models.*
 import java.util.*
 import kotlin.test.Test
@@ -14,7 +16,7 @@ class MappingTest {
         val query = UpdateAdRequest(
             requestId = "12345",
             createAd = UpdateableAd(
-                id = "id-1",
+                id = "11111111-1111-1111-1111-111111111id1",
                 title = "title-1",
                 description = "description-1",
                 ownerId = "owner_id-1",
@@ -24,7 +26,7 @@ class MappingTest {
         )
         val context = MpContext().setQuery(query)
         assertEquals("12345", context.onRequest)
-        assertEquals("id-1", context.requestAd.id.asString())
+        assertEquals(query.createAd?.id, context.requestAd.id.asString())
         assertEquals("title-1", context.requestAd.title)
         assertEquals("description-1", context.requestAd.description)
         assertEquals("owner_id-1", context.requestAd.ownerId.asString())
@@ -40,7 +42,7 @@ class MappingTest {
                 id = AdIdModel("11111111-1111-1111-1111-111111111id1"),
                 title = "title-1",
                 description = "description-1",
-                ownerId = OwnerIdModel(UUID.randomUUID()),
+                ownerId = OwnerIdModel("21111111-1111-1111-1111-111111111id1"),
                 visibility = AdVisibilityModel.REGISTERED_ONLY,
                 dealSide = DealSideModel.DEMAND,
             ),
@@ -48,10 +50,10 @@ class MappingTest {
         )
         val response = context.toUpdateResponse()
         assertEquals("12345", response.requestId)
-        assertEquals("id-1", response.updatedAd?.id)
+        assertEquals(context.responseAd.id.asString(), response.updatedAd?.id)
         assertEquals("title-1", response.updatedAd?.title)
         assertEquals("description-1", response.updatedAd?.description)
-        assertEquals("owner_id-1", response.updatedAd?.ownerId)
+        assertEquals(context.responseAd.ownerId.asString(), response.updatedAd?.ownerId)
         assertEquals(AdVisibility.REGISTERED_ONLY, response.updatedAd?.visibility)
         assertEquals(AdDealSide.DEMAND, response.updatedAd?.dealSide)
         assertEquals(UpdateAdResponse.Result.SUCCESS, response.result)

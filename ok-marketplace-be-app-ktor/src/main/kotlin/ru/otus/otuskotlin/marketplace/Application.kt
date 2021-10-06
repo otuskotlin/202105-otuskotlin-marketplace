@@ -53,8 +53,7 @@ object KtorEmbedded {
 fun Application.module(config: AppKtorConfig = AppKtorConfig()) {
     val userSessions = config.userSessions
     val objectMapper = config.objectMapper
-    val crud = config.crud
-    val adService = AdService(crud)
+    val adService = config.adService
 
     install(DefaultHeaders)
     install(CORS) {
