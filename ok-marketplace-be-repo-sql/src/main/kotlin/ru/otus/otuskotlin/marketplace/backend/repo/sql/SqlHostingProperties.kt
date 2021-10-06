@@ -4,7 +4,6 @@ import java.io.File
 import java.io.FileInputStream
 import java.util.*
 
-// Custom properties for database control
 object SqlHostingProperties {
     // SQL
     const val SQL_URL = "jdbcUrl"
@@ -17,7 +16,7 @@ fun loadFromFile(propFileName: String): Properties {
     val fileStream = if (propFile.isFile) {
         FileInputStream(propFile)
     } else {
-        SqlHostingProperties::class.java.classLoader.getResourceAsStream(propFileName)
+        SqlConnector::class.java.classLoader.getResourceAsStream(propFileName)
     }
     return if (fileStream != null) {
         Properties().apply { load(fileStream) }
