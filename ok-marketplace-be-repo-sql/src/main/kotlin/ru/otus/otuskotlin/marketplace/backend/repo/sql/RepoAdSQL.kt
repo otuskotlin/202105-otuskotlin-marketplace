@@ -26,12 +26,10 @@ class RepoAdSQL(initObjects: Collection<AdModel> = emptyList()) : IRepoAd {
     private suspend fun save(item: AdModel): DbAdResponse {
         return safeTransaction({
             val res = AdTable.insert {
-                if (item.id != AdIdModel.NONE) {
-                    it[id] = item.id.asUUID()
-                }
+                it[id] = item.id.asString()
                 it[title] = item.title
                 it[description] = item.description
-                it[ownerId] = item.ownerId.asUUID()
+                it[ownerId] = item.ownerId.id
                 it[visibility] = item.visibility
                 it[dealSide] = item.dealSide
             }
@@ -70,14 +68,14 @@ class RepoAdSQL(initObjects: Collection<AdModel> = emptyList()) : IRepoAd {
     override suspend fun update(req: DbAdModelRequest): DbAdResponse {
         val ad = req.ad
         return safeTransaction({
-            AdTable.update({ AdTable.id.eq(ad.id.asUUID()) }) {
+            AdTable.update({ AdTable.id.eq(ad.id.asString()) }) {
                 it[title] = ad.title
                 it[description] = ad.description
-                it[ownerId] = ad.ownerId.asUUID()
+                it[ownerId] = ad.ownerId.id
                 it[visibility] = ad.visibility
                 it[dealSide] = ad.dealSide
             }
-            val result = AdTable.select { AdTable.id.eq(ad.id.asUUID()) }.single()
+            val result = AdTable.select { AdTable.id.eq(ad.id.asString()) }.single()
 
             DbAdResponse(result = AdTable.from(result), isSuccess = true)
         }, {
