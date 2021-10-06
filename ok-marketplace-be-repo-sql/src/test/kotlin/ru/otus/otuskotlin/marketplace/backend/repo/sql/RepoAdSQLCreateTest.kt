@@ -4,6 +4,9 @@ import ru.otus.otuskotlin.marketplace.backend.repo.common.IRepoAd
 import ru.otus.otuskotlin.marketplace.backend.repo.test.*
 
 class RepoAdSQLCreateTest : RepoAdCreateTest() {
+    init {
+        println(System.getProperties())
+    }
     override val repo: IRepoAd = RepoAdSQL(initObjects = initObjects)
 }
 
