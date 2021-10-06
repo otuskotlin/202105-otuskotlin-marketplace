@@ -2,8 +2,14 @@ plugins {
     kotlin("jvm")
 }
 
+tasks {
+    withType<Test> {
+        environment("ok.mp.sql_drop_db", true)
+        environment("ok.mp.sql_fast_migration", true)
+    }
+}
+
 dependencies {
-    val hikariVersion: String by project
     val exposedVersion: String by project
     val postgresDriverVersion: String by project
     val testContainersVersion: String by project
@@ -12,7 +18,6 @@ dependencies {
 
     implementation(project(":ok-marketplace-be-common"))
 
-    implementation("com.zaxxer:HikariCP:$hikariVersion")
     implementation("org.postgresql:postgresql:$postgresDriverVersion")
 
     implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")

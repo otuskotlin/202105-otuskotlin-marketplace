@@ -9,6 +9,7 @@ pluginManagement {
         kotlin("jvm") version kotlinVersion
         kotlin("multiplatform") version kotlinVersion
         kotlin("plugin.serialization") version kotlinVersion
+        kotlin("plugin.allopen") version kotlinVersion
         id("org.openapi.generator") version openApiVersion
         id("com.bmuschko.docker-java-application") version bmuschkoVersion
 
@@ -23,6 +24,7 @@ pluginManagement {
 
         val shadowJarVersion: String by settings
         id("com.github.johnrengelman.shadow") version shadowJarVersion
+
 
     }
 }
@@ -53,3 +55,4 @@ include("ok-marketplace-be-app-kafka")
 include("ok-marketplace-be-repo-test")
 include("ok-marketplace-be-repo-inmemory")
 include("ok-marketplace-be-repo-sql")
+include("ok-marketplace-be-repo-sql-hibernate")
