@@ -5,7 +5,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class SerializationTest {
-    private val requestId = "11111111-1111-1111-1111-111111111111"
+    private val requestId = "123"
     private val createRequest = CreateAdRequest(
         requestId = requestId,
         createAd = CreateableAd(

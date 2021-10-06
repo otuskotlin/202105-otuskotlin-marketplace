@@ -5,7 +5,6 @@ import org.junit.Test
 import ru.otus.otuskotlin.marketplace.backend.common.models.*
 import ru.otus.otuskotlin.marketplace.backend.repo.common.DbAdIdRequest
 import ru.otus.otuskotlin.marketplace.backend.repo.common.IRepoAd
-import java.util.*
 import kotlin.test.assertEquals
 
 
@@ -33,12 +32,12 @@ abstract class RepoAdDeleteTest {
         )
     }
 
-    companion object: BaseInitAds() {
+    companion object: BaseInitAds("search") {
         override val initObjects: List<AdModel> = listOf(
             createInitTestModel("delete")
         )
         private val deleteSuccessStub = initObjects.first()
         val successId = deleteSuccessStub.id
-        val notFoundId = AdIdModel(UUID.randomUUID())
+        val notFoundId = AdIdModel("ad-repo-delete-notFound")
     }
 }

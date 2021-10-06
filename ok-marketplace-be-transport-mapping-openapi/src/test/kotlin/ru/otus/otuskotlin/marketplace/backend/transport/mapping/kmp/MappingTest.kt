@@ -3,7 +3,6 @@ package ru.otus.otuskotlin.marketplace.backend.transport.mapping.kmp
 import ru.otus.otuskotlin.marketplace.backend.common.context.MpContext
 import ru.otus.otuskotlin.marketplace.backend.common.models.*
 import ru.otus.otuskotlin.marketplace.openapi.models.*
-import java.util.*
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -37,10 +36,10 @@ class MappingTest {
         val context = MpContext(
             onRequest = "12345",
             responseAd = AdModel(
-                id = AdIdModel("11111111-1111-1111-1111-111111111id1"),
+                id = AdIdModel("id-1"),
                 title = "title-1",
                 description = "description-1",
-                ownerId = OwnerIdModel(UUID.randomUUID()),
+                ownerId = OwnerIdModel("owner_id-1"),
                 visibility = AdVisibilityModel.REGISTERED_ONLY,
                 dealSide = DealSideModel.DEMAND,
             ),

@@ -127,23 +127,23 @@ class AdCrudRepoTest {
         val repo = RepoAdInMemory(
             initObjects = listOf(
                 Bolt.getModel {
-                    id = AdIdModel("11111111-1111-1111-1111-111111111111")
+                    id = AdIdModel("123")
                     dealSide = DealSideModel.DEMAND
                 },
                 Bolt.getModel {
-                    id = AdIdModel("11111111-1111-1111-1111-111111111112")
+                    id = AdIdModel("124")
                     dealSide = DealSideModel.DEMAND
                 },
                 Bolt.getModel {
-                    id = AdIdModel("11111111-1111-1111-1111-111111111113")
+                    id = AdIdModel("125")
                     dealSide = DealSideModel.PROPOSAL
                 },
                 Bolt.getModel {
-                    id = AdIdModel("11111111-1111-1111-1111-111111111114")
+                    id = AdIdModel("126")
                     dealSide = DealSideModel.DEMAND
                 },
                 Bolt.getModel {
-                    id = AdIdModel("11111111-1111-1111-1111-111111111115")
+                    id = AdIdModel("127")
                     dealSide = DealSideModel.PROPOSAL
                 },
             )
@@ -161,10 +161,7 @@ class AdCrudRepoTest {
         assertEquals(CorStatus.SUCCESS, context.status)
         with(context.responseAds) {
             assertEquals(2, size)
-            assertEquals(
-                listOf("11111111-1111-1111-1111-111111111113", "11111111-1111-1111-1111-111111111115"),
-                map { it.id.asString() }.sorted()
-            )
+            assertEquals(listOf("125", "127"), map { it.id.asString() }.sorted())
         }
     }
 
@@ -173,23 +170,23 @@ class AdCrudRepoTest {
         val repo = RepoAdInMemory(
             initObjects = listOf(
                 Bolt.getModel {
-                    id = AdIdModel("11111111-1111-1111-1111-111111111111")
+                    id = AdIdModel("123")
                     dealSide = DealSideModel.DEMAND
                 },
                 Bolt.getModel {
-                    id = AdIdModel("11111111-1111-1111-1111-111111111112")
+                    id = AdIdModel("124")
                     dealSide = DealSideModel.DEMAND
                 },
                 Bolt.getModel {
-                    id = AdIdModel("11111111-1111-1111-1111-111111111113")
+                    id = AdIdModel("125")
                     dealSide = DealSideModel.PROPOSAL
                 },
                 Bolt.getModel {
-                    id = AdIdModel("11111111-1111-1111-1111-111111111114")
+                    id = AdIdModel("126")
                     dealSide = DealSideModel.DEMAND
                 },
                 Bolt.getModel {
-                    id = AdIdModel("11111111-1111-1111-1111-111111111115")
+                    id = AdIdModel("127")
                     dealSide = DealSideModel.PROPOSAL
                 },
             )
@@ -198,7 +195,7 @@ class AdCrudRepoTest {
         val context = MpContext(
             workMode = WorkMode.TEST,
             requestPage = PaginatedModel(),
-            requestAdId = AdIdModel("11111111-1111-1111-1111-111111111114"),
+            requestAdId = AdIdModel("126"),
             operation = MpContext.MpOperations.OFFER
         )
         runBlocking {
