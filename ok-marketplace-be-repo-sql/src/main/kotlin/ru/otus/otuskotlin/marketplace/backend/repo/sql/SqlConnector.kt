@@ -1,19 +1,16 @@
 package ru.otus.otuskotlin.marketplace.backend.repo.sql
 
-import com.zaxxer.hikari.util.DriverDataSource
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.DatabaseConfig
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.transactions.DEFAULT_ISOLATION_LEVEL
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.util.*
 
 class SqlConnector(
-    properties: Properties = System.getProperties(),
-    url: String = "jdbc:postgresql://localhost:5432/marketplacedevdb",
-    user: String = "postgres",
-    password: String = "marketplace-pass",
+    private val url: String = "jdbc:postgresql://localhost:5432/marketplacedevdb",
+    private val user: String = "postgres",
+    private val password: String = "marketplace-pass",
     private val schema: String = "marketplace",
     private val databaseConfig: DatabaseConfig = DatabaseConfig { defaultIsolationLevel = DEFAULT_ISOLATION_LEVEL }
 ) {
@@ -32,11 +29,8 @@ class SqlConnector(
         }
     }
 
-    // Load data source from our configs
-    private val dataSource = DriverDataSource(url, dbType.driver, properties, user, password)
-
     // Global connection to PSQL
-    private val globalConnection = Database.connect(dataSource, databaseConfig = databaseConfig)
+    private val globalConnection = Database.connect(url, dbType.driver, user, password, databaseConfig = databaseConfig)
 
     // Ensure creation of new connection with options to migrate/pre-drop database
     fun connect(vararg tables: Table): Database {
@@ -58,7 +52,7 @@ class SqlConnector(
 
         // Create connection for all supported db types
         val connect = Database.connect(
-            dataSource,
+            url, dbType.driver, user, password,
             databaseConfig = databaseConfig,
             setupConnection = { connection ->
                 when (dbType) {

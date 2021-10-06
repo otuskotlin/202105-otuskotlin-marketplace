@@ -5,37 +5,41 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import ru.otus.otuskotlin.marketplace.backend.common.models.*
 import ru.otus.otuskotlin.marketplace.backend.repo.common.*
-import ru.otus.otuskotlin.marketplace.backend.repo.sql.tables.AdTable
-import ru.otus.otuskotlin.marketplace.backend.repo.sql.tables.selectNotDeleted
 import java.sql.SQLException
 import java.util.*
 
 class RepoAdSQL(initObjects: Collection<AdModel> = emptyList()) : IRepoAd {
-    private val db by lazy { SqlConnector().connect(AdTable) }
+    private val db by lazy { SqlConnector().connect(AdsTable, UsersTable) }
 
     init {
         runBlocking {
             initObjects.forEach {
-                val res = save(it)
-                println(res)
+                save(it)
             }
         }
     }
 
     private suspend fun save(item: AdModel): DbAdResponse {
         return safeTransaction({
-            val res = AdTable.insert {
+            val realOwnerId = UsersTable.insertIgnore {
+                if (item.ownerId != OwnerIdModel.NONE) {
+                    it[id] = item.ownerId.asUUID()
+                }
+                it[name] = item.ownerId.asUUID().toString()
+            } get UsersTable.id
+
+            val res = AdsTable.insert {
                 if (item.id != AdIdModel.NONE) {
                     it[id] = item.id.asUUID()
                 }
                 it[title] = item.title
                 it[description] = item.description
-                it[ownerId] = item.ownerId.asUUID()
+                it[ownerId] = realOwnerId
                 it[visibility] = item.visibility
                 it[dealSide] = item.dealSide
             }
 
-            DbAdResponse(AdTable.from(res), true)
+            DbAdResponse(AdsTable.from(res), true)
         }, {
             DbAdResponse(
                 result = null,
@@ -46,17 +50,14 @@ class RepoAdSQL(initObjects: Collection<AdModel> = emptyList()) : IRepoAd {
     }
 
     override suspend fun create(req: DbAdModelRequest): DbAdResponse {
-        val id = if (req.ad.id != AdIdModel.NONE) req.ad.id else AdIdModel(UUID.randomUUID().toString())
-        return save(req.ad.copy(id = id))
+        return save(req.ad)
     }
 
     override suspend fun read(req: DbAdIdRequest): DbAdResponse {
         return safeTransaction({
-            val result = AdTable.selectNotDeleted {
-                AdTable.id.eq(req.id.asUUID()) and (AdTable.isDeleted eq false)
-            }.single()
+            val result = (AdsTable innerJoin UsersTable).select { AdsTable.id.eq(req.id.asUUID()) }.single()
 
-            DbAdResponse(AdTable.from(result), true)
+            DbAdResponse(AdsTable.from(result), true)
         }, {
             val err = when (this) {
                 is NoSuchElementException -> CommonErrorModel(field = "id", message = "Not Found")
@@ -70,16 +71,26 @@ class RepoAdSQL(initObjects: Collection<AdModel> = emptyList()) : IRepoAd {
     override suspend fun update(req: DbAdModelRequest): DbAdResponse {
         val ad = req.ad
         return safeTransaction({
-            AdTable.update({ AdTable.id.eq(ad.id.asUUID()) }) {
+            UsersTable.insertIgnore {
+                if (ad.ownerId != OwnerIdModel.NONE) {
+                    it[id] = ad.ownerId.asUUID()
+                }
+                it[name] = ad.ownerId.asUUID().toString()
+            }
+            UsersTable.update({ UsersTable.id.eq(ad.ownerId.asUUID()) }) {
+                it[name] = ad.ownerId.asUUID().toString()
+            }
+
+            AdsTable.update({ AdsTable.id.eq(ad.id.asUUID()) }) {
                 it[title] = ad.title
                 it[description] = ad.description
                 it[ownerId] = ad.ownerId.asUUID()
                 it[visibility] = ad.visibility
                 it[dealSide] = ad.dealSide
             }
-            val result = AdTable.select { AdTable.id.eq(ad.id.asUUID()) }.single()
+            val result = AdsTable.select { AdsTable.id.eq(ad.id.asUUID()) }.single()
 
-            DbAdResponse(result = AdTable.from(result), isSuccess = true)
+            DbAdResponse(result = AdsTable.from(result), isSuccess = true)
         }, {
             DbAdResponse(
                 result = null,
@@ -91,14 +102,10 @@ class RepoAdSQL(initObjects: Collection<AdModel> = emptyList()) : IRepoAd {
 
     override suspend fun delete(req: DbAdIdRequest): DbAdResponse {
         return safeTransaction({
-            val result = AdTable.select { AdTable.id.eq(req.id.asUUID()) }.single()
-            // AdTable.deleteWhere { AdTable.id eq req.id.asUUID() }
-            // We do not delete our objects, but mark them with the flag "deleted"
-            AdTable.update({ AdTable.id.eq(req.id.asUUID()) }) {
-                it[isDeleted] = true
-            }
+            val result = AdsTable.select { AdsTable.id.eq(req.id.asUUID()) }.single()
+            AdsTable.deleteWhere { AdsTable.id eq req.id.asUUID() }
 
-            DbAdResponse(result = AdTable.from(result), isSuccess = true)
+            DbAdResponse(result = AdsTable.from(result), isSuccess = true)
         }, {
             DbAdResponse(
                 result = null,
@@ -111,12 +118,12 @@ class RepoAdSQL(initObjects: Collection<AdModel> = emptyList()) : IRepoAd {
     override suspend fun search(req: DbAdFilterRequest): DbAdsResponse {
         return safeTransaction({
             // Select only if options are provided
-            val results = AdTable.selectNotDeleted {
-                (if (req.ownerId == OwnerIdModel.NONE) Op.TRUE else AdTable.ownerId eq req.ownerId.asUUID()) and
-                        (if (req.dealSide == DealSideModel.NONE) Op.TRUE else AdTable.dealSide eq req.dealSide)
+            val results = (AdsTable innerJoin UsersTable).select {
+                (if (req.ownerId == OwnerIdModel.NONE) Op.TRUE else AdsTable.ownerId eq req.ownerId.asUUID()) and
+                        (if (req.dealSide == DealSideModel.NONE) Op.TRUE else AdsTable.dealSide eq req.dealSide)
             }
 
-            DbAdsResponse(result = results.map { AdTable.from(it) }, isSuccess = true)
+            DbAdsResponse(result = results.map { AdsTable.from(it) }, isSuccess = true)
         }, {
             DbAdsResponse(result = emptyList(), isSuccess = false, listOf(CommonErrorModel(message = localizedMessage)))
         })
@@ -131,7 +138,6 @@ class RepoAdSQL(initObjects: Collection<AdModel> = emptyList()) : IRepoAd {
         } catch (e: SQLException) {
             throw e
         } catch (e: Throwable) {
-            e.printStackTrace()
             return handleException(e)
         }
     }

@@ -1,19 +1,17 @@
-package ru.otus.otuskotlin.marketplace.backend.repo.sql.tables
+package ru.otus.otuskotlin.marketplace.backend.repo.sql
 
-import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.ResultRow
+import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.statements.InsertStatement
 import ru.otus.otuskotlin.marketplace.backend.common.models.*
 
-object AdTable : Table("Ads") {
-    val id = uuid("id").autoGenerate()
+object AdsTable : Table("Ads") {
+    val id = uuid("id").autoGenerate().uniqueIndex()
     val title = varchar("title", 128)
     val description = varchar("description", 512)
-    val ownerId = uuid("ownerId")
+    val ownerId = reference("owner_id", UsersTable.id).index()
     val visibility = enumeration("visibility", AdVisibilityModel::class)
-    val dealSide = enumeration("dealSide", DealSideModel::class)
-
-    val isDeleted = bool("is_deleted").nullable().default(false)
+    val dealSide = enumeration("deal_side", DealSideModel::class).index()
 
     override val primaryKey = PrimaryKey(id)
 
@@ -37,6 +35,11 @@ object AdTable : Table("Ads") {
     )
 }
 
-fun AdTable.selectNotDeleted(where: SqlExpressionBuilder.() -> Op<Boolean>) = select(
-    SqlExpressionBuilder.where() and (isDeleted eq false)
-)
+object UsersTable : Table("Users") {
+    val id = uuid("id").autoGenerate().uniqueIndex()
+    // The field was created only for an example of using relationships and is not used anywhere,
+    // but for the references, and must always be equals ID
+    val name = varchar("name", 128)
+
+    override val primaryKey = PrimaryKey(AdsTable.id)
+}
