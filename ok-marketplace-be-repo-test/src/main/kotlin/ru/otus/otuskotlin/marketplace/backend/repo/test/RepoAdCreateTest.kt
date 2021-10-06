@@ -5,6 +5,7 @@ import org.junit.Test
 import ru.otus.otuskotlin.marketplace.backend.common.models.*
 import ru.otus.otuskotlin.marketplace.backend.repo.common.DbAdModelRequest
 import ru.otus.otuskotlin.marketplace.backend.repo.common.IRepoAd
+import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 
@@ -22,12 +23,12 @@ abstract class RepoAdCreateTest {
         assertEquals(emptyList(), result.errors)
     }
 
-    companion object: BaseInitAds("search") {
+    companion object: BaseInitAds() {
 
         private val createObj = AdModel(
             title = "create object",
             description = "create object description",
-            ownerId = OwnerIdModel("owner-123"),
+            ownerId = OwnerIdModel(UUID.randomUUID()),
             visibility = AdVisibilityModel.REGISTERED_ONLY,
             dealSide = DealSideModel.PROPOSAL,
         )
