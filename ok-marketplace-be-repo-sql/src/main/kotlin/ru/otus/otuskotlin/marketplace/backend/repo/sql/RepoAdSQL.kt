@@ -8,8 +8,14 @@ import ru.otus.otuskotlin.marketplace.backend.repo.common.*
 import java.sql.SQLException
 import java.util.*
 
-class RepoAdSQL(initObjects: Collection<AdModel> = emptyList()) : IRepoAd {
-    private val db by lazy { SqlConnector().connect(AdsTable, UsersTable) }
+class RepoAdSQL(
+    url: String = "jdbc:postgresql://localhost:5432/marketplacedevdb",
+    user: String = "postgres",
+    password: String = "marketplace-pass",
+    schema: String = "marketplace",
+    initObjects: Collection<AdModel> = emptyList()
+) : IRepoAd {
+    private val db by lazy { SqlConnector(url, user, password, schema).connect(AdsTable, UsersTable) }
 
     init {
         runBlocking {
