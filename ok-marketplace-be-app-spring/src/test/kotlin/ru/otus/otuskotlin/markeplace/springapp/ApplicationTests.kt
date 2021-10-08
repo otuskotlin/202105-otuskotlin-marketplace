@@ -19,7 +19,7 @@ class ApplicationTests {
 
     @Test
     fun createRequest() {
-        val requestId = "123"
+        val requestId = "11111111-1111-1111-1111-111111111111"
         val request = CreateAdRequest(
             requestId = requestId,
             createAd = CreateableAd(
