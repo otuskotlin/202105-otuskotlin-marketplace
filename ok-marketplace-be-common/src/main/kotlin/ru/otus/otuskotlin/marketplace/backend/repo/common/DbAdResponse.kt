@@ -7,4 +7,7 @@ data class DbAdResponse(
     override val result: AdModel?,
     override val isSuccess: Boolean,
     override val errors: List<CommonErrorModel> = emptyList()
-) : IDbResponse<AdModel?>
+) : IDbResponse<AdModel?> {
+    constructor(result: AdModel) : this(result, true)
+    constructor(error: CommonErrorModel) : this(null, false, listOf(error))
+}
