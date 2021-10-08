@@ -5,6 +5,7 @@ import aws.sdk.kotlin.services.dynamodb.model.AttributeValue
 import aws.sdk.kotlin.services.dynamodb.model.AttributeValueUpdate
 import ru.otus.otuskotlin.marketplace.backend.common.models.*
 
+// Константы с именами аттрибутов таблицы
 internal const val ID = "id"
 internal const val TITLE = "title"
 internal const val DESCRIPTION = "description"
@@ -12,6 +13,7 @@ internal const val OWNER_ID = "owner_id"
 internal const val VISIBILITY = "visibility"
 internal const val DEAL_SIDE = "deal_side"
 
+// Строка таблицы представляет собой словарь
 internal fun Map<String, AttributeValue>.toModel() = AdModel(
     id = (get(ID) as? AttributeValue.S)?.value?.let { AdIdModel(it) }?: AdIdModel.NONE,
     title = (get(TITLE) as? AttributeValue.S)?.value?: "",

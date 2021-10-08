@@ -15,20 +15,24 @@ class RepoAdDynamo(
     private val timeout: Long = 30000,
     private val table: String = "table_ads",
     private val index: String = "BY_OWNER_DEALSIDE",
-    test: Boolean = false,
+    region: String = "us-west-2",
+    initObjects: Collection<AdModel> = emptyList(),
 ): IRepoAd {
 
     private val client by lazy {
         DynamoDbClient {
-            region = "us-west-2"
-        }.also {
-            if (test)
-                runBlocking {
-                    init(it)
-                }
+            this.region = region
         }
     }
 
+    /**
+     * Запрос на создание таблицы
+     * @param tableName - имя таблицы
+     * @param attributeDefinitions - аттрибуты, которые указываются в качестве ключей
+     * @param keySchema - партиционный и сортировочный ключи таблицы
+     * @param globalSecondaryIndexes - список глобальных индексов
+     * @param provisionedThroughput - параметры пропускной способности
+     */
     private val createTableRequest by lazy {
         CreateTableRequest {
             tableName = table
@@ -60,7 +64,7 @@ class RepoAdDynamo(
                     keyType = KeyType.Range
                 },
             )
-            provisionedThroughput {
+            provisionedThroughput = ProvisionedThroughput {
                 readCapacityUnits = 10
                 writeCapacityUnits = 10
             }
@@ -86,7 +90,7 @@ class RepoAdDynamo(
                             VISIBILITY
                         )
                     }
-                    provisionedThroughput {
+                    provisionedThroughput = ProvisionedThroughput {
                         readCapacityUnits = 10
                         writeCapacityUnits = 10
                     }
@@ -95,32 +99,42 @@ class RepoAdDynamo(
         }
     }
 
-    override suspend fun create(rq: DbAdModelRequest): DbAdResponse {
-        return doWithTimeout({
-                val row = rq.ad.copy(id = AdIdModel(UUID.randomUUID().toString()))
-                client.putItem {
+    init {
+        runBlocking {
+            // Если таблица не существует, то вызывается EOFException, в обработчике создается таблица
+            try {
+                client.describeTable {
                     tableName = table
-                    item = row.toCreateItem()
                 }
-                DbAdResponse(row, true)
-            },{
-            DbAdResponse(
-                result = null,
-                isSuccess = false,
-                errors = listOf(
-                    CommonErrorModel(
-                        message = localizedMessage,
-                        field = "RepoAdDynamo.create",
-                        exception = this
-                    )
-                )
-            )
-        })
+            } catch (e: EOFException) {
+                println(e.localizedMessage)
+                client.createTable(createTableRequest)
+            }
+            var tableIsActive = client.describeTable {
+                tableName = table
+            }.table?.tableStatus == TableStatus.Active
+            // Ожидаем пока статус таблицы не изменится на Active
+            while (!tableIsActive) {
+                delay(500)
+                tableIsActive = client.describeTable {
+                    tableName = table
+                }.table?.tableStatus == TableStatus.Active
+            }
+            println("Table was created")
+            initObjects.forEach {
+                save(it)
+            }
+        }
     }
 
-    override suspend fun read(rq: DbAdIdRequest): DbAdResponse {
+    override suspend fun create(req: DbAdModelRequest): DbAdResponse {
+        val row = req.ad.copy(id = AdIdModel(UUID.randomUUID().toString()))
+        return save(row)
+    }
+
+    override suspend fun read(req: DbAdIdRequest): DbAdResponse {
         return doWithTimeout({
-            if (rq.id == AdIdModel.NONE)
+            if (req.id == AdIdModel.NONE)
                 return@doWithTimeout DbAdResponse(
                     result = null,
                     isSuccess = false,
@@ -132,7 +146,7 @@ class RepoAdDynamo(
                     )
                 )
             val keyToGet = mutableMapOf<String, AttributeValue>()
-            keyToGet[ID] = AttributeValue.S(rq.id.asString())
+            keyToGet[ID] = AttributeValue.S(req.id.asString())
             keyToGet[TITLE] = AttributeValue.S("first-ad")
             val row = client.getItem {
                 tableName = table
@@ -164,15 +178,15 @@ class RepoAdDynamo(
 
     }
 
-    override suspend fun update(rq: DbAdModelRequest): DbAdResponse {
+    override suspend fun update(req: DbAdModelRequest): DbAdResponse {
         return doWithTimeout({
-            val keyToUpd = mapOf(ID to AttributeValue.S(rq.ad.id.asString()))
+            val keyToUpd = mapOf(ID to AttributeValue.S(req.ad.id.asString()))
             client.updateItem {
                 tableName = table
                 key = keyToUpd
-                attributeUpdates = rq.ad.toUpdateItem()
+                attributeUpdates = req.ad.toUpdateItem()
             }
-            DbAdResponse(rq.ad, true)
+            DbAdResponse(req.ad, true)
         },{
             DbAdResponse(
                 result = null,
@@ -188,9 +202,9 @@ class RepoAdDynamo(
         })
     }
 
-    override suspend fun delete(rq: DbAdIdRequest): DbAdResponse {
+    override suspend fun delete(req: DbAdIdRequest): DbAdResponse {
         return doWithTimeout({
-            if (rq.id == AdIdModel.NONE)
+            if (req.id == AdIdModel.NONE)
                 return@doWithTimeout DbAdResponse(
                     result = null,
                     isSuccess = false,
@@ -201,7 +215,7 @@ class RepoAdDynamo(
                         )
                     )
                 )
-            val keyToDel = mapOf(ID to AttributeValue.S(rq.id.asString()))
+            val keyToDel = mapOf(ID to AttributeValue.S(req.id.asString()))
             val row = client.getItem {
                 tableName = table
                 this.key = keyToDel
@@ -235,7 +249,7 @@ class RepoAdDynamo(
         })
     }
 
-    override suspend fun search(rq: DbAdFilterRequest): DbAdsResponse {
+    override suspend fun search(req: DbAdFilterRequest): DbAdsResponse {
         return doWithTimeout({
             val rows = client.scan {
                 tableName = table
@@ -245,8 +259,8 @@ class RepoAdDynamo(
                     "#deal_side" to DEAL_SIDE
                 )
                 expressionAttributeValues = mapOf(
-                    ":owner_id" to AttributeValue.S(rq.ownerId.asString()),
-                    ":deal_side" to AttributeValue.S(rq.dealSide.name)
+                    ":owner_id" to AttributeValue.S(req.ownerId.asString()),
+                    ":deal_side" to AttributeValue.S(req.dealSide.name)
                 )
                 filterExpression = "#owner_id = :owner_id OR #deal_side = :deal_side"
             }.items?.asFlow()?.map { it.toModel() }?.toList()?: emptyList()
@@ -274,25 +288,26 @@ class RepoAdDynamo(
         println("Table was deleted")
     }
 
-    private suspend fun init(client: DynamoDbClient) {
-        try {
-            client.describeTable {
+    private suspend fun save(model: AdModel): DbAdResponse {
+        return doWithTimeout({
+            client.putItem {
                 tableName = table
+                item = model.toCreateItem()
             }
-        } catch (e: EOFException) {
-            println(e.localizedMessage)
-            client.createTable(createTableRequest)
-        }
-        var tableIsActive = client.describeTable {
-            tableName = table
-        }.table?.tableStatus == TableStatus.Active
-        while (!tableIsActive) {
-            delay(500)
-            tableIsActive = client.describeTable {
-                tableName = table
-            }.table?.tableStatus == TableStatus.Active
-        }
-        println("Table was created")
+            DbAdResponse(model, true)
+        },{
+            DbAdResponse(
+                result = null,
+                isSuccess = false,
+                errors = listOf(
+                    CommonErrorModel(
+                        message = localizedMessage,
+                        field = "RepoAdDynamo.create",
+                        exception = this
+                    )
+                )
+            )
+        })
     }
 
     private suspend fun <T> doWithTimeout(block: suspend () -> T, onError: Throwable.() -> T) =
