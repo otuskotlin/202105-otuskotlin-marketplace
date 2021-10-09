@@ -26,6 +26,7 @@ data class AppKafkaConfig(
         repoTest = RepoAdInMemory(initObjects = listOf()),
     ),
     val crud: AdCrud = AdCrud(contextConfig),
+    val service: AdService = AdService(crud = crud),
     val kafkaConsumer: Consumer<String, String> = kafkaConsumer(kafkaHosts, kafkaGroupId),
     val kafkaProducer: Producer<String, String> = kafkaProducer(kafkaHosts),
 ) {

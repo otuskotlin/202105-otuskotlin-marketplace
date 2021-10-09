@@ -45,7 +45,7 @@ class RepoReadTest {
                     ?: fail("Incorrect response format")
 
                 assertEquals(ReadAdResponse.Result.SUCCESS, res.result)
-                assertEquals("666", res.readAd?.id)
+                assertEquals(ad.id.asString(), res.readAd?.id)
                 assertEquals(AdDealSide.DEMAND, res.readAd?.dealSide)
                 assertEquals(AdVisibility.PUBLIC, res.readAd?.visibility)
                 assertEquals(ad.title, res.readAd?.title)

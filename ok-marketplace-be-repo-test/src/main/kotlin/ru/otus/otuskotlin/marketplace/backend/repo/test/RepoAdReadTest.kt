@@ -5,6 +5,7 @@ import org.junit.Test
 import ru.otus.otuskotlin.marketplace.backend.common.models.*
 import ru.otus.otuskotlin.marketplace.backend.repo.common.DbAdIdRequest
 import ru.otus.otuskotlin.marketplace.backend.repo.common.IRepoAd
+import java.util.*
 import kotlin.test.assertEquals
 
 
@@ -32,14 +33,14 @@ abstract class RepoAdReadTest {
         )
     }
 
-    companion object: BaseInitAds("search") {
+    companion object: BaseInitAds() {
         override val initObjects: List<AdModel> = listOf(
             createInitTestModel("read")
         )
         private val readSuccessStub = initObjects.first()
 
         val successId = readSuccessStub.id
-        val notFoundId = AdIdModel("ad-repo-read-notFound")
+        val notFoundId = AdIdModel(UUID.randomUUID())
 
     }
 }
