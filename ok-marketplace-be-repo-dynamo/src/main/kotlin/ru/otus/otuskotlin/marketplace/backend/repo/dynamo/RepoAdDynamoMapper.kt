@@ -29,24 +29,25 @@ internal fun AdModel.toCreateItem(id: String? = null): Map<String, AttributeValu
         map[ID] = AttributeValue.S(it)
     }
     title.takeIf { it.isNotBlank() }?.let {
-        map[TITLE] = AttributeValue.S(it)
+        map[TITLE] = AttributeValue.S(title)
     }
     description.takeIf { it.isNotBlank() }?.let {
-        map[DESCRIPTION] = AttributeValue.S(it)
+        map[DESCRIPTION] = AttributeValue.S(description)
     }
     ownerId.takeIf { it != OwnerIdModel.NONE }?.let {
-        map[OWNER_ID] = AttributeValue.S(it.asString())
+        map[OWNER_ID] = AttributeValue.S(ownerId.asString())
     }
     visibility.takeIf { it != AdVisibilityModel.NONE }?.let {
-        map[VISIBILITY] = AttributeValue.S(it.name)
+        map[VISIBILITY] = AttributeValue.S(visibility.name)
     }
     dealSide.takeIf { it != DealSideModel.NONE }?.let {
-        map[DEAL_SIDE] = AttributeValue.S(it.name)
+        map[DEAL_SIDE] = AttributeValue.S(dealSide.name)
     }
     return map.toMap()
 }
 
-internal fun AdModel.toUpdateItem() = this.toCreateItem().map {
+// Возможно стоит отделить update от create, чтобы была возможность сбрасывать аттрибуты
+internal fun AdModel.toUpdateItem() = this.toCreateItem().filter { it.key != ID }.map {
     it.key to AttributeValueUpdate {
         value = it.value
         action = AttributeAction.Put

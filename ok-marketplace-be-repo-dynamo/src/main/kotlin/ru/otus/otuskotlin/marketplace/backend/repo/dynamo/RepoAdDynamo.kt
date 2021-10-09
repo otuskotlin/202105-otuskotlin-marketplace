@@ -9,16 +9,17 @@ import kotlinx.coroutines.flow.toList
 import ru.otus.otuskotlin.marketplace.backend.common.models.*
 import ru.otus.otuskotlin.marketplace.backend.repo.common.*
 import java.io.EOFException
+import java.lang.Exception
 import java.util.*
+import kotlin.random.Random
 
 class RepoAdDynamo(
     private val timeout: Long = 30000,
     private val table: String = "table_ads",
     private val index: String = "BY_OWNER_DEALSIDE",
     region: String = "us-west-2",
-    initObjects: Collection<AdModel> = emptyList(),
+    private val initObjects: Collection<AdModel> = emptyList(),
 ): IRepoAd {
-
     private val client by lazy {
         DynamoDbClient {
             this.region = region
@@ -35,14 +36,10 @@ class RepoAdDynamo(
      */
     private val createTableRequest by lazy {
         CreateTableRequest {
-            tableName = table
+            this.tableName = table
             attributeDefinitions = listOf(
                 AttributeDefinition {
                     attributeName = ID
-                    attributeType = ScalarAttributeType.S
-                },
-                AttributeDefinition {
-                    attributeName = TITLE
                     attributeType = ScalarAttributeType.S
                 },
                 AttributeDefinition {
@@ -58,11 +55,7 @@ class RepoAdDynamo(
                 KeySchemaElement {
                     attributeName = ID
                     keyType = KeyType.Hash
-                },
-                KeySchemaElement {
-                    attributeName = TITLE
-                    keyType = KeyType.Range
-                },
+                }
             )
             provisionedThroughput = ProvisionedThroughput {
                 readCapacityUnits = 10
@@ -101,26 +94,25 @@ class RepoAdDynamo(
 
     init {
         runBlocking {
-            // Если таблица не существует, то вызывается EOFException, в обработчике создается таблица
             try {
                 client.describeTable {
-                    tableName = table
+                    this.tableName = table
                 }
             } catch (e: EOFException) {
                 println(e.localizedMessage)
                 client.createTable(createTableRequest)
             }
             var tableIsActive = client.describeTable {
-                tableName = table
+                this.tableName = table
             }.table?.tableStatus == TableStatus.Active
             // Ожидаем пока статус таблицы не изменится на Active
             while (!tableIsActive) {
                 delay(500)
                 tableIsActive = client.describeTable {
-                    tableName = table
+                    this.tableName = table
                 }.table?.tableStatus == TableStatus.Active
             }
-            println("Table was created")
+            println("Table is ready")
             initObjects.forEach {
                 save(it)
             }
@@ -147,7 +139,6 @@ class RepoAdDynamo(
                 )
             val keyToGet = mutableMapOf<String, AttributeValue>()
             keyToGet[ID] = AttributeValue.S(req.id.asString())
-            keyToGet[TITLE] = AttributeValue.S("first-ad")
             val row = client.getItem {
                 tableName = table
                 key = keyToGet
@@ -180,6 +171,31 @@ class RepoAdDynamo(
 
     override suspend fun update(req: DbAdModelRequest): DbAdResponse {
         return doWithTimeout({
+            if (req.ad.id == AdIdModel.NONE)
+                return@doWithTimeout DbAdResponse(
+                    result = null,
+                    isSuccess = false,
+                    errors = listOf(
+                        CommonErrorModel(
+                            field = "id",
+                            message = "Id is empty"
+                        )
+                    )
+                )
+            val keyToDel = mapOf(ID to AttributeValue.S(req.ad.id.asString()))
+            client.getItem {
+                tableName = table
+                this.key = keyToDel
+            }.item?.toModel()?: return@doWithTimeout DbAdResponse(
+                result = null,
+                isSuccess = false,
+                errors = listOf(
+                    CommonErrorModel(
+                        field = "id",
+                        message = "Not Found"
+                    )
+                )
+            )
             val keyToUpd = mapOf(ID to AttributeValue.S(req.ad.id.asString()))
             client.updateItem {
                 tableName = table
@@ -251,19 +267,40 @@ class RepoAdDynamo(
 
     override suspend fun search(req: DbAdFilterRequest): DbAdsResponse {
         return doWithTimeout({
+            val attrNameMap = mutableMapOf<String, String>()
+            val attrValuesMap = mutableMapOf<String, AttributeValue>()
+            if (req.dealSide != DealSideModel.NONE) {
+                attrNameMap["#deal_side"] = DEAL_SIDE
+                attrValuesMap[":deal_side"] = AttributeValue.S(req.dealSide.name)
+            }
+            if (req.ownerId != OwnerIdModel.NONE) {
+                attrNameMap["#owner_id"] = OWNER_ID
+                attrValuesMap[":owner_id"] = AttributeValue.S(req.ownerId.asString())
+            }
+            val expression = when {
+                req.dealSide == DealSideModel.NONE && req.ownerId != OwnerIdModel.NONE -> "#owner_id = :owner_id"
+                req.dealSide != DealSideModel.NONE && req.ownerId == OwnerIdModel.NONE -> "#deal_side = :deal_side"
+                req.dealSide != DealSideModel.NONE && req.ownerId != OwnerIdModel.NONE -> "#owner_id = :owner_id AND #deal_side = :deal_side"
+                else -> return@doWithTimeout DbAdsResponse(
+                    result = emptyList(),
+                    isSuccess = false,
+                    errors = listOf(
+                        CommonErrorModel(
+                            field = "dealSide&ownerId",
+                            message = "There is no filter for search"
+                        )
+                    )
+                )
+            }
             val rows = client.scan {
                 tableName = table
-                indexName = index
-                expressionAttributeNames = mapOf(
-                    "#owner_id" to OWNER_ID,
-                    "#deal_side" to DEAL_SIDE
-                )
-                expressionAttributeValues = mapOf(
-                    ":owner_id" to AttributeValue.S(req.ownerId.asString()),
-                    ":deal_side" to AttributeValue.S(req.dealSide.name)
-                )
-                filterExpression = "#owner_id = :owner_id OR #deal_side = :deal_side"
-            }.items?.asFlow()?.map { it.toModel() }?.toList()?: emptyList()
+//                indexName = index
+                expressionAttributeNames = attrNameMap.toMap()
+                expressionAttributeValues = attrValuesMap.toMap()
+                filterExpression = expression
+            }.items
+                ?.asFlow()
+                ?.map { it.toModel() }?.toList()?: emptyList()
             DbAdsResponse(rows, true)
         },{
             DbAdsResponse(
@@ -281,7 +318,7 @@ class RepoAdDynamo(
 
     }
 
-    suspend fun clean() {
+    suspend fun clear() {
         client.deleteTable {
             tableName = table
         }
