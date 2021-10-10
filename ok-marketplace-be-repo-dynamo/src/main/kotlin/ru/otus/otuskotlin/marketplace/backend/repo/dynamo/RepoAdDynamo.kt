@@ -8,10 +8,14 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import ru.otus.otuskotlin.marketplace.backend.common.models.*
 import ru.otus.otuskotlin.marketplace.backend.repo.common.*
+import ru.otus.otuskotlin.marketplace.backend.repo.dynamo.AdDynamoDto.Companion.DEAL_SIDE
+import ru.otus.otuskotlin.marketplace.backend.repo.dynamo.AdDynamoDto.Companion.DESCRIPTION
+import ru.otus.otuskotlin.marketplace.backend.repo.dynamo.AdDynamoDto.Companion.ID
+import ru.otus.otuskotlin.marketplace.backend.repo.dynamo.AdDynamoDto.Companion.OWNER_ID
+import ru.otus.otuskotlin.marketplace.backend.repo.dynamo.AdDynamoDto.Companion.TITLE
+import ru.otus.otuskotlin.marketplace.backend.repo.dynamo.AdDynamoDto.Companion.VISIBILITY
 import java.io.EOFException
-import java.lang.Exception
 import java.util.*
-import kotlin.random.Random
 
 class RepoAdDynamo(
     private val timeout: Long = 30000,
@@ -142,7 +146,7 @@ class RepoAdDynamo(
             val row = client.getItem {
                 tableName = table
                 key = keyToGet
-            }.item?.toModel()?: return@doWithTimeout DbAdResponse(
+            }.item?.let { AdDynamoDto(it) }?.toModel()?: return@doWithTimeout DbAdResponse(
                 result = null,
                 isSuccess = false,
                 errors = listOf(
@@ -186,7 +190,7 @@ class RepoAdDynamo(
             client.getItem {
                 tableName = table
                 this.key = keyToDel
-            }.item?.toModel()?: return@doWithTimeout DbAdResponse(
+            }.item?.let { AdDynamoDto(it) }?.toModel()?: return@doWithTimeout DbAdResponse(
                 result = null,
                 isSuccess = false,
                 errors = listOf(
@@ -200,7 +204,7 @@ class RepoAdDynamo(
             client.updateItem {
                 tableName = table
                 key = keyToUpd
-                attributeUpdates = req.ad.toUpdateItem()
+                attributeUpdates = AdDynamoDto(req.ad).toUpdateItem()
             }
             DbAdResponse(req.ad, true)
         },{
@@ -235,7 +239,7 @@ class RepoAdDynamo(
             val row = client.getItem {
                 tableName = table
                 this.key = keyToDel
-            }.item?.toModel()?: return@doWithTimeout DbAdResponse(
+            }.item?.let { AdDynamoDto(it) }?.toModel()?: return@doWithTimeout DbAdResponse(
                 result = null,
                 isSuccess = false,
                 errors = listOf(
@@ -300,7 +304,7 @@ class RepoAdDynamo(
                 filterExpression = expression
             }.items
                 ?.asFlow()
-                ?.map { it.toModel() }?.toList()?: emptyList()
+                ?.map { AdDynamoDto(it).toModel() }?.toList()?: emptyList()
             DbAdsResponse(rows, true)
         },{
             DbAdsResponse(
@@ -329,7 +333,7 @@ class RepoAdDynamo(
         return doWithTimeout({
             client.putItem {
                 tableName = table
-                item = model.toCreateItem()
+                item = AdDynamoDto(model).toCreateItem()
             }
             DbAdResponse(model, true)
         },{
