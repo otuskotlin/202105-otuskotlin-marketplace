@@ -19,28 +19,29 @@ import ru.otus.otuskotlin.marketplace.backend.repo.test.RepoAdUpdateTest
 import java.net.InetSocketAddress
 
 class RepoAdCassandraCreateTest : RepoAdCreateTest() {
-    override val repo: IRepoAd = TestCompanion.repository(initObjects)
+    override val repo: IRepoAd = TestCompanion.repository(initObjects, "ks_create")
 }
 
 class RepoAdCassandraDeleteTest : RepoAdDeleteTest() {
-    override val repo: IRepoAd = TestCompanion.repository(initObjects)
+    override val repo: IRepoAd = TestCompanion.repository(initObjects, "ks_delete")
 }
 
 class RepoAdCassandraReadTest : RepoAdReadTest() {
-    override val repo: IRepoAd = TestCompanion.repository(initObjects)
+    override val repo: IRepoAd = TestCompanion.repository(initObjects, "ks_read")
 }
 
 class RepoAdCassandraSearchTest : RepoAdSearchTest() {
-    override val repo: IRepoAd = TestCompanion.repository(initObjects)
+    override val repo: IRepoAd = TestCompanion.repository(initObjects, "ks_search")
 }
 
 class RepoAdCassandraUpdateTest : RepoAdUpdateTest() {
-    override val repo: IRepoAd = TestCompanion.repository(initObjects)
+    override val repo: IRepoAd = TestCompanion.repository(initObjects, "ks_update")
 }
 
-class TestCasandraContainer : CassandraContainer<TestCasandraContainer>()
+class TestCasandraContainer : CassandraContainer<TestCasandraContainer>("cassandra:3.11.2")
 
 object TestCompanion {
+//    val keyspace = "data"
     val container by lazy { TestCasandraContainer().apply { start() } }
 
     val codecRegistry by lazy {
@@ -49,6 +50,18 @@ object TestCompanion {
             register(EnumNameCodec(DealSideModel::class.java))
             register(EnumNameCodec(PermissionModel::class.java))
         }
+    }
+
+    fun createSchema(keyspace: String) {
+        session.execute(
+            SchemaBuilder
+                .createKeyspace(keyspace)
+                .ifNotExists()
+                .withSimpleStrategy(1)
+                .build()
+        )
+        session.execute(AdCassandraDTO.table(keyspace, AdCassandraDTO.TABLE_NAME))
+        session.execute(AdCassandraDTO.titleIndex(keyspace, AdCassandraDTO.TABLE_NAME))
     }
 
     val session by lazy {
@@ -62,24 +75,14 @@ object TestCompanion {
 
     val mapper by lazy { CassandraMapper.builder(session).build() }
 
-    fun repository(initObjects: List<AdModel>): RepoAdCassandra {
-        val keyspace = "data"
-
-        session.execute(
-            SchemaBuilder
-                .createKeyspace(keyspace)
-                .ifNotExists()
-                .withSimpleStrategy(1)
-                .build()
-        )
-        session.execute(AdCassandraDTO.table(keyspace, AdCassandraDTO.TABLE_NAME))
-        session.execute(AdCassandraDTO.titleIndex(keyspace, AdCassandraDTO.TABLE_NAME))
-
+    fun repository(initObjects: List<AdModel>, keyspace: String): RepoAdCassandra {
+        createSchema(keyspace)
         val dao = mapper.adDao(keyspace, AdCassandraDTO.TABLE_NAME)
         CompletableFutures
             .allDone(initObjects.map { dao.create(AdCassandraDTO(it)) })
             .toCompletableFuture()
             .get()
+
         return RepoAdCassandra(dao)
     }
 }

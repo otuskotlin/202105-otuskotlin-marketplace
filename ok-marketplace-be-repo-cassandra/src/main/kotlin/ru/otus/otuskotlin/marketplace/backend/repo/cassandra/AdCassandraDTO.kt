@@ -28,6 +28,10 @@ data class AdCassandraDTO(
     @CqlName(COLUMN_VISIBILITY)
     var visibility: AdVisibilityModel? = null,
     @CqlName(COLUMN_DEAL_SIDE)
+
+    // Нельзя использовать в моделях хранения внутренние модели.
+    // При изменении внутренних моделей, БД автоматически не изменится,
+    // а потому будет Runtime ошибка, которая вылезет только на продуктовом стенде
     var dealSide: DealSideModel? = null,
     @CqlName(COLUMN_PERMISSIONS)
     var permissions: Set<PermissionModel>? = null
