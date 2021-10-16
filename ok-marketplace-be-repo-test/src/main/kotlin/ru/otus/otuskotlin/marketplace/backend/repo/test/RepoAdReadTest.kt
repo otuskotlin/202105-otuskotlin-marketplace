@@ -1,5 +1,6 @@
 package ru.otus.otuskotlin.marketplace.backend.repo.test
 
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import ru.otus.otuskotlin.marketplace.backend.common.models.*
