@@ -107,3 +107,4 @@ Marketplace -- это площадка, на которой пользовате
 2. [ok-marketplace-be-repo-inmemory](ok-marketplace-be-repo-inmemory) - Репозиторий на базе EhCache для тестирования
 3. [ok-marketplace-be-repo-sql](ok-marketplace-be-repo-sql) - Репозиторий на базе PostgreSQL
 4. [ok-marketplace-be-repo-cassandra](ok-marketplace-be-repo-cassandra) - Репозиторий на базе Cassandra
+5. [ok-marketplace-be-repo-dynamo](ok-marketplace-be-repo-dynamo) - Репозиторий на базе AWS Dynamo
