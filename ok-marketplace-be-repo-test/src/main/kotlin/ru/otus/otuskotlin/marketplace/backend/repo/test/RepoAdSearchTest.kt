@@ -2,7 +2,9 @@ package ru.otus.otuskotlin.marketplace.backend.repo.test
 
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
-import ru.otus.otuskotlin.marketplace.backend.common.models.*
+import ru.otus.otuskotlin.marketplace.backend.common.models.AdModel
+import ru.otus.otuskotlin.marketplace.backend.common.models.DealSideModel
+import ru.otus.otuskotlin.marketplace.backend.common.models.OwnerIdModel
 import ru.otus.otuskotlin.marketplace.backend.repo.common.DbAdFilterRequest
 import ru.otus.otuskotlin.marketplace.backend.repo.common.IRepoAd
 import java.util.*
@@ -30,7 +32,16 @@ abstract class RepoAdSearchTest {
         assertEquals(emptyList(), result.errors)
     }
 
-    companion object: BaseInitAds() {
+    @Test
+    fun searchStr() {
+        val result = runBlocking { repo.search(DbAdFilterRequest(searchStr = "ad1")) }
+        assertEquals(true, result.isSuccess)
+        val expected = listOf(initObjects[0])
+        assertEquals(expected.sortedBy { it.id.asString() }, result.result.sortedBy { it.id.asString() })
+        assertEquals(emptyList(), result.errors)
+    }
+
+    companion object : BaseInitAds() {
 
         val searchOwnerId = OwnerIdModel(UUID.randomUUID())
         override val initObjects: List<AdModel> = listOf(
