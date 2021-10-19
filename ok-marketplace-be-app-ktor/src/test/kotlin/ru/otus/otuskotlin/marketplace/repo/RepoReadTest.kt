@@ -4,14 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import io.ktor.http.*
 import io.ktor.server.testing.*
 import org.junit.Test
-import ru.otus.otuskotlin.marketplace.AppKtorConfig
+import ru.otus.otuskotlin.marketplace.configs.AppKtorConfig
 import ru.otus.otuskotlin.marketplace.Utils
 import ru.otus.otuskotlin.marketplace.backend.repo.inmemory.RepoAdInMemory
+import ru.otus.otuskotlin.marketplace.configs.KtorAuthConfig
 import ru.otus.otuskotlin.marketplace.module
 import ru.otus.otuskotlin.marketplace.openapi.models.*
 import ru.otus.otuskotlin.marketplace.stubs.Bolt
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 import kotlin.test.fail
 
 class RepoReadTest {
@@ -29,6 +29,7 @@ class RepoReadTest {
         }) {
             handleRequest(HttpMethod.Post, "/ad/read") {
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.withCharset(Charsets.UTF_8).toString())
+                addHeader(HttpHeaders.Authorization, "Bearer ${KtorAuthConfig.testToken()}")
                 val request = ReadAdRequest(
                     readAdId = ad.id.asString(),
                     debug = BaseDebugRequest(mode = BaseDebugRequest.Mode.TEST)

@@ -1,10 +1,11 @@
 package ru.otus.otuskotlin.marketplace.validation
 
-import io.ktor.application.*
 import io.ktor.http.*
 import io.ktor.server.testing.*
 import org.junit.Test
 import ru.otus.otuskotlin.marketplace.Utils
+import ru.otus.otuskotlin.marketplace.configs.AppKtorConfig
+import ru.otus.otuskotlin.marketplace.configs.KtorAuthConfig
 import ru.otus.otuskotlin.marketplace.module
 import ru.otus.otuskotlin.marketplace.openapi.models.CreateAdResponse
 import kotlin.test.assertEquals
@@ -14,9 +15,12 @@ import kotlin.test.fail
 class ValidationTest {
     @Test
     fun `bad json`() {
-        withTestApplication(Application::module) {
+        withTestApplication({
+            module(config = AppKtorConfig())
+        }) {
             handleRequest(HttpMethod.Post, "/ad/create") {
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.withCharset(Charsets.UTF_8).toString())
+                addHeader(HttpHeaders.Authorization, "Bearer ${KtorAuthConfig.testToken()}")
                 setBody("{")
             }.apply {
                 assertEquals(HttpStatusCode.OK, response.status())

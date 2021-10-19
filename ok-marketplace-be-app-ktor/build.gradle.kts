@@ -37,6 +37,8 @@ dependencies {
     implementation(ktor("server-netty")) // "io.ktor:ktor-ktor-server-netty:$ktorVersion"
     implementation(ktor("jackson")) // "io.ktor:ktor-ktor-jackson:$ktorVersion"
     implementation(ktor("websockets")) // "io.ktor:ktor-websockets:$ktorVersion"
+    implementation(ktor("auth"))
+    implementation(ktor("auth-jwt"))
 
     // logging if you want
     implementation("ch.qos.logback:logback-classic:$logbackVersion")

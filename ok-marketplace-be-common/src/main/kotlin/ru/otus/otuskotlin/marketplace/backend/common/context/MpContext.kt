@@ -13,6 +13,7 @@ data class MpContext(
     var config: ContextConfig = ContextConfig(),
 
     val userSession: IUserSession<*> = IUserSession.Companion.EmptySession,
+    var principal: MpPrincipalModel = MpPrincipalModel.NONE,
     var adRepo: IRepoAd = IRepoAd.NONE,
 
     var onRequest: String = "",

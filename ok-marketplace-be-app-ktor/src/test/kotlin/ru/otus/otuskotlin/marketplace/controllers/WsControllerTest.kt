@@ -5,6 +5,7 @@ import io.ktor.http.cio.websocket.Frame
 import io.ktor.http.cio.websocket.readBytes
 import io.ktor.server.testing.withTestApplication
 import ru.otus.otuskotlin.marketplace.Utils
+import ru.otus.otuskotlin.marketplace.configs.AppKtorConfig
 import ru.otus.otuskotlin.marketplace.module
 import ru.otus.otuskotlin.marketplace.openapi.models.BaseMessage
 import ru.otus.otuskotlin.marketplace.openapi.models.CreateAdRequest
@@ -16,7 +17,9 @@ import kotlin.test.assertIs
 class WsControllerTest {
     @Test
     fun test() {
-        withTestApplication({ module() }) {
+        withTestApplication({
+            module(config = AppKtorConfig())
+        }) {
             handleWebSocketConversation("/ws") { incoming, outgoing ->
                 run {
                     val responseFrame = incoming.receive()
