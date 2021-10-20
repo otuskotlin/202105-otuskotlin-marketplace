@@ -1,5 +1,6 @@
 POST http://127.0.0.1:8080/ad/create
 Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZC11c2VycyIsImlzcyI6Ik90dXNLb3RsaW4iLCJncm91cHMiOlsiVEVTVCJdLCJpZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMSIsImV4cCI6MTYzNDc1MjkxN30.rE9a1at2iZnVIfao-onYmF9I_jBmhFEUegLV-qo76GY
 
 {
   "messageType": "CreateAdRequest",

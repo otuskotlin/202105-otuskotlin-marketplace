@@ -14,7 +14,8 @@ abstract class RouterTest {
         body: BaseMessage? = null,
         uri: String,
         config: AppKtorConfig = AppKtorConfig(),
-        crossinline block: T.() -> Unit
+        result: HttpStatusCode = HttpStatusCode.OK,
+        crossinline block: T.() -> Unit = {}
     ) {
         withTestApplication({
             module(config = config)
@@ -25,10 +26,11 @@ abstract class RouterTest {
                 setBody(Utils.mapper.writeValueAsString(body))
             }.apply {
                 println(response.content)
-                assertEquals(HttpStatusCode.OK, response.status())
-                assertEquals(ContentType.Application.Json.withCharset(Charsets.UTF_8), response.contentType())
-
-                Utils.mapper.readValue(response.content, T::class.java).block()
+                assertEquals(result, response.status())
+                if (result == HttpStatusCode.OK) {
+                    assertEquals(ContentType.Application.Json.withCharset(Charsets.UTF_8), response.contentType())
+                    Utils.mapper.readValue(response.content, T::class.java).block()
+                }
             }
         }
     }
