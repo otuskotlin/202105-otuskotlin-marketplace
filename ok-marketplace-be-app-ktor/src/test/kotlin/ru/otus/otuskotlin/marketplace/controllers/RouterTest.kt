@@ -3,6 +3,7 @@ package ru.otus.otuskotlin.marketplace.controllers
 import io.ktor.http.*
 import io.ktor.server.testing.*
 import ru.otus.otuskotlin.marketplace.Utils
+import ru.otus.otuskotlin.marketplace.auth.testUserToken
 import ru.otus.otuskotlin.marketplace.configs.AppKtorConfig
 import ru.otus.otuskotlin.marketplace.configs.KtorAuthConfig
 import ru.otus.otuskotlin.marketplace.module

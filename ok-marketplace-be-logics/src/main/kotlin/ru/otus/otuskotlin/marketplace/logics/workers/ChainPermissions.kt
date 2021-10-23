@@ -45,5 +45,7 @@ fun ICorChainDsl<MpContext>.chainPermissions(title: String) = worker<MpContext> 
         }.flatten().toSet()
         chainPermissions.addAll(permAdd)
         chainPermissions.removeAll(permDel)
+        println("PRINCIPAL: $principal")
+        println("PERMISSIONS: $chainPermissions")
     }
 }

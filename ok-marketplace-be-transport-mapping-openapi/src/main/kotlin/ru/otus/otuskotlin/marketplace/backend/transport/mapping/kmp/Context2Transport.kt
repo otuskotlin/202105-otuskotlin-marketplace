@@ -95,3 +95,11 @@ private fun AdModel.toTransport() = ResponseAd(
     permissions = permissions.takeIf { it.isNotEmpty() }?.filter { it != PermissionModel.NONE }
         ?.map { AdPermissions.valueOf(it.name) }?.toSet(),
 )
+
+private fun PermissionModel.toTransport() = when(this) {
+    PermissionModel.READ -> AdPermissions.READ
+    PermissionModel.UPDATE -> AdPermissions.UPDATE
+    PermissionModel.DELETE -> AdPermissions.DELETE
+    PermissionModel.CONTACT -> AdPermissions.CONTACT
+    PermissionModel.NONE -> null
+}

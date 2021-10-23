@@ -6,6 +6,7 @@ import io.ktor.server.testing.*
 import org.junit.Test
 import ru.otus.otuskotlin.marketplace.configs.AppKtorConfig
 import ru.otus.otuskotlin.marketplace.Utils
+import ru.otus.otuskotlin.marketplace.auth.testUserToken
 import ru.otus.otuskotlin.marketplace.backend.repo.inmemory.RepoAdInMemory
 import ru.otus.otuskotlin.marketplace.configs.KtorAuthConfig
 import ru.otus.otuskotlin.marketplace.module
@@ -23,7 +24,8 @@ class RepoReadTest {
             val config = AppKtorConfig(
                 adRepoTest = RepoAdInMemory(
                     initObjects = listOf(ad)
-                )
+                ),
+                auth = KtorAuthConfig.TEST
             )
             module(config)
         }) {
