@@ -16,8 +16,6 @@ internal fun ICorChainDsl<MpContext>.repoOffer(title: String) = chain {
 
     on { status == CorStatus.RUNNING }
 
-    repoRead("Чтение объекта, для которого предложения")
-
     worker {
         this.title = "Search offers for the ad"
         description = """

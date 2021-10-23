@@ -18,4 +18,5 @@ enum class MpUserPermissions {
 
     SEARCH_OWN,
 
+    OFFER_FOR_OWN,
 }

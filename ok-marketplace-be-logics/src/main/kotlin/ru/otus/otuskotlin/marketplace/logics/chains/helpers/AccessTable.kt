@@ -29,4 +29,18 @@ val accessTable = mapOf(
         permission = MpUserPermissions.READ_PUBLIC,
         relation = MpPrincipalRelations.PUBLIC
     ) to true,
+
+    // Delete
+    AccessTableConditions(
+        operation = MpContext.MpOperations.DELETE,
+        permission = MpUserPermissions.DELETE_OWN,
+        relation = MpPrincipalRelations.OWN
+    ) to true,
+
+    // Offers
+    AccessTableConditions(
+        operation = MpContext.MpOperations.OFFER,
+        permission = MpUserPermissions.OFFER_FOR_OWN,
+        relation = MpPrincipalRelations.NONE
+    ) to true,
 )

@@ -8,7 +8,10 @@ import ru.otus.otuskotlin.marketplace.common.cor.ICorExec
 import ru.otus.otuskotlin.marketplace.common.cor.chain
 import ru.otus.otuskotlin.marketplace.common.cor.handlers.chain
 import ru.otus.otuskotlin.marketplace.common.cor.handlers.worker
+import ru.otus.otuskotlin.marketplace.logics.chains.helpers.AccessTableConditions
+import ru.otus.otuskotlin.marketplace.logics.chains.helpers.accessTable
 import ru.otus.otuskotlin.marketplace.logics.chains.helpers.mpValidation
+import ru.otus.otuskotlin.marketplace.logics.chains.helpers.resolveRelationsTo
 import ru.otus.otuskotlin.marketplace.logics.chains.stubs.adDeleteStub
 import ru.otus.otuskotlin.marketplace.logics.workers.*
 import ru.otus.otuskotlin.marketplace.validation.validators.ValidatorStringNonEmpty
@@ -30,21 +33,39 @@ object AdDelete: ICorExec<MpContext> by chain<MpContext>({
     }
 
     chainPermissions("Вычисление разрешений для пользователя")
+    repoRead(title = "Чтение объекта из БД")
 
     chain {
+        this.title = "Валидация прав доступа"
         on { status == CorStatus.RUNNING }
-        worker() {
+        worker("Вычисление отношения объявления к принципалу") {
+            dbAd.principalRelations = dbAd.resolveRelationsTo(principal)
+        }
+        worker("Вычисление доступа к объявлению") {
+            permitted = dbAd.principalRelations.flatMap { relation ->
+                chainPermissions.map { permission ->
+                    AccessTableConditions(
+                        operation = operation,
+                        permission = permission,
+                        relation = relation,
+                    )
+                }
+            }
+                .any {
+                    accessTable[it] ?: false
+                }
+        }
+        worker {
             title = "Валидация прав доступа"
-            description = "Проверка наличия прав для удаления объектов из БД"
-            on { MpUserPermissions.CREATE_OWN !in chainPermissions }
+            description = "Проверка наличия прав для удаления объекта из БД"
+            on { !permitted }
             handle {
                 addError(
-                    CommonErrorModel(message = "User is not allowed to create Ads")
+                    CommonErrorModel(message = "User is not allowed to delete Ad")
                 )
             }
         }
     }
-
 
     repoDelete(title = "Удаление объекта из БД")
 

@@ -24,6 +24,7 @@ fun ICorChainDsl<MpContext>.chainPermissions(title: String) = worker<MpContext> 
                     MpUserPermissions.CREATE_OWN,
                     MpUserPermissions.UPDATE_OWN,
                     MpUserPermissions.DELETE_OWN,
+                    MpUserPermissions.OFFER_FOR_OWN,
                 )
                 MpUserGroups.MODERATOR_MP -> setOf()
                 MpUserGroups.ADMIN_AD -> setOf()

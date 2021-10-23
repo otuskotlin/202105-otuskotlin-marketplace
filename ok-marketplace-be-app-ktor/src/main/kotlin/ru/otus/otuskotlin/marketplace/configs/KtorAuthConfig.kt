@@ -21,9 +21,9 @@ data class KtorAuthConfig(
     companion object {
         const val ID_CLAIM = "id"
         const val GROUPS_CLAIM = "groups"
-        const val FNAME_CLAIM = "fname"
-        const val MNAME_CLAIM = "mname"
-        const val LNAME_CLAIM = "lname"
+        const val F_NAME_CLAIM = "fname"
+        const val M_NAME_CLAIM = "mname"
+        const val L_NAME_CLAIM = "lname"
 
         val TEST = KtorAuthConfig(
                 secret = "secret",
