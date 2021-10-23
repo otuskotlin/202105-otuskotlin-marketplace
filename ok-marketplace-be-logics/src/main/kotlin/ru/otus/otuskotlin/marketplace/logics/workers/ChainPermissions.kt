@@ -5,7 +5,7 @@ import ru.otus.otuskotlin.marketplace.backend.common.context.MpContext
 import ru.otus.otuskotlin.marketplace.backend.common.models.MpUserGroups
 import ru.otus.otuskotlin.marketplace.backend.common.models.MpUserPermissions
 import ru.otus.otuskotlin.marketplace.common.cor.ICorChainDsl
-import ru.otus.otuskotlin.marketplace.common.cor.worker
+import ru.otus.otuskotlin.marketplace.common.cor.handlers.worker
 
 fun ICorChainDsl<MpContext>.chainPermissions(title: String) = worker<MpContext> {
     this.title = title
@@ -16,7 +16,6 @@ fun ICorChainDsl<MpContext>.chainPermissions(title: String) = worker<MpContext> 
     }
 
     handle {
-        println("COMPUT PERMISSTIONS")
         val permAdd: Set<MpUserPermissions> = principal.groups.map {
             when(it) {
                 MpUserGroups.USER -> setOf(
@@ -46,10 +45,5 @@ fun ICorChainDsl<MpContext>.chainPermissions(title: String) = worker<MpContext> 
         }.flatten().toSet()
         chainPermissions.addAll(permAdd)
         chainPermissions.removeAll(permDel)
-
-        println("PERM ADD: $permAdd")
-        println("PERM DEL: $permDel")
-        println("PERM RES: $chainPermissions")
-
     }
 }

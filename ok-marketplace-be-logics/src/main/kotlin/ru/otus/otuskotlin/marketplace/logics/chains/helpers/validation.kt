@@ -9,6 +9,8 @@ import ru.otus.otuskotlin.marketplace.validation.cor.ValidationBuilder
 import ru.otus.otuskotlin.marketplace.validation.cor.workers.validation
 
 fun ICorChainDsl<MpContext>.mpValidation(block: ValidationBuilder<MpContext>.() -> Unit) = validation {
+//    this.on { status == CorStatus.RUNNING }
+//    this.except { status = CorStatus.FAILING }
     errorHandler { validationResult ->
         if (validationResult.isSuccess) return@errorHandler
         val errs = validationResult.errors.map {

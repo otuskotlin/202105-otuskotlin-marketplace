@@ -12,7 +12,13 @@ import ru.otus.otuskotlin.marketplace.common.cor.handlers.worker
 internal fun ICorChainDsl<MpContext>.adCreateStub(title: String) = chain {
     this.title = title
 
-    on { status == CorStatus.RUNNING && stubCase != MpStubCase.NONE }
+    on {
+        status == CorStatus.RUNNING && stubCase != MpStubCase.NONE
+    }
+
+    worker("ok") {
+        println("adCreateStub")
+    }
 
     worker {
         this.title = "Успешный стабкейс для CREATE"

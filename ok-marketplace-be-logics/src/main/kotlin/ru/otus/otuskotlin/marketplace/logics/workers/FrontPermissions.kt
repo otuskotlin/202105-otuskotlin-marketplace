@@ -10,7 +10,7 @@ import ru.otus.otuskotlin.marketplace.common.cor.handlers.chain
 import ru.otus.otuskotlin.marketplace.common.cor.handlers.worker
 import ru.otus.otuskotlin.marketplace.common.cor.worker
 
-fun ICorChainDsl<MpContext>.frontPermissions(title: String) = chain<MpContext> {
+fun ICorChainDsl<MpContext>.frontPermissions(title: String) = chain {
     this.title = title
     description = "Вычисление разрешений пользователей для фронтенда"
 

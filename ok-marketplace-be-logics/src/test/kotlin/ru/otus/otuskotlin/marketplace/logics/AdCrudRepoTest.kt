@@ -8,6 +8,7 @@ import ru.otus.otuskotlin.marketplace.backend.common.context.MpContext
 import ru.otus.otuskotlin.marketplace.backend.common.models.*
 import ru.otus.otuskotlin.marketplace.backend.repo.common.DbAdFilterRequest
 import ru.otus.otuskotlin.marketplace.backend.repo.inmemory.RepoAdInMemory
+import ru.otus.otuskotlin.marketplace.logics.helpers.principalUser
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -21,13 +22,16 @@ class AdCrudRepoTest {
     @Test
     fun createSuccessTest() {
         val repo = RepoAdInMemory()
-        val crud = AdCrud(config = ContextConfig(
-            repoTest = repo
-        ))
+        val crud = AdCrud(
+            config = ContextConfig(
+                repoTest = repo
+            )
+        )
         val context = MpContext(
             workMode = WorkMode.TEST,
             requestAd = Bolt.getModel { id = AdIdModel.NONE },
             operation = MpContext.MpOperations.CREATE,
+            principal = principalUser()
         )
         runBlocking {
             crud.create(context)
@@ -54,6 +58,7 @@ class AdCrudRepoTest {
             workMode = WorkMode.TEST,
             requestAdId = Bolt.getModel().id,
             operation = MpContext.MpOperations.READ,
+            principal = principalUser(),
         )
         runBlocking {
             crud.read(context)
@@ -80,6 +85,7 @@ class AdCrudRepoTest {
             workMode = WorkMode.TEST,
             requestAd = Bolt.getModel(),
             operation = MpContext.MpOperations.UPDATE,
+            principal = principalUser(),
         )
         runBlocking {
             crud.update(context)
@@ -106,6 +112,7 @@ class AdCrudRepoTest {
             workMode = WorkMode.TEST,
             requestAdId = Bolt.getModel().id,
             operation = MpContext.MpOperations.DELETE,
+            principal = principalUser(),
         )
         runBlocking {
             crud.delete(context)
@@ -154,6 +161,7 @@ class AdCrudRepoTest {
             requestFilter = DbAdFilterRequest(dealSide = DealSideModel.PROPOSAL),
             requestPage = PaginatedModel(),
             operation = MpContext.MpOperations.SEARCH,
+            principal = principalUser(),
         )
         runBlocking {
             crud.search(context)
@@ -199,7 +207,8 @@ class AdCrudRepoTest {
             workMode = WorkMode.TEST,
             requestPage = PaginatedModel(),
             requestAdId = AdIdModel("11111111-1111-1111-1111-111111111114"),
-            operation = MpContext.MpOperations.OFFER
+            operation = MpContext.MpOperations.OFFER,
+            principal = principalUser(),
         )
         runBlocking {
             crud.offer(context)

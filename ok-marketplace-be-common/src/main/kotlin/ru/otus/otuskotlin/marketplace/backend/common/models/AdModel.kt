@@ -7,5 +7,6 @@ data class AdModel(
     var ownerId: OwnerIdModel = OwnerIdModel.NONE,
     var visibility: AdVisibilityModel = AdVisibilityModel.NONE,
     var dealSide: DealSideModel = DealSideModel.NONE,
+    var principalRelations: Set<MpPrincipalRelations> = emptySet(),
     var permissions: MutableSet<PermissionModel> = mutableSetOf(),
 )

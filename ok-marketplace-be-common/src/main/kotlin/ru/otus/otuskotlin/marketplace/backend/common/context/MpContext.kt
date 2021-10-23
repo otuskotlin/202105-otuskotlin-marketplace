@@ -22,7 +22,8 @@ data class MpContext(
     var requestAd: AdModel = AdModel(),
     var requestFilter: DbAdFilterRequest = DbAdFilterRequest(),
 
-    var saveAd: AdModel = AdModel(),
+    var dbAd: AdModel = AdModel(),
+    var permitted: Boolean = false,
 
     var responseAd: AdModel = AdModel(),
     var requestPage: PaginatedModel = PaginatedModel(),

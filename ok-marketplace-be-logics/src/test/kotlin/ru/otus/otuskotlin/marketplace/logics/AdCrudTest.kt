@@ -22,7 +22,7 @@ class AdCrudTest {
             requestAd = Bolt.getModel { id = AdIdModel.NONE },
             operation = MpContext.MpOperations.CREATE,
             principal = MpPrincipalModel(
-                id = OwnerIdModel("00000000-0000-0000-0000-00000000000a"),
+                id = Bolt.getModel().ownerId,
                 fname = "Ivan",
                 mname = "I.",
                 lname = "Ivanov",

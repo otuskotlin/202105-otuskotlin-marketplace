@@ -16,7 +16,6 @@ internal fun ICorChainDsl<MpContext>.chooseDb(title: String) = worker {
     """.trimIndent()
 
     handle {
-        println("chooseDb")
         if (principal.groups.contains(MpUserGroups.TEST)) {
             adRepo = config.repoTest
             return@handle

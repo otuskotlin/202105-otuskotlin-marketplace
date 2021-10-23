@@ -60,7 +60,7 @@ object AdCreate: ICorExec<MpContext> by chain<MpContext>({
         handle {
             // Копируем в отдельное свойство для подготовки к сохранению.
             // Копирование для того, чтоб иметь возможность логировать иходные данные из запроса
-            saveAd = requestAd.copy(
+            dbAd = requestAd.copy(
                 ownerId = principal.id
             )
         }
