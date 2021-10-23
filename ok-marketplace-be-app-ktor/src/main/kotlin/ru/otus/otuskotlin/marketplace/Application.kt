@@ -20,6 +20,7 @@ fun Application.module(config: AppKtorConfig = AppKtorConfig(environment)) {
     // Generally not needed as it is replaced by a `routing`
     install(Routing)
 
+//    https://github.com/imalik8088/ktor-starter/blob/master/src/Application.kt
     install(Authentication) {
         jwt("auth-jwt") {
             realm = config.auth.realm

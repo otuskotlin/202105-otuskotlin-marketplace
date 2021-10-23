@@ -20,7 +20,7 @@ class ValidationTest {
         }) {
             handleRequest(HttpMethod.Post, "/ad/create") {
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.withCharset(Charsets.UTF_8).toString())
-                addHeader(HttpHeaders.Authorization, "Bearer ${KtorAuthConfig.testToken()}")
+                addHeader(HttpHeaders.Authorization, "Bearer ${KtorAuthConfig.testUserToken()}")
                 setBody("{")
             }.apply {
                 assertEquals(HttpStatusCode.OK, response.status())

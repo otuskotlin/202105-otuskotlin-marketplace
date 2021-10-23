@@ -29,7 +29,7 @@ class RepoReadTest {
         }) {
             handleRequest(HttpMethod.Post, "/ad/read") {
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.withCharset(Charsets.UTF_8).toString())
-                addHeader(HttpHeaders.Authorization, "Bearer ${KtorAuthConfig.testToken()}")
+                addHeader(HttpHeaders.Authorization, "Bearer ${KtorAuthConfig.testUserToken()}")
                 val request = ReadAdRequest(
                     readAdId = ad.id.asString(),
                     debug = BaseDebugRequest(mode = BaseDebugRequest.Mode.TEST)

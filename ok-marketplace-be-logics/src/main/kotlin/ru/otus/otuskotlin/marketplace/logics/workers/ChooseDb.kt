@@ -2,6 +2,7 @@ package ru.otus.otuskotlin.marketplace.logics.workers
 
 import ru.otus.otuskotlin.marketplace.backend.common.context.MpContext
 import ru.otus.otuskotlin.marketplace.backend.common.models.MpStubCase
+import ru.otus.otuskotlin.marketplace.backend.common.models.MpUserGroups
 import ru.otus.otuskotlin.marketplace.backend.common.models.WorkMode
 import ru.otus.otuskotlin.marketplace.backend.repo.common.IRepoAd
 import ru.otus.otuskotlin.marketplace.common.cor.ICorChainDsl
@@ -15,6 +16,11 @@ internal fun ICorChainDsl<MpContext>.chooseDb(title: String) = worker {
     """.trimIndent()
 
     handle {
+        println("chooseDb")
+        if (principal.groups.contains(MpUserGroups.TEST)) {
+            adRepo = config.repoTest
+            return@handle
+        }
         adRepo = when(workMode) {
             WorkMode.PROD -> config.repoProd
             WorkMode.TEST -> config.repoTest

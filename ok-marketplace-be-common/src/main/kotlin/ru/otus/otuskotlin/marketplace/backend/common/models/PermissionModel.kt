@@ -4,5 +4,6 @@ enum class PermissionModel {
     NONE,
     READ,
     UPDATE,
+    DELETE,
     CONTACT;
 }

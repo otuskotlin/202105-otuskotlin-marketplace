@@ -20,6 +20,6 @@ fun JWTPrincipal?.toModel() = this?.run {
                 } catch (e: Throwable) {
                     null
                 }
-            } ?: emptyList()
+            }?.toSet() ?: emptySet()
     )
 } ?: MpPrincipalModel.NONE

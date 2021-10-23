@@ -4,9 +4,7 @@ import kotlinx.coroutines.runBlocking
 import ru.otus.otuskotlin.marketplace.stubs.Bolt
 import ru.otus.otuskotlin.marketplace.backend.common.context.CorStatus
 import ru.otus.otuskotlin.marketplace.backend.common.context.MpContext
-import ru.otus.otuskotlin.marketplace.backend.common.models.AdIdModel
-import ru.otus.otuskotlin.marketplace.backend.common.models.MpStubCase
-import ru.otus.otuskotlin.marketplace.backend.common.models.PaginatedModel
+import ru.otus.otuskotlin.marketplace.backend.common.models.*
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -23,6 +21,14 @@ class AdCrudTest {
             stubCase = MpStubCase.SUCCESS,
             requestAd = Bolt.getModel { id = AdIdModel.NONE },
             operation = MpContext.MpOperations.CREATE,
+            principal = MpPrincipalModel(
+                id = OwnerIdModel("00000000-0000-0000-0000-00000000000a"),
+                fname = "Ivan",
+                mname = "I.",
+                lname = "Ivanov",
+                groups = setOf(MpUserGroups.TEST, MpUserGroups.USER)
+            ),
+            workMode = WorkMode.STUB,
         )
         runBlocking {
             crud.create(context)

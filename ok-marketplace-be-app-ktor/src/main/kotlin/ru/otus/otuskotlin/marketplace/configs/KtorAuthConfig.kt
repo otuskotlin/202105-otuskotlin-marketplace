@@ -28,18 +28,23 @@ data class KtorAuthConfig(
             audience = "ad-users",
             realm = "Access to Ads"
         )
-        fun testToken(): String = JWT.create()
+        fun testUserToken(): String = testToken("TEST", "USER")
+        fun testModerToken(): String = testToken("TEST", "USER", "MODERATOR")
+        fun testAdminToken(): String = testToken("TEST", "USER", "ADMIN")
+        private fun testToken(vararg groups: String) = JWT.create()
             .withExpiresAt(
                 GregorianCalendar().apply {
-                    set(2035,1,1,0,0,0)
+                    set(2036,0,1,0,0,0)
+                    timeZone = TimeZone.getTimeZone("UTC")
                 }.time
             )
             .withAudience(TEST.audience)
             .withIssuer(TEST.issuer)
             .withClaim(ID_CLAIM, "00000000-0000-0000-0000-000000000001")
             .withArrayClaim(GROUPS_CLAIM, arrayOf("TEST"))
-            .withExpiresAt(Date(System.currentTimeMillis() + 60000))
+//            .withExpiresAt(Date(System.currentTimeMillis() + 60000))
             .sign(Algorithm.HMAC256(TEST.secret))
             .apply { println("Test JWT token: $this") }
+
     }
 }

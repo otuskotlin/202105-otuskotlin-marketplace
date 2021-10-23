@@ -5,7 +5,7 @@ data class MpPrincipalModel(
     val fname: String = "",
     val mname: String = "",
     val lname: String = "",
-    val groups: List<MpUserGroups> = emptyList()
+    val groups: Set<MpUserGroups> = emptySet()
 ) {
     companion object {
         val NONE = MpPrincipalModel()

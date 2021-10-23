@@ -22,7 +22,7 @@ abstract class RouterTest {
         }) {
             handleRequest(HttpMethod.Post, uri) {
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.withCharset(Charsets.UTF_8).toString())
-                addHeader(HttpHeaders.Authorization, "Bearer ${KtorAuthConfig.testToken()}")
+                addHeader(HttpHeaders.Authorization, "Bearer ${KtorAuthConfig.testUserToken()}")
                 setBody(Utils.mapper.writeValueAsString(body))
             }.apply {
                 println(response.content)

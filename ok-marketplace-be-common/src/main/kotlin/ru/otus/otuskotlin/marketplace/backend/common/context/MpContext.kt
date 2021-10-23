@@ -14,12 +14,16 @@ data class MpContext(
 
     val userSession: IUserSession<*> = IUserSession.Companion.EmptySession,
     var principal: MpPrincipalModel = MpPrincipalModel.NONE,
+    val chainPermissions: MutableSet<MpUserPermissions> = mutableSetOf(),
     var adRepo: IRepoAd = IRepoAd.NONE,
 
     var onRequest: String = "",
     var requestAdId: AdIdModel = AdIdModel.NONE,
     var requestAd: AdModel = AdModel(),
     var requestFilter: DbAdFilterRequest = DbAdFilterRequest(),
+
+    var saveAd: AdModel = AdModel(),
+
     var responseAd: AdModel = AdModel(),
     var requestPage: PaginatedModel = PaginatedModel(),
     var responsePage: PaginatedModel = PaginatedModel(),

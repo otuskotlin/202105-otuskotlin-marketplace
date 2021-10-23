@@ -9,7 +9,7 @@ import ru.otus.otuskotlin.marketplace.common.cor.ICorChainDsl
 import ru.otus.otuskotlin.marketplace.common.cor.handlers.chain
 import ru.otus.otuskotlin.marketplace.common.cor.handlers.worker
 
-internal fun ICorChainDsl<MpContext>.adCreateStub(title: String) = chain{
+internal fun ICorChainDsl<MpContext>.adCreateStub(title: String) = chain {
     this.title = title
 
     on { status == CorStatus.RUNNING && stubCase != MpStubCase.NONE }
@@ -33,5 +33,4 @@ internal fun ICorChainDsl<MpContext>.adCreateStub(title: String) = chain{
             )
         }
     }
-
 }

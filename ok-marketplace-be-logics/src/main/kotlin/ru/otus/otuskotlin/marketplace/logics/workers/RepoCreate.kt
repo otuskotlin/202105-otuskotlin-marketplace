@@ -17,7 +17,7 @@ internal fun ICorChainDsl<MpContext>.repoCreate(title: String) = worker {
     on { status == CorStatus.RUNNING }
 
     handle {
-        val result = adRepo.create(DbAdModelRequest(ad = requestAd))
+        val result = adRepo.create(DbAdModelRequest(ad = saveAd))
         val resultValue = result.result
         if (result.isSuccess && resultValue != null) {
             responseAd =  resultValue
