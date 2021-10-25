@@ -30,7 +30,7 @@ object AdSearch : ICorExec<MpContext> by chain<MpContext>({
         description = "Добавление ограничений в поисковый запрос согласно правам доступа и др. политикам"
         on { status == CorStatus.RUNNING }
         worker {
-            title = "Удаление из выборки приватных объявлений"
+            title = "Определение типа поиска"
             description = title
             handle {
                 dbFilter.searchTypes = listOf(
