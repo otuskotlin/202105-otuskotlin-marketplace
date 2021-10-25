@@ -17,6 +17,9 @@ enum class MpUserPermissions {
     DELETE_PUBLIC,
 
     SEARCH_OWN,
+    SEARCH_PUBLIC,
+    SEARCH_REGISTERED,
+    SEARCH_DRAFTS,
 
     OFFER_FOR_OWN,
 }

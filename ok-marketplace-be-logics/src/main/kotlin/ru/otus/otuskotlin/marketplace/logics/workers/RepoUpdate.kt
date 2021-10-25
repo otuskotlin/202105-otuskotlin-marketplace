@@ -17,7 +17,7 @@ internal fun ICorChainDsl<MpContext>.repoUpdate(title: String) = worker {
     on { status == CorStatus.RUNNING }
 
     handle {
-        val result = adRepo.update(DbAdModelRequest(ad = requestAd))
+        val result = adRepo.update(DbAdModelRequest(ad = dbAd))
         val resultValue = result.result
         if (result.isSuccess && resultValue != null) {
             responseAd =  resultValue

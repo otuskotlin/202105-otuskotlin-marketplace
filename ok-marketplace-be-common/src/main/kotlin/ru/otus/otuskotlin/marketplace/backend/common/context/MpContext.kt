@@ -20,8 +20,9 @@ data class MpContext(
     var onRequest: String = "",
     var requestAdId: AdIdModel = AdIdModel.NONE,
     var requestAd: AdModel = AdModel(),
-    var requestFilter: DbAdFilterRequest = DbAdFilterRequest(),
+    var requestFilter: MpSearchFilter = MpSearchFilter(),
 
+    val dbFilter: MpSearchFilter = MpSearchFilter(),
     var dbAd: AdModel = AdModel(),
     var permitted: Boolean = false,
 

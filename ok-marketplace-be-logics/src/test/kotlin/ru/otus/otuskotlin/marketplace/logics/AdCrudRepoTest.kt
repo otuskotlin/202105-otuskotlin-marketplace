@@ -81,9 +81,10 @@ class AdCrudRepoTest {
             initObjects = listOf(Bolt.getModel())
         )
         val crud = AdCrud(config = ContextConfig(repoTest = repo))
+        val expected = Bolt.getModel { title = "Updated bolt" }
         val context = MpContext(
             workMode = WorkMode.TEST,
-            requestAd = Bolt.getModel(),
+            requestAd = expected,
             operation = MpContext.MpOperations.UPDATE,
             principal = principalUser(),
         )
@@ -91,7 +92,6 @@ class AdCrudRepoTest {
             crud.update(context)
         }
         assertEquals(CorStatus.SUCCESS, context.status)
-        val expected = Bolt.getModel()
         with(context.responseAd) {
             assertEquals(expected.id, id)
             assertEquals(expected.title, title)
@@ -158,7 +158,7 @@ class AdCrudRepoTest {
         val crud = AdCrud(config = ContextConfig(repoTest = repo))
         val context = MpContext(
             workMode = WorkMode.TEST,
-            requestFilter = DbAdFilterRequest(dealSide = DealSideModel.PROPOSAL),
+            requestFilter = MpSearchFilter(dealSide = DealSideModel.PROPOSAL),
             requestPage = PaginatedModel(),
             operation = MpContext.MpOperations.SEARCH,
             principal = principalUser(),

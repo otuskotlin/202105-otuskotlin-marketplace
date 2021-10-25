@@ -21,7 +21,7 @@ internal fun ICorChainDsl<MpContext>.repoSearch(title: String) = worker {
     on { status == CorStatus.RUNNING }
 
     handle {
-        val result = adRepo.search(requestFilter)
+        val result = adRepo.search(DbAdFilterRequest.of(dbFilter))
         if (result.isSuccess) {
             responseAds = result.result.toMutableList()
         } else {

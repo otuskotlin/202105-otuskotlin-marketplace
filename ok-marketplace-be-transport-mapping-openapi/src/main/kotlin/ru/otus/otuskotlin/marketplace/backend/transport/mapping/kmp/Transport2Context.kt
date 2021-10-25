@@ -60,7 +60,7 @@ fun MpContext.setQuery(query: SearchAdRequest) = apply {
     stubCase = query.debug?.stubCase?.takeIf { workMode == WorkMode.STUB }.toModel()
 }
 
-private fun SearchAdFilter?.toModel(): DbAdFilterRequest = DbAdFilterRequest(
+private fun SearchAdFilter?.toModel(): MpSearchFilter = MpSearchFilter(
     dealSide = when(this?.dealSide) {
         AdDealSide.DEMAND -> DealSideModel.DEMAND
         AdDealSide.PROPOSAL -> DealSideModel.DEMAND
