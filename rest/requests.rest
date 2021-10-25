@@ -1,5 +1,6 @@
 POST http://127.0.0.1:8080/ad/create
 Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZC11c2VycyIsImlzcyI6Ik90dXNLb3RsaW4iLCJncm91cHMiOlsiVEVTVCJdLCJpZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMSIsImV4cCI6MjA4Mjc1ODQwMH0.gaxJtUCgdC00r05fNHHHORh45v_ZnvErGsLZgoMuhUY
 
 {
   "messageType": "CreateAdRequest",
@@ -25,6 +26,7 @@ Content-Type: application/json
 ### With unexisted ID
 POST http://127.0.0.1:8080/ad/create
 Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZC11c2VycyIsImlzcyI6Ik90dXNLb3RsaW4iLCJncm91cHMiOlsiVEVTVCJdLCJpZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMSIsImV4cCI6MjA4Mjc1ODQwMH0.gaxJtUCgdC00r05fNHHHORh45v_ZnvErGsLZgoMuhUY
 
 {
   "messageType": "CreateAdRequest",
@@ -50,6 +52,7 @@ Content-Type: application/json
 ### With unexisted ID
 POST http://127.0.0.1:8080/ad/read
 Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZC11c2VycyIsImlzcyI6Ik90dXNLb3RsaW4iLCJncm91cHMiOlsiVEVTVCJdLCJpZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMSIsImV4cCI6MjA4Mjc1ODQwMH0.gaxJtUCgdC00r05fNHHHORh45v_ZnvErGsLZgoMuhUY
 
 {
   "messageType": "ReadAdRequest",
@@ -63,6 +66,7 @@ Content-Type: application/json
 ### With Existed id
 POST http://127.0.0.1:8080/ad/read
 Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZC11c2VycyIsImlzcyI6Ik90dXNLb3RsaW4iLCJncm91cHMiOlsiVEVTVCJdLCJpZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMSIsImV4cCI6MjA4Mjc1ODQwMH0.gaxJtUCgdC00r05fNHHHORh45v_ZnvErGsLZgoMuhUY
 
 {
   "messageType": "ReadAdRequest",
@@ -76,6 +80,7 @@ Content-Type: application/json
 ### Update
 POST http://localhost:8080/ad/update
 Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZC11c2VycyIsImlzcyI6Ik90dXNLb3RsaW4iLCJncm91cHMiOlsiVEVTVCJdLCJpZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMSIsImV4cCI6MjA4Mjc1ODQwMH0.gaxJtUCgdC00r05fNHHHORh45v_ZnvErGsLZgoMuhUY
 
 {
   "messageType": "UpdateAdRequest",
@@ -99,6 +104,7 @@ Content-Type: application/json
 ###
 POST http://localhost:8080/ad/search
 Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZC11c2VycyIsImlzcyI6Ik90dXNLb3RsaW4iLCJncm91cHMiOlsiVEVTVCJdLCJpZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMSIsImV4cCI6MjA4Mjc1ODQwMH0.gaxJtUCgdC00r05fNHHHORh45v_ZnvErGsLZgoMuhUY
 
 {
   "messageType": "SearchAdRequest",
@@ -112,6 +118,7 @@ Content-Type: application/json
 ### Get concrete offers
 POST http://localhost:8080/ad/offers
 Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZC11c2VycyIsImlzcyI6Ik90dXNLb3RsaW4iLCJncm91cHMiOlsiVEVTVCJdLCJpZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMSIsImV4cCI6MjA4Mjc1ODQwMH0.gaxJtUCgdC00r05fNHHHORh45v_ZnvErGsLZgoMuhUY
 
 {
   "messageType": "OffersAdRequest",
@@ -129,6 +136,7 @@ Content-Type: application/json
 ### Get all offers
 POST http://localhost:8080/ad/offers
 Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZC11c2VycyIsImlzcyI6Ik90dXNLb3RsaW4iLCJncm91cHMiOlsiVEVTVCJdLCJpZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMSIsImV4cCI6MjA4Mjc1ODQwMH0.gaxJtUCgdC00r05fNHHHORh45v_ZnvErGsLZgoMuhUY
 
 {
   "messageType": "OffersAdRequest",
@@ -146,6 +154,7 @@ Content-Type: application/json
 ### Delete existed
 POST http://localhost:8080/ad/delete
 Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZC11c2VycyIsImlzcyI6Ik90dXNLb3RsaW4iLCJncm91cHMiOlsiVEVTVCJdLCJpZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMSIsImV4cCI6MjA4Mjc1ODQwMH0.gaxJtUCgdC00r05fNHHHORh45v_ZnvErGsLZgoMuhUY
 
 {
   "messageType": "DeleteAdRequest",
@@ -159,6 +168,7 @@ Content-Type: application/json
 ### Delete non-existed
 POST http://localhost:8080/ad/delete
 Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZC11c2VycyIsImlzcyI6Ik90dXNLb3RsaW4iLCJncm91cHMiOlsiVEVTVCJdLCJpZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMSIsImV4cCI6MjA4Mjc1ODQwMH0.gaxJtUCgdC00r05fNHHHORh45v_ZnvErGsLZgoMuhUY
 
 {
   "messageType": "DeleteAdRequest",
@@ -168,7 +178,3 @@ Content-Type: application/json
     "mode": "test"
   }
 }
-
-
-
-

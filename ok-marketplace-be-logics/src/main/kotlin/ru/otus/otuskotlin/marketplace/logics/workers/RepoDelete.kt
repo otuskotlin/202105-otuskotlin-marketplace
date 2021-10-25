@@ -17,7 +17,7 @@ internal fun ICorChainDsl<MpContext>.repoDelete(title: String) = worker {
     on { status == CorStatus.RUNNING }
 
     handle {
-        val result = adRepo.delete(DbAdIdRequest(id = requestAdId))
+        val result = adRepo.delete(DbAdIdRequest(id = dbAd.id))
         val resultValue = result.result
         if (result.isSuccess && resultValue != null) {
             responseAd =  resultValue

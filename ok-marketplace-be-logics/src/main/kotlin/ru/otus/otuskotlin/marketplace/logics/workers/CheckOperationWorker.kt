@@ -12,7 +12,9 @@ internal fun ICorChainDsl<MpContext>.checkOperationWorker(
 ) = worker{
     this.title = title
     description = "Если в контексте недопустимая операция, то чейн неуспешен"
-    on { operation != targetOperation }
+    on {
+        operation != targetOperation
+    }
     handle {
         status = CorStatus.FAILING
         addError(

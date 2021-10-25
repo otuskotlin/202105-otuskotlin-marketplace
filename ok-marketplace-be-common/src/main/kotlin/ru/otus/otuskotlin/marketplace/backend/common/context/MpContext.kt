@@ -13,12 +13,19 @@ data class MpContext(
     var config: ContextConfig = ContextConfig(),
 
     val userSession: IUserSession<*> = IUserSession.Companion.EmptySession,
+    var principal: MpPrincipalModel = MpPrincipalModel.NONE,
+    val chainPermissions: MutableSet<MpUserPermissions> = mutableSetOf(),
     var adRepo: IRepoAd = IRepoAd.NONE,
 
     var onRequest: String = "",
     var requestAdId: AdIdModel = AdIdModel.NONE,
     var requestAd: AdModel = AdModel(),
-    var requestFilter: DbAdFilterRequest = DbAdFilterRequest(),
+    var requestFilter: MpSearchFilter = MpSearchFilter(),
+
+    val dbFilter: MpSearchFilter = MpSearchFilter(),
+    var dbAd: AdModel = AdModel(),
+    var permitted: Boolean = false,
+
     var responseAd: AdModel = AdModel(),
     var requestPage: PaginatedModel = PaginatedModel(),
     var responsePage: PaginatedModel = PaginatedModel(),

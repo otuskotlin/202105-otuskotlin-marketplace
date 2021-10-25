@@ -280,6 +280,7 @@ components:
       enum:
         - read
         - update
+        - delete
         - contact
 
     BaseDebugRequest:
