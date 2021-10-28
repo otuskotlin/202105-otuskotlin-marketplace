@@ -34,7 +34,7 @@ object AdUpdate : ICorExec<MpContext> by chain<MpContext>({
     worker(title = "инициализируем requestAdId") { requestAdId = requestAd.id }
     repoRead(title = "Чтение объекта из БД")
     worker {
-        title = "Инициализация dbAd"
+        title = "Дополнительная валидация"
         on { status == CorStatus.RUNNING && dbAd.dealSide != requestAd.dealSide }
         handle {
             addError(
