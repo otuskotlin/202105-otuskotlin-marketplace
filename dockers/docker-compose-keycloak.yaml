@@ -1,0 +1,17 @@
+version: "3.3"
+services:
+#  app:
+#    image: ok-marketplace-be-app-ktor:0.0.1
+#    ports:
+#      - "8080:8080"
+
+  keycloak:
+    image: jboss/keycloak
+    ports:
+      - "8081:8080"
+      - "8082:9990"
+    volumes:
+      - ./keycloak:/tmp
+    environment:
+      KEYCLOAK_USER: otus
+      KEYCLOAK_PASSWORD: otus

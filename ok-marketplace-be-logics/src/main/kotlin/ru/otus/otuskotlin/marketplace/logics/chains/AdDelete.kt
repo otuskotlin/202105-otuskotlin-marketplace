@@ -8,7 +8,7 @@ import ru.otus.otuskotlin.marketplace.logics.chains.stubs.adDeleteStub
 import ru.otus.otuskotlin.marketplace.logics.workers.*
 import ru.otus.otuskotlin.marketplace.validation.validators.ValidatorStringNonEmpty
 
-object AdDelete: ICorExec<MpContext> by chain<MpContext>({
+object AdDelete : ICorExec<MpContext> by chain<MpContext>({
     checkOperationWorker(
         title = "Проверка операции",
         targetOperation = MpContext.MpOperations.DELETE,
