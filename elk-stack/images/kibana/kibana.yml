@@ -1,0 +1,21 @@
+#
+# ** THIS IS AN AUTO-GENERATED FILE **
+#
+
+# Default Kibana configuration for docker target
+server.name: kibana
+server.host: "0.0.0.0"
+elasticsearch.hosts: [ "http://elasticsearch:9200" ]
+xpack.monitoring.ui.container.elasticsearch.enabled: true
+
+#map.regionmap:
+#  includeElasticMapsService: false
+#  layers:
+#    - name: "Россия"
+#      url: "http://my.cors.enabled.server.org/france_departements.geojson"
+#      attribution: "INRAP"
+#      fields:
+#        - name: "department"
+#          description: "Full department name"
+#        - name: "INSEE"
+#          description: "INSEE numeric identifier"
