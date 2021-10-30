@@ -1,0 +1,7 @@
+/volumes/kfdata/*
+!/volumes/kfdata/.gitkeep
+
+/volumes/esdata/*
+!/volumes/esdata/.gitkeep
+
+/tmp
