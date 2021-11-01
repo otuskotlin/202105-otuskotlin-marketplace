@@ -4,12 +4,14 @@ import ru.otus.otuskotlin.marketplace.backend.common.context.MpContext
 import ru.otus.otuskotlin.marketplace.backend.common.exceptions.MpOperationNotSet
 import ru.otus.otuskotlin.marketplace.backend.common.models.*
 import ru.otus.otuskotlin.marketplace.openapi.models.*
+import java.time.Instant
+import java.util.*
 
 fun MpContext.toInitResponse() = InitAdResponse(
     requestId = onRequest.takeIf { it.isNotBlank() },
     errors = errors.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
     result = if (errors.find { it.level == IError.Level.ERROR } == null) InitAdResponse.Result.SUCCESS
-                else InitAdResponse.Result.ERROR
+    else InitAdResponse.Result.ERROR
 )
 
 fun MpContext.toReadResponse() = ReadAdResponse(
@@ -17,7 +19,7 @@ fun MpContext.toReadResponse() = ReadAdResponse(
     readAd = responseAd.takeIf { it != AdModel() }?.toTransport(),
     errors = errors.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
     result = if (errors.find { it.level == IError.Level.ERROR } == null) ReadAdResponse.Result.SUCCESS
-                else ReadAdResponse.Result.ERROR
+    else ReadAdResponse.Result.ERROR
 )
 
 fun MpContext.toCreateResponse() = CreateAdResponse(
@@ -25,7 +27,7 @@ fun MpContext.toCreateResponse() = CreateAdResponse(
     errors = errors.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
     createdAd = responseAd.takeIf { it != AdModel() }?.toTransport(),
     result = if (errors.find { it.level == IError.Level.ERROR } == null) CreateAdResponse.Result.SUCCESS
-                else CreateAdResponse.Result.ERROR
+    else CreateAdResponse.Result.ERROR
 )
 
 fun MpContext.toUpdateResponse() = UpdateAdResponse(
@@ -33,7 +35,7 @@ fun MpContext.toUpdateResponse() = UpdateAdResponse(
     errors = errors.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
     updatedAd = responseAd.takeIf { it != AdModel() }?.toTransport(),
     result = if (errors.find { it.level == IError.Level.ERROR } == null) UpdateAdResponse.Result.SUCCESS
-                else UpdateAdResponse.Result.ERROR
+    else UpdateAdResponse.Result.ERROR
 )
 
 fun MpContext.toDeleteResponse() = DeleteAdResponse(
@@ -41,7 +43,7 @@ fun MpContext.toDeleteResponse() = DeleteAdResponse(
     errors = errors.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
     deletedAd = responseAd.takeIf { it != AdModel() }?.toTransport(),
     result = if (errors.find { it.level == IError.Level.ERROR } == null) DeleteAdResponse.Result.SUCCESS
-                else DeleteAdResponse.Result.ERROR
+    else DeleteAdResponse.Result.ERROR
 )
 
 fun MpContext.toOffersResponse() = OffersAdResponse(
@@ -50,7 +52,7 @@ fun MpContext.toOffersResponse() = OffersAdResponse(
     offeredAds = responseAds.takeIf { it.isNotEmpty() }?.filter { it != AdModel() }?.map { it.toTransport() },
     page = responsePage.takeIf { it != PaginatedModel() }?.toTransport(),
     result = if (errors.find { it.level == IError.Level.ERROR } == null) OffersAdResponse.Result.SUCCESS
-                else OffersAdResponse.Result.ERROR
+    else OffersAdResponse.Result.ERROR
 )
 
 fun MpContext.toSearchResponse() = SearchAdResponse(
@@ -59,10 +61,10 @@ fun MpContext.toSearchResponse() = SearchAdResponse(
     foundAds = responseAds.takeIf { it.isNotEmpty() }?.filter { it != AdModel() }?.map { it.toTransport() },
     page = responsePage.takeIf { it != PaginatedModel() }?.toTransport(),
     result = if (errors.find { it.level == IError.Level.ERROR } == null) SearchAdResponse.Result.SUCCESS
-                else SearchAdResponse.Result.ERROR
+    else SearchAdResponse.Result.ERROR
 )
 
-fun MpContext.toResponse() = when(operation) {
+fun MpContext.toResponse() = when (operation) {
     MpContext.MpOperations.INIT -> toInitResponse()
     MpContext.MpOperations.CREATE -> toCreateResponse()
     MpContext.MpOperations.READ -> toReadResponse()
@@ -72,6 +74,20 @@ fun MpContext.toResponse() = when(operation) {
     MpContext.MpOperations.OFFER -> toOffersResponse()
     MpContext.MpOperations.NONE -> throw MpOperationNotSet("Operation for error response is not set")
 }
+
+fun MpContext.toLog(logId: String) = CommonLogModel(
+    messageId = UUID.randomUUID().toString(),
+    messageTime = Instant.now().toString(),
+    source = "ok-marketplace",
+    logId = logId,
+    marketplace = MpLogModel(
+        requestAdId = requestAdId.takeIf { it != AdIdModel.NONE }?.asString(),
+        requestAd = requestAd.takeIf { it != AdModel() }?.toTransport(),
+        responseAd = responseAd.takeIf { it != AdModel() }?.toTransport(),
+        responseAds = responseAds.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
+    ),
+    errors = errors.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
+)
 
 private fun PaginatedModel.toTransport() = BasePaginatedResponse(
     size = size.takeIf { it != Int.MIN_VALUE },
@@ -96,7 +112,7 @@ private fun AdModel.toTransport() = ResponseAd(
         ?.map { AdPermissions.valueOf(it.name) }?.toSet(),
 )
 
-private fun PermissionModel.toTransport() = when(this) {
+private fun PermissionModel.toTransport() = when (this) {
     PermissionModel.READ -> AdPermissions.READ
     PermissionModel.UPDATE -> AdPermissions.UPDATE
     PermissionModel.DELETE -> AdPermissions.DELETE
