@@ -7,11 +7,10 @@ import org.slf4j.event.Level
 import org.slf4j.event.LoggingEvent
 import java.time.Instant
 
-data class MpLogContext(val logger: Logger, val loggerId: String = "") {
+class MpLogWrapper(val logger: Logger, val loggerId: String = "") {
     fun log(
         msg: String = "",
         level: Level = Level.TRACE,
-        marker: Marker = DefaultMarker("DEV"),
         e: Throwable? = null,
         data: Any? = null,
         vararg objs: Pair<String, Any>?
@@ -21,7 +20,7 @@ data class MpLogContext(val logger: Logger, val loggerId: String = "") {
             override fun getTimeStamp(): Long = Instant.now().toEpochMilli()
             override fun getThreadName(): String = Thread.currentThread().name
             override fun getMessage(): String = msg
-            override fun getMarker(): Marker = marker
+            override fun getMarker(): Marker? = null
             override fun getArgumentArray(): Array<out Any> = data?.let { d ->
                 arrayOf(
                     *objs.map { StructuredArguments.keyValue(it?.first, it?.second) }.toTypedArray(),
@@ -35,34 +34,32 @@ data class MpLogContext(val logger: Logger, val loggerId: String = "") {
     }
     suspend fun <T> doWithLogging(
         id: String = "",
-        marker: Marker = DefaultMarker("DEV"),
         level: Level = Level.INFO,
         block: suspend () -> T,
     ): T = try {
         val timeStart = Instant.now()
-        log("$loggerId Entering $id", level, DefaultMarker("START", listOf(marker)))
+        log("$loggerId Entering $id", level)
         block().also {
             val diffTime = Instant.now().toEpochMilli() - timeStart.toEpochMilli()
             log(
-                "$loggerId Finishing $id", level, DefaultMarker("END", listOf(marker)),
+                "$loggerId Finishing $id", level,
                 objs = arrayOf(Pair("metricHandleTime", diffTime))
             )
         }
     } catch (e: Throwable) {
-        log("$loggerId Failing $id", Level.ERROR, DefaultMarker("ERROR", listOf(marker)), e)
+        log("$loggerId Failing $id", Level.ERROR, e)
         throw e
     }
 
     suspend fun <T> doWithErrorLogging(
         id: String = "",
-        marker: Marker = DefaultMarker("DEV"),
         throwRequired: Boolean = true,
         block: suspend () -> T,
     ): T? = try {
         val result = block()
         result
     } catch (e: Throwable) {
-        log("$loggerId Failing $id", Level.ERROR, DefaultMarker("ERROR", listOf(marker)), e)
+        log("$loggerId Failing $id", Level.ERROR, e)
         if (throwRequired) throw e else null
     }
 }
