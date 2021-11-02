@@ -8,7 +8,7 @@ import ru.otus.otuskotlin.marketplace.logging.mpLogger
 import ru.otus.otuskotlin.marketplace.logics.AdCrud
 import ru.otus.otuskotlin.marketplace.openapi.models.*
 
-class AdService(private val crud: AdCrud, ) {
+class AdService(private val crud: AdCrud) {
     private val logger = mpLogger(this::class.java)
 
     suspend fun handleAd(context: MpContext, request: BaseMessage): BaseMessage = try {
@@ -28,68 +28,47 @@ class AdService(private val crud: AdCrud, ) {
 
     suspend fun createAd(context: MpContext, request: CreateAdRequest): CreateAdResponse {
         context.setQuery(request)
-        return context.handle(
-            "create-ad",
-            MpContext::toCreateResponse
-        ) {
+        return context.handle("create-ad", MpContext::toCreateResponse) {
             crud.create(it)
         }
     }
 
     suspend fun readAd(context: MpContext, request: ReadAdRequest): ReadAdResponse {
         context.setQuery(request)
-        return context.handle(
-            "read-ad",
-            MpContext::toReadResponse
-        ) {
+        return context.handle("read-ad", MpContext::toReadResponse) {
             crud.read(it)
         }
     }
 
     suspend fun updateAd(context: MpContext, request: UpdateAdRequest): UpdateAdResponse {
         context.setQuery(request)
-        return context.handle(
-            "update-ad",
-            MpContext::toUpdateResponse
-        ) {
+        return context.handle("update-ad", MpContext::toUpdateResponse) {
             crud.update(it)
         }
     }
 
     suspend fun deleteAd(context: MpContext, request: DeleteAdRequest): DeleteAdResponse {
         context.setQuery(request)
-        return context.handle(
-            "delete-ad",
-            MpContext::toDeleteResponse
-        ) {
+        return context.handle("delete-ad", MpContext::toDeleteResponse) {
             crud.delete(it)
         }
     }
 
     suspend fun searchAd(context: MpContext, request: SearchAdRequest): SearchAdResponse {
         context.setQuery(request)
-        return context.handle(
-            "search-ad",
-            MpContext::toSearchResponse
-        ) {
+        return context.handle("search-ad", MpContext::toSearchResponse) {
             crud.search(it)
         }
     }
 
     suspend fun errorAd(context: MpContext, e: Throwable): BaseMessage {
         context.addError(e)
-        return context.handle(
-            "error-ad",
-            MpContext::toReadResponse
-        )
+        return context.handle("error-ad", MpContext::toReadResponse)
     }
 
     suspend fun initAd(context: MpContext, request: InitAdRequest): InitAdResponse {
         context.setQuery(request)
-        return context.handle(
-            "init-ad",
-            MpContext::toInitResponse
-        )
+        return context.handle("init-ad", MpContext::toInitResponse)
     }
 
     @Suppress("UNUSED_PARAMETER", "RedundantSuspendModifier")
@@ -99,10 +78,7 @@ class AdService(private val crud: AdCrud, ) {
 
     suspend fun offersAd(context: MpContext, request: OffersAdRequest): OffersAdResponse {
         context.setQuery(request)
-        return context.handle(
-            "offers-ad",
-            MpContext::toOffersResponse
-        ) {
+        return context.handle("offers-ad", MpContext::toOffersResponse) {
             crud.offer(it)
         }
     }
