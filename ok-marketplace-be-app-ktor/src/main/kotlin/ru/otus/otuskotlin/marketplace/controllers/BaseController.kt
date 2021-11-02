@@ -5,16 +5,16 @@ import io.ktor.auth.*
 import io.ktor.auth.jwt.*
 import io.ktor.request.*
 import io.ktor.response.*
-import org.slf4j.event.Level
+import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.withContext
 import ru.otus.otuskotlin.marketplace.backend.common.context.MpContext
-import ru.otus.otuskotlin.marketplace.logging.MpLogContext
-import ru.otus.otuskotlin.marketplace.logging.mpLogger
+import ru.otus.otuskotlin.marketplace.logging.MpLogWrapper
 import ru.otus.otuskotlin.marketplace.mappers.toModel
 import java.time.Instant
 
 suspend inline fun <reified Request : Any, reified Response : Any> ApplicationCall.handleRequest(
     logId: String,
-    logger: MpLogContext,
+    logger: MpLogWrapper,
     crossinline block: suspend MpContext.(Request) -> Response,
     crossinline except: suspend MpContext.(Throwable) -> Response
 ) {
@@ -25,7 +25,9 @@ suspend inline fun <reified Request : Any, reified Response : Any> ApplicationCa
             val req = receive<Request>()
             context.block(req)
         } catch (e: Throwable) {
-            context.except(e)
+            withContext(NonCancellable) {
+                context.except(e)
+            }
         }
         respond(res)
     }
