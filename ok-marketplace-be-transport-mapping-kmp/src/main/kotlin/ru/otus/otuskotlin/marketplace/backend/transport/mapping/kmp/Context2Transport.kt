@@ -3,6 +3,8 @@ package ru.otus.otuskotlin.marketplace.backend.transport.mapping.kmp
 import ru.otus.otuskotlin.marketplace.backend.common.context.MpContext
 import ru.otus.otuskotlin.marketplace.backend.common.models.*
 import ru.otus.otuskotlin.marketplace.kmp.transport.models.*
+import java.time.Instant
+import java.util.*
 
 fun MpContext.toInitResponse() = InitAdResponse(
     requestId = onRequest.takeIf { it.isNotBlank() },
@@ -59,6 +61,20 @@ fun MpContext.toSearchResponse() = SearchAdResponse(
     page = responsePage.takeIf { it != PaginatedModel() }?.toTransport(),
     result = if (errors.find { it.level == IError.Level.ERROR } == null) BaseResponse.Result.SUCCESS
                 else BaseResponse.Result.ERROR
+)
+
+fun MpContext.toLog(logId: String) = CommonLogModel(
+    messageId = UUID.randomUUID().toString(),
+    messageTime = Instant.now().toString(),
+    source = "ok-marketplace",
+    logId = logId,
+    marketplace = MpLogModel(
+        requestAdId = requestAdId.takeIf { it != AdIdModel.NONE }?.asString(),
+        requestAd = requestAd.takeIf { it != AdModel() }?.toTransport(),
+        responseAd = responseAd.takeIf { it != AdModel() }?.toTransport(),
+        responseAds = responseAds.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
+    ),
+    errors = errors.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
 )
 
 private fun PaginatedModel.toTransport() = BasePaginatedResponse(

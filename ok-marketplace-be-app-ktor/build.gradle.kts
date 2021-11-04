@@ -53,6 +53,8 @@ dependencies {
     implementation(project(":ok-marketplace-be-logics"))
     // DB
     implementation(project(":ok-marketplace-be-repo-inmemory"))
+    // logging
+    implementation(project(":ok-marketplace-be-logging"))
 
     testImplementation(kotlin("test-junit"))
     testImplementation(ktor("server-test-host")) // "io.ktor:ktor-server-test-host:$ktorVersion"

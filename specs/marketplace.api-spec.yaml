@@ -171,7 +171,7 @@ components:
     BaseRequest:
       description: Базовый класс для всех запросов
       allOf:
-#        - $ref: '#/components/schemas/BaseMessage'
+        # - $ref: '#/components/schemas/BaseMessage'
         - type: object
           properties:
             requestId:
@@ -180,7 +180,7 @@ components:
     BaseResponse:
       description: Базовый класс для всех ответов
       allOf:
-#        - $ref: '#/components/schemas/BaseMessage'
+        # - $ref: '#/components/schemas/BaseMessage'
         - type: object
           properties:
             requestId:
@@ -562,4 +562,39 @@ components:
               description: Размер резьбы
               type: number
               format: double
+    # Типы продуктов
+    MpLogModel:
+      description: Модель логирования
+      allOf:
+        - type: object
+          properties:
+            requestAdId:
+              type: string
+            requestAd:
+              $ref: '#/components/schemas/ResponseAd'
+            responseAd:
+              $ref: '#/components/schemas/ResponseAd'
+            responseAds:
+              type: array
+              items:
+                $ref: '#/components/schemas/ResponseAd'
 
+    CommonLogModel:
+      description: Модель логирования
+      allOf:
+        - type: object
+          properties:
+            messageId:
+              type: string
+            messageTime:
+              type: string
+            logId:
+              type: string
+            source:
+              type: string
+            marketplace:
+              $ref: '#/components/schemas/MpLogModel'
+            errors:
+              type: array
+              items:
+                $ref: '#/components/schemas/RequestError'
