@@ -126,6 +126,8 @@ class RepoAdSQL(
             // Select only if options are provided
             val results = (AdsTable innerJoin UsersTable).select {
                 (if (req.ownerId == OwnerIdModel.NONE) Op.TRUE else AdsTable.ownerId eq req.ownerId.asUUID()) and
+                        (if (req.searchStr.isBlank()) Op.TRUE else (AdsTable.title like "%${req.searchStr}%") or
+                                (AdsTable.description like "%${req.searchStr}%")) and
                         (if (req.dealSide == DealSideModel.NONE) Op.TRUE else AdsTable.dealSide eq req.dealSide)
             }
 

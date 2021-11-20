@@ -143,6 +143,10 @@ class RepoAdInMemory(
     override suspend fun search(req: DbAdFilterRequest): DbAdsResponse {
         val results = cache.asFlow()
             .filter {
+                if (req.searchStr.isBlank()) return@filter true
+                "${it.value.title}${it.value.description}".contains(req.searchStr)
+            }
+            .filter {
                 if (req.ownerId == OwnerIdModel.NONE) return@filter true
                 req.ownerId.asString() == it.value.ownerId
             }

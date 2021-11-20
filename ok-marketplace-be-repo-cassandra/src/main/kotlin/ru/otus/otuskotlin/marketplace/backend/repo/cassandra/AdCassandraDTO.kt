@@ -1,39 +1,32 @@
 package ru.otus.otuskotlin.marketplace.backend.repo.cassandra
 
-import com.datastax.oss.driver.api.core.metadata.schema.ClusteringOrder
 import com.datastax.oss.driver.api.core.type.DataTypes
-import com.datastax.oss.driver.api.mapper.annotations.ClusteringColumn
 import com.datastax.oss.driver.api.mapper.annotations.CqlName
 import com.datastax.oss.driver.api.mapper.annotations.Entity
 import com.datastax.oss.driver.api.mapper.annotations.PartitionKey
 import com.datastax.oss.driver.api.querybuilder.SchemaBuilder
-import ru.otus.otuskotlin.marketplace.backend.common.models.AdIdModel
-import ru.otus.otuskotlin.marketplace.backend.common.models.AdModel
-import ru.otus.otuskotlin.marketplace.backend.common.models.AdVisibilityModel
-import ru.otus.otuskotlin.marketplace.backend.common.models.DealSideModel
-import ru.otus.otuskotlin.marketplace.backend.common.models.OwnerIdModel
-import ru.otus.otuskotlin.marketplace.backend.common.models.PermissionModel
+import ru.otus.otuskotlin.marketplace.backend.common.models.*
 
 @Entity
 data class AdCassandraDTO(
-    @CqlName(COLUMN_ID)
-    @PartitionKey
+    @field:CqlName(COLUMN_ID)
+    @field:PartitionKey
     var id: String? = null,
-    @CqlName(COLUMN_TITLE)
+    @field:CqlName(COLUMN_TITLE)
     var title: String? = null,
-    @CqlName(COLUMN_DESCRIPTION)
+    @field:CqlName(COLUMN_DESCRIPTION)
     var description: String? = null,
-    @CqlName(COLUMN_OWNER_ID)
+    @field:CqlName(COLUMN_OWNER_ID)
     var ownerId: String? = null,
-    @CqlName(COLUMN_VISIBILITY)
+    @field:CqlName(COLUMN_VISIBILITY)
     var visibility: AdVisibilityModel? = null,
-    @CqlName(COLUMN_DEAL_SIDE)
+    @field:CqlName(COLUMN_DEAL_SIDE)
 
     // Нельзя использовать в моделях хранения внутренние модели.
     // При изменении внутренних моделей, БД автоматически не изменится,
     // а потому будет Runtime ошибка, которая вылезет только на продуктовом стенде
     var dealSide: DealSideModel? = null,
-    @CqlName(COLUMN_PERMISSIONS)
+    @field:CqlName(COLUMN_PERMISSIONS)
     var permissions: Set<PermissionModel>? = null
 ) {
     constructor(adModel: AdModel) : this(
@@ -63,7 +56,7 @@ data class AdCassandraDTO(
         const val COLUMN_ID = "id"
         const val COLUMN_TITLE = "title"
         const val COLUMN_DESCRIPTION = "description"
-        const val COLUMN_OWNER_ID = "owner_id"
+        const val COLUMN_OWNER_ID = "\"owner_id_my\""
         const val COLUMN_VISIBILITY = "visibility"
         const val COLUMN_DEAL_SIDE = "deal_side"
         const val COLUMN_PERMISSIONS = "permissions"
