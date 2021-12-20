@@ -1,0 +1,35 @@
+{
+  "scenarios": {
+    "continues": {
+      "executor": "constant-vus",
+      "vus": 1,
+      "duration": "10m"
+    },
+    "increasing-users": {
+      "executor": "ramping-vus",
+      "stages": [
+        {
+          "duration": "10m",
+          "target": 30
+        },
+        {
+          "duration": "2m",
+          "target": 30
+        },
+        {
+          "duration": "10m",
+          "target": 0
+        }
+      ],
+      "startTime": "11m"
+    }
+  },
+  "thresholds": {
+    "http_req_duration{scenario:continues}": [
+      "p(95) < 500"
+    ],
+    "failed_requests": [
+      "rate == 0"
+    ]
+  }
+}
